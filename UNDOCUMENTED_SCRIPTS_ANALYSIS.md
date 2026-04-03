@@ -1,0 +1,790 @@
+# TPT ORACLE - UNDOCUMENTED SCRIPTS COMPREHENSIVE ANALYSIS
+
+**Total Scripts in Repository:** 794 (in root, ash/, awr/)
+**Currently Documented:** 88
+**Undocumented:** 706
+
+---
+
+## ASH Analysis (69 scripts)
+
+- **ash/ash_index_helper.sql**
+- **ash/ash_index_helperx.sql**
+- **ash/ash_log_file_sync.sql**
+- **ash/ash_object_predicates.sql** - PROMPT  ASQLMon v1.1 - by Tanel Poder ( http://blog.tanelpoder.com ) - Display SQL execution plan line level activity breakdown from ASH
+- **ash/ashmem.sql**
+- **ash/ashpeak.sql** - ashpeak.sql
+- **ash/ashpeaktop.sql** - ashpeak.sql
+- **ash/ashtop10.sql** - ashtop.sql v1.2
+- **ash/ashtopsum.sql** - ashtopsum.sql v1.3
+- **ash/asqlflame.sql**
+- **ash/asqlmon12.sql** - asqlmon.sql (v1.2)
+- **ash/asqlmonx.sql** - asqlmon.sql (v1.1)
+- **ash/bash_wait_chains.sql** - ash_wait_chains.sql (v0.2 BETA)
+- **ash/bashtop.sql** - ashtop.sql v1.2
+- **ash/bevent_hist.sql**
+- **ash/bevent_hist_micro.sql**
+- **ash/bshortmon_logfilesync.sql**
+- **ash/btime_model_phases.sql**
+- **ash/cashtop.sql** - cashtop.sql
+- **ash/create_ash_without_timestamps.sql**
+- **ash/daplanline.sql** - daplanline.sql (v1.0)
+- **ash/dash_wait_chains.sql** - dash_wait_chains.sql (v0.8)
+- **ash/dashpeak.sql** - ashpeak.sql
+- **ash/dashpeaktop.sql** - ashpeak.sql
+- **ash/dashtop.sql** - dashtop.sql v1.2
+- **ash/dashtopsum.sql** - dashtopsum.sql v1.3
+- **ash/dashtopsum_pga.sql** - dashtopsum.sql v1.3
+- **ash/dasqlmon.sql** - dasqlmon.sql (v1.2)
+- **ash/dasqlmonx.sql** - dasqlmon.sql (v1.2)
+- **ash/devent_hist.sql** - devent_hist.sql
+- **ash/devent_hist_micro.sql**
+- **ash/disk_rereads.sql**
+- **ash/event_hist.sql**
+- **ash/event_hist_cell.sql** - PROMPT Showing only CELL wait events as they have the wait_event.p1 = v$cell.cell_hashval link...
+- **ash/event_hist_micro.sql**
+- **ash/evet_hist_cell.sql**
+- **ash/examples/ash10.sql**
+- **ash/examples/ash11.sql**
+- **ash/examples/ash12a.sql** - PROMPT FROM_TIME=&from_time TO_TIME=&to_time
+- **ash/examples/ash13.sql** - PROMPT FROM_TIME=&from_time TO_TIME=&to_time
+- **ash/examples/ash13a.sql** - PROMPT FROM_TIME=&from_time TO_TIME=&to_time
+- **ash/examples/ash2.sql** - PROMPT FROM_TIME=&from_time TO_TIME=&to_time
+- **ash/examples/ash3.sql** - PROMPT FROM_TIME=&from_time TO_TIME=&to_time
+- **ash/examples/ash5.sql**
+- **ash/examples/ash6.sql**
+- **ash/examples/ash7.sql**
+- **ash/examples/ash8.sql**
+- **ash/examples/ash9.sql**
+- **ash/examples/ashrelated.sql**
+- **ash/gashtop.sql**
+- **ash/gasqlmon.sql**
+- **ash/gen_ash_report_html.sql** - ACCEPT bdate DATE FORMAT 'YYYY-MM-DD HH24:MI' DEFAULT '&def_bdate' PROMPT "Enter begin time [&def_bdate]: "
+- **ash/gen_ash_report_text.sql** - ACCEPT bdate DATE FORMAT 'YYYY-MM-DD HH24:MI' DEFAULT '&def_bdate' PROMPT "Enter begin time [&def_bdate]: "
+- **ash/old.event_hist_cell.sql**
+- **ash/old_devent_hist.sql**
+- **ash/perfsheet_ash.sql**
+- **ash/rowsource_events.sql** - rowsource_events.sql
+- **ash/sample_drift.sql**
+- **ash/shortmon.sql**
+- **ash/shortmon_cell.sql**
+- **ash/shortmon_logfilesync.sql**
+- **ash/shortmon_numblocks.sql**
+- **ash/sqlexec_duration_buckets.sql**
+- **ash/sqlexec_longer_than.sql**
+- **ash/sqlid_activity.sql** - ACCEPT sqlid CHAR FORMAT A13 DEFAULT '%'                           PROMPT "Enter     SQL ID [       %        ]: "
+- **ash/sqlid_dbtime_buckets.sql**
+- **ash/sqlid_plan_activity.sql**
+- **ash/time_model.sql**
+- **ash/w.sql** - PROMPT What's going on? Showing top timed events of last minute from ASH...
+
+## AWR Analysis (21 scripts)
+
+- **awr/awr_evh.sql**
+- **awr/awr_last.sql**
+- **awr/awr_lasth.sql**
+- **awr/awr_log_file_sync.sql**
+- **awr/awr_mem_resize.sql**
+- **awr/awr_procmem.sql**
+- **awr/awr_sqlid.sql**
+- **awr/awr_sqlid_binds.sql**
+- **awr/awr_sqlstats_unstable.sql**
+- **awr/awr_sysmetric_history.sql**
+- **awr/awr_sysmetric_summary.sql**
+- **awr/awr_sysstat.sql**
+- **awr/awr_system_event.sql**
+- **awr/create_event_histogram_view.sql**
+- **awr/dbload.sql**
+- **awr/dstat.sql** - PROMPT awr/dstat.sql: Show system metrics with per-minute granularity for current container/PDB
+- **awr/gen_awr_report.sql** - PROMPT Listing latest AWR snapshots ...
+- **awr/gen_perfhub_report.sql**
+- **awr/get_settings.sql**
+- **awr/other_xml.sql**
+- **awr/settings.sql** - PROMPT AWR Data Retention (Includes DBA_HIST ASH):
+
+## Session Monitoring (5 scripts)
+
+- **a.sql** - A-Script: Display CURRENT active sessions...
+- **as.sql** - A-Script: Display active sessions grouped by &1....
+- **asql.sql** - Display active sessions current SQLs
+- **ba.sql**
+- **sid.sql**
+
+## SQL Analysis & Cursors (26 scripts)
+
+- **curheaps.sql** - curheaps.sql
+- **curschema.sql**
+- **sql.sql** - Show SQL text, child cursors and execution stats for SQL hash value &1 child &2
+- **sql_profile_hints.sql**
+- **sqla.sql**
+- **sqlbindsum.sql**
+- **sqlcsstat.sql**
+- **sqlexecid.sql**
+- **sqlfh.sql** - sqlfh.sql (SQL Feature Hieararchy)
+- **sqlflame.sql** - Demo script for displaying execution plan profile as a flame chart
+- **sqlfn.sql**
+- **sqlfna.sql**
+- **sqlh.sql**
+- **sqli.sql**
+- **sqlidx.sql** - A temporary script/hack to display exadata-specific metrics along normal SQL stuff from V$SQL
+- **sqll.sql**
+- **sqlmemh.sql** - Show shared pool memory usage of SQL statement with hash value &1
+- **sqlmemx.sql** - Show shared pool memory usage of SQL statement with SQL_ID &1
+- **sqlmon_restarts.sql** - List UPDATE/DELETE statements that have experienced restarts due to write consistency from V$SQL_PLAN_MONITOR
+- **sqlmon_sn.sql** - PROMPT Querying V$SQL_MONITOR_STATNAME...
+- **sqlmoni.sql** - Spool a SQL Monitoring report to a local HTML file and open it
+- **sqlopt.sql** - PROMPT Show compilation environment stored inside cursors for SQLID &1 child# &2 parameter &3
+- **sqlprof.sql**
+- **sqlt.sql**
+- **sqlt9.sql**
+- **sqltune_tune_sqlid.sql** - dbms_sqltune.create_tuning_task(task_name=>'SQLTT_&1', sql_id=>'&1', time_limit=>&2)
+
+## Execution Plans (42 scripts)
+
+- **x101.sql**
+- **x2.sql**
+- **x9.sql**
+- **x9a.sql**
+- **x9all.sql**
+- **xad.sql** - Display execution plan for last statement for this session from library cache...
+- **xall.sql**
+- **xb.sql** - xb (eXplain Better)
+- **xbi.sql** - xb (eXplain Better)
+- **xbix.sql** - xb (eXplain Better)
+- **xbx.sql** - xb (eXplain Better)
+- **xco.sql**
+- **xde.sql**
+- **xde2.sql** - xde.sql ( X$ DEscribe )
+- **xia.sql** - Display Execution plan in advanced format for sqlid &1
+- **xiad.sql** - eXplain the execution plan for sqlid &1 child &2....
+- **xip.sql** - eXplain the execution plan for sqlid &1 child &2....
+- **xls.sql**
+- **xm.sql** - xm.sql (eXplain from Memory)
+- **xma.sql** - xma.sql (eXplain from Memoryi all)
+- **xmai.sql** - xmai (eXplain from Memory with object/QB alias, lookup by SQL ID)
+- **xmon.sql**
+- **xms.sql** - xms (eXplain from Memory with Statistics)
+- **xms2.sql**
+- **xmsh.sql** - xmsh (eXplain from Memory with Statistics lookup by Hash value)
+- **xmsi.sql** - xmsi (eXplain from Memory with Statistics lookup by SQL ID)
+- **xp.sql** - eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &1....
+- **xpa.sql** - eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &1.... (11.2+)
+- **xph.sql** - PROMPT eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &1....
+- **xpi.sql** - eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SQL_ID &1....
+- **xpia.sql** - eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SQL_ID &1.... (11.2+)
+- **xpih.sql** - PROMPT eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SQL_ID &1.... (11.2+)
+- **xplto.sql** - Show execution plan operations and options matching &1 (11g+)
+- **xpm.sql**
+- **xprof.sql** - Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &3....
+- **xr.sql**
+- **xs.sql**
+- **xsid.sql**
+- **xsida.sql**
+- **xt.sql**
+- **xte.sql**
+- **xx.sql** - Display execution plan for last statement for this session from library cache...
+
+## Wait/Event Analysis (2 scripts)
+
+- **snapwait.sql** - Taking a &1 second snapshot of wait "&2"...
+- **waitprof.sql** - waitprof.sql ( Session Wait Profiler )
+
+## Memory & Buffer Management (18 scripts)
+
+- **bh_by_ts.sql**
+- **bhcls.sql** - bhla.sql (Buffer Headers by Latch Address)
+- **bhdo.sql**
+- **bhfp.sql**
+- **bhla.sql** - bhla.sql (Buffer Headers by Latch Address)
+- **bhobjects.sql**
+- **bhobjects2.sql**
+- **bufp.sql**
+- **bufprof.sql** - BufProf 1.04 ( Buffer Get Profiler )
+- **bufprof_wrong.sql**
+- **heap6.sql**
+- **memres.sql**
+- **pmem_detail.sql** - pmem_detail.sql (EXPERIMENTAL!)
+- **smem_detail.sql** - smem_detail.sql
+- **spmem.sql** - WARNING!!! This script will query X$KSMSP, which will cause heavy shared pool latch contention
+- **spoolrun.sql**
+- **subheap.sql**
+- **tabhisthybrid.sql**
+
+## Lock/Latch/Mutex (5 scripts)
+
+- **glock.sql**
+- **latchprof_old.sql** - lhp.sql ( Latch Holder Profile )
+- **latchprofx.sql** - latchprofx.sql ( Latch Holder Profiler eXtended )
+- **mutexprof.sql** - mutexprof.sql ( Mutex sleep Profiler )
+- **ulock.sql**
+
+## Performance Profiling (4 scripts)
+
+- **drop_sql_profile.sql**
+- **ostackprof.sql** - PROMPT New usage:
+- **ostackprofu.sql** - oStackProfU.sql ( Oradebug short_Stack Profiler )
+- **ostackprofw.sql** - oStackProf.sql ( Oradebug short_Stack Profiler )
+
+## System Statistics (10 scripts)
+
+- **bg2.sql**
+- **bgact.sql**
+- **statn.sql**
+- **sysm.sql** - Display SYSTEM metrics from V$METRIC
+- **sysopt.sql** - PROMPT Show system default compilation environment, parameter &1
+- **syspriv.sql**
+- **top.sql**
+- **topmsh.sql**
+- **topseg2.sql** - Show top space users per tablespace - collapse partitions to table/index level
+- **topsql.sql** - Show TOP SQL ordered by user-provided criteria
+
+## Transaction & Undo (2 scripts)
+
+- **gtrans.sql** - Show global transactions from X$K2GTE2...
+- **snapundo.sql** - Taking a &1 second snapshot...
+
+## Redo & Archive Logs (4 scripts)
+
+- **alog.sql**
+- **logfile.sql**
+- **login.sql** - also sets command  window/xterm title
+- **snapredo.sql** - Taking a &1 second snapshot...
+
+## ASM (Automatic Storage Management) (5 scripts)
+
+- **asmdf.sql**
+- **asmdg.sql**
+- **asmdump.sql**
+- **asmdumpf.sql**
+- **asmls.sql**
+
+## Tracing & Diagnostics (17 scripts)
+
+- **46off.sql**
+- **46on.sql**
+- **53off.sql** - alter session set events '10053 trace name context off';;
+- **53on.sql** - alter session set events '10053 trace name context forever, level 1';;
+- **53trace.sql** - ACC v_sql_id PROMPT 'Enter your SQL ID: '
+- **diag.sql**
+- **diag_sid.sql** - PROMPT  diag_sid v2.01 by Tanel Poder ( http://www.tanelpoder.com )
+- **dump.sql** - @dump <file#> <block#> <what regexp>
+- **dumptrc.sql**
+- **dumpvar.sql**
+- **get_trace.sql** - ACCEPT trc_file PROMPT 'Trace file name: '
+- **get_trace2.sql**
+- **gettracename.sql**
+- **ostack.sql**
+- **pxtrace.sql**
+- **tracesid.sql**
+- **tracesidoff.sql**
+
+## Object Information (24 scripts)
+
+- **arg.sql**
+- **colltypes.sql**
+- **cons.sql** - Show constraints on table &1....
+- **cons2.sql**
+- **dep.sql**
+- **ind2.sql** - Display indexes where table or index name matches &1....
+- **indf.sql** - Display indexes where table or index name matches &1....
+- **indroot.sql**
+- **partmon.sql**
+- **partpruning.sql**
+- **procid.sql**
+- **seg2.sql**
+- **segcachedx.sql** - Display number of buffered blocks of a segment using X$KCBOQH for table &1
+- **segeof.sql**
+- **segext.sql**
+- **segext2.sql**
+- **segstat.sql**
+- **segstat2.sql**
+- **segstatint.sql**
+- **segsum.sql**
+- **seq2.sql**
+- **syn2.sql**
+- **tab2.sql** - Show tables matching condition "&1" (if schema is not specified then current user's tables only are shown)...
+- **trigger.sql**
+
+## Space & Storage (22 scripts)
+
+- **du.sql**
+- **du2.sql**
+- **evts.sql** - PROMPT ORADEBUG EVENTDUMP system
+- **gts.sql** - Gather Table Statistics for table &1....
+- **gtsh.sql** - Gather Table Statistics with histograms for table &1....
+- **lotscommits.sql** - PROMPT This script will issue lots of synchronous commits and will generate undo/redo
+- **lotsfailedparses.sql**
+- **lotshparses.sql** - lotshparses.sql
+- **lotshparses2.sql** - lotshparses2.sql
+- **lotshparses3.sql** - lotshparses3.sql
+- **lotslios.sql** - lotslios.sql
+- **lotsparses.sql**
+- **lotspios.sql** - lotspios.sql
+- **lotssparses.sql** - lotssparses.sql
+- **lotssparses2.sql** - lotssparses.sql
+- **lotstempios.sql**
+- **netstat.sql**
+- **netstat2.sql**
+- **otherxmlhints.sql**
+- **privgrants.sql**
+- **privgrants2.sql**
+- **tsv.sql**
+
+## Parameters & Configuration (29 scripts)
+
+- **html_settings.sql**
+- **htmlset.sql**
+- **htmlset2.sql**
+- **init.sql** - Initializes sqlplus variables for 156 character terminal width and other settings.
+- **loadset.sql**
+- **paddr.sql**
+- **pd2.sql** - Prompt Show all parameters and session values from x$ksppi/x$ksppcv...
+- **pdbs.sql**
+- **pdv.sql**
+- **peek.sql** - -> oradebug peek 0x&1 64
+- **peekloop.sql** - -> oradebug peek 0x&1 64
+- **pgav.sql**
+- **pinfo.sql**
+- **pn.sql** - Prompt Show all parameters and session values from x$ksppi/x$ksppcv...
+- **pr.sql**
+- **prc.sql**
+- **prefetch.sql** - prefetch.sql
+- **printtab2.sql** - PROMPT printtab2.sql: There seems to be an issue on Oracle 12c+
+- **privs.sql**
+- **privs2.sql**
+- **prq.sql**
+- **prr.sql**
+- **prs.sql**
+- **px.sql** - Report Pararallel Execution SQL globally in a RAC instance
+- **px2.sql** - PROMPT Show current Parallel Execution sessions in RAC cluster...
+- **pxs.sql** - Display Parallel Execution QC and slave sessions for QC &1....
+- **saveset.sql**
+- **set.sql** - Show SEssion Time model values for SID &1....
+- **xtreset.sql**
+
+## Utilities & Helpers (401 scripts)
+
+- **acc.sql** - alter session set session_cached_cursors=&1;;
+- **aon.sql**
+- **appinfo.sql**
+- **aq.sql**
+- **ar.sql** - ....and rownum <= &1
+- **ascii.sql**
+- **asfp.sql** - PROMPT ALTER SESSION FORCE PARALLEL QUERY PARALLEL &1;;
+- **ash.sql** - PROMPT FROM_TIME=&from_time TO_TIME=&to_time
+- **atname.sql**
+- **aud.sql**
+- **audo.sql**
+- **audo2.sql**
+- **bclass.sql**
+- **bf.sql**
+- **bitmask.sql**
+- **break.sql** - Display the PREV_SQL_ID of sessions if this query manages to
+- **c.sql**
+- **calc.sql** - Basic calculator and dec/hex converter
+- **cbo_helper.sql**
+- **cborun.sql** - Fetching tracefile...
+- **cbothis.sql** - Fetching tracefile...
+- **cc.sql** - PROMPT ALTER SESSION SET container = &1;;
+- **ccr.sql**
+- **channels.sql** - channels.sql
+- **channels2.sql** - channels.sql
+- **channels3.sql** - channels.sql
+- **chr.sql**
+- **ci.sql** - PROMPT EXEC DBMS_SESSION.SET_IDENTIFIER('&1');
+- **cid.sql**
+- **cinfo.sql**
+- **clt.sql**
+- **cnt.sql**
+- **cnta.sql**
+- **cntg.sql**
+- **cofef.sql**
+- **cofef_missing.sql**
+- **cofep.sql**
+- **comm.sql** - Not listing tables without comments...
+- **compileall.sql** - Generating the compile commands into compileall_out.sql...
+- **cont.sql**
+- **create_sql_baseline_awr.sql**
+- **cs.sql** - alter session set current_schema=&1
+- **cstat.sql** - Execute SQL statement in script argument and report basic
+- **csv.sql**
+- **d2.sql** - Show data dictionary views and x$ tables matching the expression "&1" from ALL_TABLES...
+- **date.sql**
+- **date2unix.sql**
+- **db.sql**
+- **dba.sql** - dba.sql (version 0.2)
+- **dba2.sql** - PROMPT Translate file#=&1 block#=&2 to segment name ...
+- **dbinfo.sql**
+- **dc.sql**
+- **dec.sql**
+- **desc.sql**
+- **descpartxx.sql**
+- **descx.sql** - eXtended describe of &1
+- **descx2.sql** - eXtended describe of &1
+- **descxx11.sql**
+- **descxx2.sql**
+- **dg.sql** - PROMPT == v$database
+- **dir.sql**
+- **disable_restricting_fks.sql**
+- **disco.sql** - Generates commands for disconnecting selected sessions
+- **dist.sql** - select distinct &1 from &2;
+- **distribution.sql**
+- **dnfs.sql**
+- **doid.sql**
+- **dsv.sql**
+- **dv.sql**
+- **e2d.sql**
+- **ed.sql**
+- **el.sql**
+- **eme.sql** - PROMPT XDB / EM Express port:
+- **eoff.sql**
+- **eon.sql**
+- **ep.sql** - PROMPT EXPLAIN PLAN FOR
+- **eqs.sql** - PROMPT Display Enqueue Statistics from v$enqueue_statistics
+- **equiv.sql**
+- **equivx.sql**
+- **es.sql** - Edit TPT script &SQLPATH/&1....
+- **esn.sql**
+- **esnx.sql**
+- **et.sql**
+- **ev.sql** - alter session set events '&1 trace name context forever, level &2';;
+- **evi.sql** - alter session set events 'immediate trace name &1 level &2';;
+- **evo.sql**
+- **expandlast.sql**
+- **extloc.sql**
+- **exttab.sql**
+- **f.sql** - Search for Fixed view (V$ view) text
+- **fcha.sql** - fcha.sql (Find CHunk Address) v0.2
+- **fcura.sql**
+- **fd.sql** - .....from dual
+- **fgran.sql**
+- **find.sql**
+- **fish.sql**
+- **fix.sql**
+- **ft.sql**
+- **fusage.sql** - PROMPT Did you flush feature usage information to the repository?
+- **fv.sql**
+- **fv2.sql** - Display Fixed SGA Variables matching &1
+- **fva.sql**
+- **fval.sql**
+- **fval2.sql**
+- **getplusparm.sql** - getplusparm.sql
+- **getprev.sql** - Get previously executed SQL ID, child number and other details into sqlplus variables for further use
+- **grep.sql**
+- **grp.sql** - count &1 in table &2....
+- **grpa.sql**
+- **grpn.sql** - Quick group by query for aggregating Numeric columns
+- **grpo.sql**
+- **grps.sql**
+- **gsqlmon.sql**
+- **gss.sql** - Gather Schema Statistics for schema &1....
+- **h.sql**
+- **h2s.sql**
+- **ha.sql**
+- **hex.sql**
+- **hexop.sql**
+- **hg.sql**
+- **hintclass.sql**
+- **hintfeature.sql**
+- **hinth.sql** - hinth.sql (Hint Hierarchy)
+- **hist2.sql**
+- **hist_generic.sql**
+- **hof.sql**
+- **hoff.sql**
+- **hon.sql**
+- **hp.sql**
+- **hr.sql**
+- **hs.sql**
+- **hsel.sql**
+- **html.sql**
+- **html2.sql**
+- **html3.sql**
+- **html_.sql**
+- **htmloff.sql**
+- **htmlon.sql**
+- **htmlon_.sql**
+- **htmlrun.sql**
+- **i.sql** - the Who am I script (also sets terminal title)
+- **i2h.sql** - i2h.sql  (sql Id to Hash value)
+- **id.sql**
+- **ii.sql**
+- **ima.sql** - PROMPT Querying GV$INMEMORY_AREA...
+- **imseg.sql**
+- **imtab.sql** - Show tables matching condition "&1" (if schema is not specified then current user's tables only are shown)...
+- **imu.sql** - Display In-Memory Undo (IMU) buffer usage
+- **intopt.sql** - Show internal compilation environment parameters which are not related to KSP parameters
+- **inv.sql** - Show invalid objects, indexes, index partitions and index subpartitions....
+- **jf.sql** - Display bloom filters used by a PX session from V$SQL_JOIN_FILTER...
+- **jobdisable.sql**
+- **jobsr.sql**
+- **kcbbes.sql** - PROMPT List background I/O write priorities and reasons from X$KCBBES...
+- **kcboqh.sql** - PROMPT Calling segcached.sql
+- **kcbsw.sql**
+- **kcbsw_10.sql**
+- **kcbsw_11.sql**
+- **kcbsw_9.sql**
+- **kcbwds.sql**
+- **kcbwh.sql**
+- **kghlu.sql**
+- **kglbroken.sql** - kglbroken.sql
+- **kgllk.sql**
+- **kglob.sql**
+- **kglpn.sql**
+- **kill_cpu.sql** - Jonathan Lewis'es kill_cpu script
+- **killi.sql** - Generates commands for killing selected sessions
+- **ksllw.sql**
+- **ksmdd.sql**
+- **ksminfo.sql**
+- **ksmlru.sql**
+- **ksmsp.sql** - WARNING!!! This script will query X$KSMSP, which will cause heavy shared pool latch contention
+- **ksmsp2.sql** - WARNING!!! This script will query X$KSMSP, which will cause heavy shared pool latch contention
+- **ksqeq.sql**
+- **ksqrs.sql**
+- **kstex.sql**
+- **ksupr.sql**
+- **ksuse.sql**
+- **ktuxe.sql**
+- **l.sql** - Display Latch stats from V$LATCH for latches matching %&1%
+- **la.sql** - la.sql ( Latch Address )
+- **last.sql**
+- **lastchanged.sql** - lastchanged.sql
+- **lastmon.sql**
+- **lastmont.sql**
+- **lc.sql** - Display Latch Children stats from V$LATCH for latches matching %&1%
+- **lco.sql**
+- **lcoa.sql**
+- **ld.sql**
+- **len.sql**
+- **length.sql**
+- **lh.sql** - lh.sql ( Latch Holder )
+- **lhp.sql** - lhp.sql ( Latch Holder Profile )
+- **lhpx.sql** - latchprofx.sql ( Latch Holder Profile eXtended )
+- **li.sql**
+- **li2.sql**
+- **lib.sql**
+- **lib2.sql**
+- **list.sql**
+- **lm.sql** - PROMPT Querying V$LATCH_MISSES....
+- **ln.sql**
+- **lpstat.sql** - Show large pool stats by sub-pool from X$KSMLS
+- **lpx.sql** - @latchprofx sid,name,func,hmode "&1" "&2" &3
+- **lpxa.sql**
+- **lr.sql**
+- **lrc.sql**
+- **lrc2.sql**
+- **lscpu.sql**
+- **lt.sql** - Show lock type info from V$LOCK_TYPE for lock &1
+- **ltx.sql**
+- **m.sql**
+- **measure_io.sql** - measure_io.sql (v0.1)
+- **metric.sql**
+- **minelog.sql**
+- **minmax.sql** - Show min/max (low/high) values in column "&1" of table &2....
+- **mkdba.sql**
+- **mloc.sql**
+- **mods.sql** - PROMPT Display table modifcations from DBA_TAB_MODIFICATIONS for tables &1....
+- **modsx.sql** - PROMPT Display table modifcations from DBA_TAB_MODIFICATIONS for tables &1....
+- **mp.sql** - @@mutexprof id,loc,req,blk 1=1
+- **ms.sql**
+- **msh.sql** - @@mutexprof id,loc,req,blk 1=1
+- **mycur.sql**
+- **mys.sql** - Show current session's statistics from V$SESSTAT....
+- **mysid.sql**
+- **mysx.sql**
+- **newxpa.sql** - ACCEPT sqlid FORMAT A13 PROMPT "Enter sql_id: "
+- **nf.sql**
+- **nls.sql**
+- **nonshared2.sql** - nonshared2.sql
+- **nonsharedsum.sql**
+- **nonsharedsum2.sql**
+- **nonsharedsum3.sql**
+- **nonsharedsum_html.sql** - nonsharedsum_html.sql
+- **npstat.sql** - Show shared pool stats by sub-pool from X$KSMSS
+- **o2.sql**
+- **oc.sql**
+- **od.sql** - SQL> oradebug setmypid
+- **oda.sql** - PROMPT ORADEBUG DOC EVENT ACTION | grep -i &1
+- **odc.sql**
+- **oddc.sql** - PROMPT ORADEBUG DOC COMPONENT | grep -i &1
+- **odh.sql**
+- **odl.sql** - (spool is off)
+- **ods.sql**
+- **odsid.sql**
+- **odt.sql**
+- **oerr.sql**
+- **oerrh.sql** - PROMPT Opening https://docs.oracle.com/en/error-help/db/ora-&1
+- **oerrign.sql**
+- **ofe.sql** - PROMPT ALTER SESSION SET optimizer_features_enable = '&1';;
+- **oi.sql**
+- **oid.sql**
+- **ol.sql**
+- **oprivs.sql**
+- **oprivs2.sql**
+- **ora_hash.sql**
+- **osp.sql**
+- **otherxml.sql**
+- **ou.sql** - Listing Other Users objects where username matches %&1% and object matches %&2%
+- **rac112.sql**
+- **reco.sql**
+- **reg.sql** - PROMPT Querying DBA_REGISTRY_HISTORY ...
+- **repg.sql**
+- **repo.sql**
+- **repo2.sql**
+- **res.sql** - Show reserved words matching %&1% from V$RESERVED_WORDS....
+- **res2.sql** - Show reserved words matching &1 from V$RESERVED_WORDS....
+- **rman_archlogs.sql**
+- **roles.sql**
+- **rowcache.sql** - rowcache.sql
+- **rowcr.sql**
+- **rowid.sql** - Show file, block, row numbers from rowid &1....
+- **rowid_scan.sql**
+- **rs.sql** - Display available Redo Strands
+- **saddr.sql**
+- **sample.sql** - sample.sql (v1.1)
+- **sampleaddr.sql** - sampleaddr.sql
+- **schedlat.sql** - List PSP0 process scheduling latency test results (where scheduling latency is not 0)
+- **sdr.sql** - PROMPT ALTER SESSION SET "_serial_direct_read"=&1;
+- **se.sql**
+- **sed2.sql** - Show wait event descriptions matching &1...
+- **sedn.sql**
+- **sedx.sql**
+- **sel.sql**
+- **select.sql**
+- **sesopt.sql** - PROMPT Show compilation environment of session &1 parameter &2
+- **sest.sql**
+- **sgai.sql**
+- **sgares.sql**
+- **sgastatx.sql** - Show shared pool stats by sub-pool from X$KSMSS
+- **sgav.sql**
+- **sh.sql**
+- **sinfo.sql**
+- **sl.sql** - alter session set statistics_level = &1;;
+- **sleep.sql**
+- **sm.sql**
+- **sn.sql** - @snapper all &1 1 "&2"
+- **snapcpu.sql** - Taking a &1 second snapshot...
+- **snapio.sql** - Taking a &1 second snapshot...
+- **snaplio.sql** - Taking a &1 second snapshot...
+- **snapnet.sql** - Taking a &1 second snapshot...
+- **snapper3.sql** - snapper.sql
+- **snapper_v1.sql** - snapper.sql
+- **snapper_v2.sql** - snapper.sql
+- **snapperloop.sql** - Running Snapper 42,000 times in a row, press CTRL+C to cancel...
+- **snappio.sql** - Taking a &1 second snapshot...
+- **snappiomb.sql** - Taking a &1 second snapshot...
+- **snapsys.sql**
+- **snaptime.sql** - Taking a &1 second snapshot...
+- **snb.sql**
+- **sne.sql**
+- **snr.sql** - PROMPT RUNNING SELECT * FROM (&snr_query);;
+- **soff.sql** - SQL> set serverout off
+- **sol102.sql**
+- **sol112.sql**
+- **someload.sql** - Generate some load for &1 hours....
+- **source.sql**
+- **source2.sql**
+- **sout.sql** - set serverout on size 1000000 format wrapped
+- **sowalk.sql**
+- **sp.sql** - Show SPFILE parameters from v$spparameter matching %&1%
+- **splast.sql**
+- **sprivs.sql**
+- **sprivs2.sql**
+- **sr.sql**
+- **sr2.sql**
+- **sr_old.sql**
+- **srp.sql**
+- **srs.sql**
+- **sru.sql**
+- **srun.sql**
+- **st.sql**
+- **sum.sql**
+- **svcs.sql**
+- **sw.sql** - Display current Session Wait info
+- **sw2.sql** - Display current Session Wait info
+- **swa.sql**
+- **swag.sql**
+- **swani.sql**
+- **swb.sql**
+- **swc.sql** - PROMPT  Display Session Wait Chain Signatures script v0.1 BETA by Tanel Poder ( https://tanelpoder.com )
+- **swf.sql**
+- **swg.sql** - Display given Session Wait info grouped by state and event
+- **swh.sql** - PROMPT  Display last 10 COMPLETED waits from v$session_wait_history v0.1 BETA by Tanel Poder ( https://tanelpoder.com )
+- **swo.sql** - Display current Session Wait info
+- **swp.sql**
+- **swu.sql**
+- **swug.sql**
+- **sye.sql**
+- **syt.sql**
+- **t.sql**
+- **tail.sql**
+- **temp.sql**
+- **ti.sql**
+- **tlc.sql** - PROMPT Display top-level call names matching %&1% (Oracle 11.2+)
+- **toff.sql**
+- **ton.sql**
+- **tpt.sql** - =========================================================
+- **tq.sql** - Show PX Table Queue statistics from last Parallel Execution in this session...
+- **trci.sql**
+- **trim_database.sql**
+- **troff.sql** - Setting linesize truncate off
+- **tron.sql** - Setting linesize truncate on
+- **typ.sql**
+- **typ2.sql**
+- **u.sql**
+- **u_exit.sql**
+- **ua.sql**
+- **uall.sql**
+- **ub.sql** - Show background sessions belonging to background processes...
+- **ucpid.sql**
+- **uds.sql** - Show undo statistics from V$UNDOSTAT....
+- **ue.sql**
+- **uganco.sql**
+- **ugav.sql**
+- **umachine.sql**
+- **undefparm.sql**
+- **unix2date.sql**
+- **uo.sql** - Listing current user's objects matching %&1%
+- **uopid.sql**
+- **uos.sql**
+- **up.sql**
+- **use.sql**
+- **userenv.sql**
+- **uspid.sql**
+- **usql.sql** - usql (show outher User's SQL)
+- **usqlx.sql** - usql (show outher User's SQL)
+- **utopsql.sql**
+- **v.sql**
+- **v2.sql** - Show SQL text of views matching "&1"...
+- **var.sql**
+- **vaud.sql**
+- **vstat.sql** - PROMPT vstat.sql: Show system metrics with per-minute granularity for current container/PDB
+- **w.sql** - What's going on right now?!
+- **w4.sql** - What's going on right now?!
+- **wat.sql**
+- **wc.sql**
+- **wp.sql**
+- **wr.sql** - ....where rownum <= &1
+- **wrk.sql** - List "last completed execution" SQL workarea memory and TEMP usage details
+
+---
+
+## Summary by Category
+
+- ASH Analysis: 69
+- AWR Analysis: 21
+- Session Monitoring: 5
+- SQL Analysis & Cursors: 26
+- Execution Plans: 42
+- Wait/Event Analysis: 2
+- Memory & Buffer Management: 18
+- Lock/Latch/Mutex: 5
+- Performance Profiling: 4
+- System Statistics: 10
+- Transaction & Undo: 2
+- Redo & Archive Logs: 4
+- ASM (Automatic Storage Management): 5
+- Tracing & Diagnostics: 17
+- Object Information: 24
+- Space & Storage: 22
+- Parameters & Configuration: 29
+- Utilities & Helpers: 401

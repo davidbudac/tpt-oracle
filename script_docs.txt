@@ -1,0 +1,796 @@
+Script|First_Line_Doc
+------|---------------
+46off.sql|No documentation found
+46on.sql|No documentation found
+53off.sql|alter session set events '10053 trace name context off';;
+53on.sql|alter session set events '10053 trace name context forever, level 1';;
+53trace.sql|No documentation found
+a.sql|A-Script: Display CURRENT active sessions...
+acc.sql|alter session set session_cached_cursors=&1;;
+alog.sql|No documentation found
+aon.sql|No documentation found
+appinfo.sql|No documentation found
+aq.sql|No documentation found
+ar.sql|....and rownum <= &1
+arg.sql|No documentation found
+as.sql|A-Script: Display active sessions grouped by &1....
+ascii.sql|No documentation found
+asfp.sql|ALTER SESSION FORCE PARALLEL QUERY PARALLEL &1;;
+ash.sql|No documentation found
+asmdf.sql|No documentation found
+asmdg.sql|No documentation found
+asmdump.sql|No documentation found
+asmdumpf.sql|No documentation found
+asmls.sql|No documentation found
+asql.sql|Display active sessions current SQLs
+atname.sql|No documentation found
+aud.sql|No documentation found
+audo.sql|No documentation found
+audo2.sql|No documentation found
+aw.sql|What's going on right now?!
+ba.sql|No documentation found
+bclass.sql|Usage: @bclass <block_class#>
+bf.sql|No documentation found
+bg.sql|No documentation found
+bg2.sql|No documentation found
+bgact.sql|No documentation found
+bh_by_ts.sql|No documentation found
+bhcls.sql|Purpose:     Report which blocks are in buffer cache, protected by a cache
+bhdo.sql|No documentation found
+bhfp.sql|No documentation found
+bhla.sql|Purpose:     Report which blocks are in buffer cache, protected by a cache
+bhobjects.sql|No documentation found
+bhobjects2.sql|No documentation found
+bitmask.sql|No documentation found
+break.sql|Purpose:     Display the PREV_SQL_ID of sessions if this query manages to
+bufp.sql|No documentation found
+bufprof.sql|Purpose:     Display buffer gets done by a session and their reason
+bufprof_wrong.sql|No documentation found
+c.sql|No documentation found
+calc.sql|Purpose:     Basic calculator and dec/hex converter
+cancel.sql|Purpose:     Generates commands for canceling selected sessions
+cbo_helper.sql|No documentation found
+cborun.sql|No documentation found
+cbothis.sql|No documentation found
+cc.sql|ALTER SESSION SET container = &1;;
+ccr.sql|No documentation found
+channels.sql|Purpose:     Report KSR channel message counts by channel endpoints
+channels2.sql|Purpose:     Report KSR channel message counts by channel endpoints
+channels3.sql|Purpose:     Report KSR channel message counts by channel endpoints
+chr.sql|No documentation found
+ci.sql|EXEC DBMS_SESSION.SET_IDENTIFIER('&1');
+cid.sql|No documentation found
+cinfo.sql|No documentation found
+clt.sql|No documentation found
+cnt.sql|No documentation found
+cnta.sql|No documentation found
+cntg.sql|No documentation found
+cofef.sql|No documentation found
+cofef_missing.sql|No documentation found
+cofep.sql|No documentation found
+col.sql|No documentation found
+colltypes.sql|No documentation found
+colusage.sql|Show column usage stats from sys.col_usage$ for table &1..&2....
+comm.sql|Not listing tables without comments...
+compileall.sql|No documentation found
+cons.sql|No documentation found
+cons2.sql|No documentation found
+cont.sql|No documentation found
+create_sql_baseline.sql|usage:
+create_sql_baseline_awr.sql|usage:
+create_sql_patch.sql|No documentation found
+create_sql_profile.sql|No documentation found
+cs.sql|alter session set current_schema=&1
+cstat.sql|Purpose:     Execute SQL statement in script argument and report basic
+csv.sql|No documentation found
+curheaps.sql|Purpose:     Show main cursor data block heap sizes and their contents
+curlog.sql|No documentation found
+curschema.sql|No documentation found
+d.sql|Show data dictionary views and x$ tables matching the expression "&1"...
+d2.sql|Show data dictionary views and x$ tables matching the expression "&1" from ALL_TABLES...
+date.sql|No documentation found
+date2unix.sql|No documentation found
+db.sql|No documentation found
+dba.sql|Purpose:     Convert Data Block Address (a 6 byte hex number) to file#, block#
+dba2.sql|Usage: @dba2 <file#> <block#>
+dbinfo.sql|No documentation found
+dblinks.sql|No documentation found
+dc.sql|No documentation found
+ddl.sql|Purpose:     Extracts DDL statements for specified objects
+dec.sql|No documentation found
+dep.sql|No documentation found
+desc.sql|No documentation found
+descpartxx.sql|No documentation found
+descx.sql|prompt eXtended describe of &1
+descx2.sql|No documentation found
+descxx.sql|No documentation found
+descxx11.sql|No documentation found
+descxx2.sql|No documentation found
+df.sql|PURPOSE:     Show Oracle tablespace free space in Unix df style
+dfm.sql|PURPOSE:     Show Oracle tablespace free space in Unix df style
+dg.sql|== v$database
+diag.sql|No documentation found
+diag_sid.sql|No documentation found
+dir.sql|No documentation found
+dirs.sql|No documentation found
+disable_restricting_fks.sql|No documentation found
+disco.sql|Purpose:     Generates commands for disconnecting selected sessions
+dist.sql|select distinct &1 from &2;
+distribution.sql|No documentation found
+dnfs.sql|No documentation found
+doid.sql|No documentation found
+drop_sql_baseline.sql|No documentation found
+drop_sql_patch.sql|No documentation found
+drop_sql_profile.sql|No documentation found
+dsv.sql|No documentation found
+du.sql|No documentation found
+du2.sql|No documentation found
+dump.sql|prompt @dump <file#> <block#> <what regexp>
+dumptrc.sql|No documentation found
+dumpvar.sql|No documentation found
+dv.sql|No documentation found
+e2d.sql|No documentation found
+ed.sql|No documentation found
+el.sql|No documentation found
+eme.sql|XDB / EM Express port:
+eoff.sql|No documentation found
+eon.sql|No documentation found
+ep.sql|EXPLAIN PLAN FOR
+eqs.sql|Display Enqueue Statistics from v$enqueue_statistics
+equiv.sql|No documentation found
+equivx.sql|No documentation found
+es.sql|prompt Edit TPT script &SQLPATH/&1....
+esn.sql|No documentation found
+esnx.sql|No documentation found
+et.sql|No documentation found
+ev.sql|alter session set events '&1 trace name context forever, level &2';;
+evh.sql|No documentation found
+evi.sql|alter session set events 'immediate trace name &1 level &2';;
+evo.sql|No documentation found
+evts.sql|ORADEBUG EVENTDUMP system
+expandlast.sql|No documentation found
+extloc.sql|No documentation found
+exttab.sql|No documentation found
+f.sql|Purpose:     Search for Fixed view (V$ view) text
+fcha.sql|Purpose:     Find in which heap (UGA, PGA or Shared Pool) a memory address resides
+fcura.sql|No documentation found
+fd.sql|.....from dual
+fgran.sql|No documentation found
+find.sql|PARAMETERS
+fish.sql|No documentation found
+fix.sql|No documentation found
+ft.sql|No documentation found
+fusage.sql|Did you flush feature usage information to the repository?
+fv.sql|No documentation found
+fv2.sql|Display Fixed SGA Variables matching &1
+fva.sql|No documentation found
+fval.sql|No documentation found
+fval2.sql|No documentation found
+get_trace.sql|No documentation found
+get_trace2.sql|No documentation found
+getplusparm.sql|Purpose:     get sqlplus parameter value (such linesize, pagesize, sqlcode,
+getprev.sql|Purpose:     Get previously executed SQL ID, child number and other details into sqlplus variables for further use
+gettracename.sql|No documentation found
+glock.sql|No documentation found
+grep.sql|No documentation found
+grp.sql|count &1 in table &2....
+grpa.sql|No documentation found
+grpn.sql|Purpose:     Quick group by query for aggregating Numeric columns
+grpo.sql|No documentation found
+grps.sql|No documentation found
+gsqlmon.sql|No documentation found
+gss.sql|Gather Schema Statistics for schema &1....
+gtrans.sql|Show global transactions from X$K2GTE2...
+gts.sql|Gather Table Statistics for table &1....
+gtsh.sql|Gather Table Statistics with histograms for table &1....
+h.sql|No documentation found
+h2s.sql|No documentation found
+ha.sql|No documentation found
+hash.sql|Purpose:     Show the hash value, SQL_ID and child number of previously
+heap6.sql|No documentation found
+help.sql|Purpose:     Help
+hex.sql|No documentation found
+hexop.sql|No documentation found
+hg.sql|No documentation found
+hint.sql|No documentation found
+hintclass.sql|No documentation found
+hintfeature.sql|No documentation found
+hinth.sql|Purpose:     Display the areas / features in Oracle kernel that a hint affects
+hist2.sql|No documentation found
+hist_generic.sql|No documentation found
+hof.sql|No documentation found
+hoff.sql|No documentation found
+hon.sql|No documentation found
+hp.sql|No documentation found
+hr.sql|No documentation found
+hs.sql|No documentation found
+hsel.sql|No documentation found
+html.sql|No documentation found
+html2.sql|No documentation found
+html3.sql|No documentation found
+html_.sql|No documentation found
+html_settings.sql|No documentation found
+htmloff.sql|No documentation found
+htmlon.sql|No documentation found
+htmlon_.sql|No documentation found
+htmlrun.sql|No documentation found
+htmlset.sql|No documentation found
+htmlset2.sql|No documentation found
+i.sql|Purpose:     the Who am I script (also sets terminal title)
+i2h.sql|Purpose:     Advanced Oracle Troubleshooting Seminar demo script
+id.sql|No documentation found
+ii.sql|No documentation found
+ima.sql|Querying GV$INMEMORY_AREA...
+imseg.sql|No documentation found
+imtab.sql|No documentation found
+imu.sql|Purpose:     Display In-Memory Undo (IMU) buffer usage
+ind.sql|No documentation found
+ind2.sql|Display indexes where table or index name matches &1....
+indf.sql|Display indexes where table or index name matches &1....
+indroot.sql|No documentation found
+init.sql|Purpose:     Initializes sqlplus variables for 156 character terminal width and other settings.
+intopt.sql|Show internal compilation environment parameters which are not related to KSP parameters
+inv.sql|Show invalid objects, indexes, index partitions and index subpartitions....
+jf.sql|Display bloom filters used by a PX session from V$SQL_JOIN_FILTER...
+jobdisable.sql|No documentation found
+jobs.sql|No documentation found
+jobsr.sql|No documentation found
+kcbbes.sql|List background I/O write priorities and reasons from X$KCBBES...
+kcboqh.sql|Calling segcached.sql
+kcbsw.sql|No documentation found
+kcbsw_10.sql|No documentation found
+kcbsw_11.sql|No documentation found
+kcbsw_9.sql|No documentation found
+kcbwds.sql|No documentation found
+kcbwh.sql|No documentation found
+kghlu.sql|No documentation found
+kglbroken.sql|Purpose:     
+kgllk.sql|No documentation found
+kglob.sql|No documentation found
+kglpn.sql|No documentation found
+kill.sql|Purpose:     Generates commands for killing selected sessions
+kill_cpu.sql|prompt Jonathan Lewis'es kill_cpu script
+killi.sql|Purpose:     Generates commands for killing selected sessions
+ksllw.sql|No documentation found
+ksmdd.sql|No documentation found
+ksminfo.sql|No documentation found
+ksmlru.sql|No documentation found
+ksmsp.sql|No documentation found
+ksmsp2.sql|No documentation found
+ksqeq.sql|No documentation found
+ksqrs.sql|No documentation found
+kstex.sql|No documentation found
+ksupr.sql|No documentation found
+ksuse.sql|No documentation found
+ktuxe.sql|No documentation found
+l.sql|Display Latch stats from V$LATCH for latches matching %&1%
+la.sql|Purpose:     Show which latch occupies a given memory address and its stats
+last.sql|No documentation found
+lastchanged.sql|Purpose:     Detect when a datablock in table was last changed
+lastmon.sql|No documentation found
+lastmont.sql|No documentation found
+latchprof.sql|Purpose:     Perform high-frequency sampling on V$LATCHHOLDER
+latchprof_old.sql|Purpose:     Perform high-frequency sampling on V$LATCHHOLDER
+latchprofx.sql|Purpose:     Perform high-frequency sampling on V$LATCHHOLDER
+lc.sql|Display Latch Children stats from V$LATCH for latches matching %&1%
+lco.sql|No documentation found
+lcoa.sql|No documentation found
+ld.sql|No documentation found
+len.sql|No documentation found
+length.sql|No documentation found
+lh.sql|Purpose:     Show latch holding SIDs and latch details from V$LATCHHOLDER
+lhp.sql|Purpose:     Perform high-frequency sampling on V$LATCHHOLDER
+lhpx.sql|Purpose:     Perform high-frequency sampling on V$LATCHHOLDER
+li.sql|No documentation found
+li2.sql|No documentation found
+lib.sql|No documentation found
+lib2.sql|No documentation found
+list.sql|No documentation found
+lm.sql|No documentation found
+ln.sql|No documentation found
+loadset.sql|No documentation found
+lob.sql|No documentation found
+lock.sql|No documentation found
+log.sql|Show redo log layout from V$LOG, V$STANDBY_LOG and V$LOGFILE...
+logfile.sql|No documentation found
+login.sql|also sets command prompt window/xterm title
+long.sql|Show session long operations from v$session_longops for sid &1
+lotscommits.sql|This script will issue lots of synchronous commits and will generate undo/redo
+lotsfailedparses.sql|No documentation found
+lotshparses.sql|Purpose:     Generate Lots of hard parses and shared pool activity 
+lotshparses2.sql|Purpose:     Generate Lots of hard parses and shared pool activity 
+lotshparses3.sql|Purpose:     Generate Lots of hard parses and shared pool activity 
+lotslios.sql|Purpose:     Generate Lots of Logical IOs for testing purposes
+lotsparses.sql|No documentation found
+lotspios.sql|Purpose:     Generate Lots of Physical IOs for testing purposes
+lotssparses.sql|Purpose:     Generate Lots of soft parses and library cache/mutex activity 
+lotssparses2.sql|Purpose:     Generate Lots of soft parses and library cache/mutex activity 
+lotstempios.sql|No documentation found
+lpstat.sql|Purpose:     Show large pool stats by sub-pool from X$KSMLS
+lpx.sql|@latchprofx sid,name,func,hmode "&1" "&2" &3
+lpxa.sql|No documentation found
+lr.sql|No documentation found
+lrc.sql|No documentation found
+lrc2.sql|No documentation found
+ls.sql|No documentation found
+lscpu.sql|No documentation found
+lt.sql|No documentation found
+ltx.sql|No documentation found
+m.sql|No documentation found
+measure_io.sql|Purpose:     Measure IO reasons and "sizes" from v$iostat_function_detail
+mem.sql|Show instance memory usage breakdown from v$memory_dynamic_components
+memres.sql|No documentation found
+metric.sql|No documentation found
+minelog.sql|No documentation found
+minmax.sql|Show min/max (low/high) values in column "&1" of table &2....
+mkdba.sql|No documentation found
+mloc.sql|No documentation found
+mods.sql|Display table modifcations from DBA_TAB_MODIFICATIONS for tables &1....
+modsx.sql|Display table modifcations from DBA_TAB_MODIFICATIONS for tables &1....
+mp.sql|No documentation found
+ms.sql|No documentation found
+msh.sql|No documentation found
+mutexprof.sql|Purpose:     Display KGX mutex sleep history from v$mutex_sleep_history
+mycur.sql|No documentation found
+mys.sql|Show current session's statistics from V$SESSTAT....
+mysid.sql|No documentation found
+mysx.sql|No documentation found
+netstat.sql|No documentation found
+netstat2.sql|No documentation found
+newxpa.sql|ACCEPT sqlid FORMAT A13 PROMPT "Enter sql_id: "
+nf.sql|No documentation found
+nls.sql|No documentation found
+nonshared.sql|Purpose:     Print reasons for non-shared child cursors from v$sql_shared_cursor
+nonshared2.sql|Purpose:     Show the reasons why more child cursors were created instead of
+nonsharedsum.sql|No documentation found
+nonsharedsum2.sql|No documentation found
+nonsharedsum3.sql|No documentation found
+nonsharedsum_html.sql|Purpose:     Print reasons for non-shared child cursors from v$sql_shared_cursor
+npstat.sql|Purpose:     Show shared pool stats by sub-pool from X$KSMSS
+o.sql|No documentation found
+o2.sql|No documentation found
+oc.sql|No documentation found
+od.sql|SQL> oradebug setmypid
+oda.sql|ORADEBUG DOC EVENT ACTION | grep -i &1
+odc.sql|No documentation found
+oddc.sql|ORADEBUG DOC COMPONENT | grep -i &1
+odh.sql|No documentation found
+odl.sql|No documentation found
+ods.sql|No documentation found
+odsid.sql|No documentation found
+odt.sql|No documentation found
+oerr.sql|No documentation found
+oerrh.sql|Opening https://docs.oracle.com/en/error-help/db/ora-&1
+oerrign.sql|No documentation found
+ofe.sql|ALTER SESSION SET optimizer_features_enable = '&1';;
+oi.sql|No documentation found
+oid.sql|No documentation found
+ol.sql|No documentation found
+oprivs.sql|No documentation found
+oprivs2.sql|No documentation found
+ora_hash.sql|No documentation found
+osp.sql|No documentation found
+ostack.sql|No documentation found
+ostackprof.sql|New usage:
+ostackprofu.sql|Purpose:     Take target process stack samples and show an execution profile
+ostackprofw.sql|Purpose:     Take target process stack samples and show an execution profile
+otherxml.sql|No documentation found
+otherxmlhints.sql|No documentation found
+ou.sql|Listing Other Users objects where username matches %&1% and object matches %&2%
+p.sql|No documentation found
+paddr.sql|No documentation found
+partkeys.sql|No documentation found
+partmon.sql|No documentation found
+partpruning.sql|No documentation found
+pd.sql|No documentation found
+pd2.sql|Show all parameters and session values from x$ksppi/x$ksppcv...
+pdbs.sql|No documentation found
+pdv.sql|No documentation found
+peek.sql|prompt ---> oradebug peek 0x&1 64
+peekloop.sql|prompt ---> oradebug peek 0x&1 64
+pga.sql|Show PGA manager stats from V$PGASTAT
+pgav.sql|No documentation found
+pinfo.sql|No documentation found
+pmem.sql|Purpose:     Show process memory usage breakdown - lookup by process SPID
+pmem_detail.sql|Purpose:     Show process memory usage breakdown details - lookup by process SPID
+pn.sql|Show all parameters and session values from x$ksppi/x$ksppcv...
+pr.sql|No documentation found
+prc.sql|No documentation found
+prefetch.sql|Purpose:     Show KCB layer prefetch 
+printtab2.sql|printtab2.sql: There seems to be an issue on Oracle 12c+
+privgrants.sql|No documentation found
+privgrants2.sql|No documentation found
+privs.sql|No documentation found
+privs2.sql|No documentation found
+proc.sql|No documentation found
+procid.sql|No documentation found
+prq.sql|No documentation found
+prr.sql|No documentation found
+prs.sql|No documentation found
+pv.sql|Show parameter which have value &1
+pvalid.sql|Purpose:     Show valid parameter values from V$PARAMETER_VALID_VALUES
+px.sql|Purpose:     Report Pararallel Execution SQL globally in a RAC instance
+px2.sql|Show current Parallel Execution sessions in RAC cluster...
+pxs.sql|Display Parallel Execution QC and slave sessions for QC &1....
+pxtrace.sql|No documentation found
+rac112.sql|No documentation found
+reco.sql|No documentation found
+reg.sql|Querying DBA_REGISTRY_HISTORY ...
+repg.sql|No documentation found
+repo.sql|No documentation found
+repo2.sql|No documentation found
+res.sql|Show reserved words matching %&1% from V$RESERVED_WORDS....
+res2.sql|Show reserved words matching &1 from V$RESERVED_WORDS....
+rman_archlogs.sql|No documentation found
+roles.sql|No documentation found
+rowcache.sql|Purpose:     Show parent rowcache entries mathcing an object name
+rowcr.sql|No documentation found
+rowid.sql|Show file, block, row numbers from rowid &1....
+rowid_scan.sql|No documentation found
+rs.sql|Purpose:     Display available Redo Strands
+s.sql|Purpose:     Display current Session Wait and SQL_ID info (10g+)
+saddr.sql|No documentation found
+sample.sql|Purpose:     Sample any V$ view or X$ table and display aggregated results
+sampleaddr.sql|Purpose:     High-frequency sampling of contents of a SGA memory address
+saveset.sql|No documentation found
+schedlat.sql|Purpose: List PSP0 process scheduling latency test results (where scheduling latency is not 0)
+sdr.sql|ALTER SESSION SET "_serial_direct_read"=&1;
+se.sql|No documentation found
+sed.sql|No documentation found
+sed2.sql|Show wait event descriptions matching &1...
+sedn.sql|No documentation found
+sedx.sql|No documentation found
+seg.sql|No documentation found
+seg2.sql|No documentation found
+segcached.sql|Display number of buffered blocks of a segment using X$KCBOQH for table &1
+segcachedx.sql|Display number of buffered blocks of a segment using X$KCBOQH for table &1
+segeof.sql|No documentation found
+segext.sql|No documentation found
+segext2.sql|No documentation found
+segstat.sql|No documentation found
+segstat2.sql|No documentation found
+segstatint.sql|No documentation found
+segsum.sql|No documentation found
+sel.sql|No documentation found
+select.sql|No documentation found
+seq.sql|No documentation found
+seq2.sql|No documentation found
+ses.sql|Purpose:     Display Session statistics for given sessions, filter by
+ses2.sql|Purpose:     Display Session statistics for given sessions, filter by
+sesopt.sql|Show compilation environment of session &1 parameter &2
+sest.sql|No documentation found
+set.sql|Show SEssion Time model values for SID &1....
+sga.sql|Show instance memory usage breakdown from v$memory_dynamic_components
+sgai.sql|No documentation found
+sgares.sql|No documentation found
+sgastat.sql|No documentation found
+sgastatx.sql|Purpose:     Show shared pool stats by sub-pool from X$KSMSS
+sgav.sql|No documentation found
+sh.sql|No documentation found
+sid.sql|No documentation found
+sinfo.sql|No documentation found
+sl.sql|alter session set statistics_level = &1;;
+sleep.sql|No documentation found
+sm.sql|No documentation found
+smem.sql|Purpose:     Show process memory usage breakdown - lookup by session ID
+smem_detail.sql|Purpose:     Show process memory usage breakdown details - lookup by session ID
+sn.sql|@snapper all &1 1 "&2"
+snapcpu.sql|Taking a &1 second snapshot...
+snapio.sql|Taking a &1 second snapshot...
+snaplio.sql|Taking a &1 second snapshot...
+snapnet.sql|Taking a &1 second snapshot...
+snapper.sql|Purpose:     An easy to use Oracle session-level performance measurement tool
+snapper3.sql|Purpose:     An easy to use Oracle session-level performance measurement tool
+snapper_v1.sql|Purpose:     An easy to use Oracle session-level performance snapshot utility
+snapper_v2.sql|Purpose:     An easy to use Oracle session-level performance snapshot utility
+snapperloop.sql|No documentation found
+snappio.sql|Taking a &1 second snapshot...
+snappiomb.sql|Taking a &1 second snapshot...
+snapredo.sql|Taking a &1 second snapshot...
+snapsys.sql|No documentation found
+snaptime.sql|Taking a &1 second snapshot...
+snapundo.sql|Taking a &1 second snapshot...
+snapwait.sql|Taking a &1 second snapshot of wait "&2"...
+snb.sql|No documentation found
+sne.sql|No documentation found
+snr.sql|RUNNING SELECT * FROM (&snr_query);;
+soff.sql|SQL> set serverout off
+sol102.sql|No documentation found
+sol112.sql|No documentation found
+someload.sql|Generate some load for &1 hours....
+source.sql|No documentation found
+source2.sql|No documentation found
+sout.sql|set serverout on size 1000000 format wrapped
+sowalk.sql|No documentation found
+sp.sql|Show SPFILE parameters from v$spparameter matching %&1%
+splast.sql|No documentation found
+spmem.sql|No documentation found
+spoolrun.sql|No documentation found
+sprivs.sql|No documentation found
+sprivs2.sql|No documentation found
+sql.sql|Show SQL text, child cursors and execution stats for SQL hash value &1 child &2
+sql_profile_hints.sql|No documentation found
+sqla.sql|No documentation found
+sqlbinds.sql|Show captured binds from V$SQL_BIND_CAPTURE...
+sqlbindsum.sql|No documentation found
+sqlcsstat.sql|No documentation found
+sqlexecid.sql|No documentation found
+sqlf.sql|No documentation found
+sqlfh.sql|Purpose:     Display the full SQL Feature Hieararchy from v$sql_feature
+sqlflame.sql|Purpose:     Demo script for displaying execution plan profile as a flame chart
+sqlfn.sql|No documentation found
+sqlfna.sql|No documentation found
+sqlh.sql|No documentation found
+sqli.sql|No documentation found
+sqlid.sql|No documentation found
+sqlidx.sql|Purpose:     A temporary script/hack to display exadata-specific metrics along normal SQL stuff from V$SQL
+sqll.sql|No documentation found
+sqlmem.sql|Show shared pool memory usage of SQL statement with SQL_ID &1
+sqlmemh.sql|Show shared pool memory usage of SQL statement with hash value &1
+sqlmemx.sql|Show shared pool memory usage of SQL statement with SQL_ID &1
+sqlmon.sql|Purpose:     Spool a SQL Monitoring report to a local HTML file and open it
+sqlmon_restarts.sql|Purpose:     List UPDATE/DELETE statements that have experienced restarts due to write consistency from V$SQL_PLAN_MONITOR
+sqlmon_sn.sql|Querying V$SQL_MONITOR_STATNAME...
+sqlmoni.sql|Purpose:     Spool a SQL Monitoring report to a local HTML file and open it
+sqlopt.sql|Show compilation environment stored inside cursors for SQLID &1 child# &2 parameter &3
+sqlprof.sql|No documentation found
+sqlt.sql|No documentation found
+sqlt9.sql|No documentation found
+sqltune_tune_sqlid.sql|dbms_sqltune.create_tuning_task(task_name=>'SQLTT_&1', sql_id=>'&1', time_limit=>&2)
+sr.sql|No documentation found
+sr2.sql|No documentation found
+sr_old.sql|No documentation found
+srp.sql|No documentation found
+srs.sql|No documentation found
+sru.sql|No documentation found
+srun.sql|No documentation found
+st.sql|No documentation found
+statn.sql|No documentation found
+subheap.sql|No documentation found
+sum.sql|No documentation found
+svcs.sql|No documentation found
+sw.sql|Purpose:     Display current Session Wait info
+sw2.sql|Purpose:     Display current Session Wait info
+swa.sql|No documentation found
+swag.sql|No documentation found
+swani.sql|No documentation found
+swb.sql|No documentation found
+swc.sql|No documentation found
+swf.sql|No documentation found
+swg.sql|Purpose:     Display given Session Wait info grouped by state and event
+swh.sql|No documentation found
+swo.sql|Purpose:     Display current Session Wait info
+swp.sql|No documentation found
+swu.sql|No documentation found
+swug.sql|No documentation found
+sye.sql|No documentation found
+syn.sql|No documentation found
+syn2.sql|No documentation found
+sys.sql|No documentation found
+sysm.sql|Display SYSTEM metrics from V$METRIC
+sysopt.sql|Show system default compilation environment, parameter &1
+syspriv.sql|No documentation found
+syt.sql|No documentation found
+t.sql|No documentation found
+tab.sql|No documentation found
+tab2.sql|No documentation found
+tabhist.sql|No documentation found
+tabhisthybrid.sql|usage:   @tabhisthybrid [<owner>.]<table_name> <column_name>
+tabpart.sql|No documentation found
+tabsubpart.sql|No documentation found
+tail.sql|No documentation found
+temp.sql|No documentation found
+ti.sql|No documentation found
+tlc.sql|Display top-level call names matching %&1% (Oracle 11.2+)
+toff.sql|No documentation found
+ton.sql|No documentation found
+top.sql|No documentation found
+topcur.sql|Showing SQLs with at least &atleast cursors
+topcurmem.sql|No documentation found
+topmsh.sql|No documentation found
+topseg.sql|Show top space users per tablespace - collapse partitions to table/index level
+topseg2.sql|Show top space users per tablespace - collapse partitions to table/index level
+topsegstat.sql|No documentation found
+topsql.sql|Purpose:     Show TOP SQL ordered by user-provided criteria
+tpt.sql|No documentation found
+tq.sql|Show PX Table Queue statistics from last Parallel Execution in this session...
+trace.sql|No documentation found
+traceme.sql|No documentation found
+traceoff.sql|No documentation found
+tracesid.sql|No documentation found
+tracesidoff.sql|No documentation found
+trans.sql|No documentation found
+trci.sql|No documentation found
+trig.sql|Show triggers by table/trigger name &1....
+trigger.sql|No documentation found
+trim_database.sql|purpose	: print alter database commands for trimming database files
+troff.sql|Setting linesize truncate off
+tron.sql|Setting linesize truncate on
+ts.sql|No documentation found
+tsv.sql|No documentation found
+typ.sql|No documentation found
+typ2.sql|No documentation found
+u.sql|No documentation found
+u_exit.sql|No documentation found
+ua.sql|No documentation found
+uall.sql|No documentation found
+ub.sql|No documentation found
+ucpid.sql|No documentation found
+uds.sql|Show undo statistics from V$UNDOSTAT....
+ue.sql|No documentation found
+uganco.sql|No documentation found
+ugav.sql|No documentation found
+ulock.sql|No documentation found
+umachine.sql|No documentation found
+undefparm.sql|No documentation found
+unix2date.sql|No documentation found
+uo.sql|Listing current user's objects matching %&1%
+uopid.sql|No documentation found
+uos.sql|No documentation found
+up.sql|No documentation found
+us.sql|Show database usernames from dba_users matching %&1%
+use.sql|No documentation found
+userenv.sql|No documentation found
+usid.sql|No documentation found
+uspid.sql|No documentation found
+usql.sql|Purpose:     Show another session's SQL directly from library cache
+usqlx.sql|Purpose:     Show another session's SQL directly from library cache
+utopsql.sql|No documentation found
+uu.sql|No documentation found
+v.sql|No documentation found
+v2.sql|Show SQL text of views matching "&1"...
+var.sql|No documentation found
+vaud.sql|No documentation found
+vstat.sql|No documentation found
+w.sql|What's going on right now?!
+w4.sql|What's going on right now?!
+waitprof.sql|Purpose:     Sample V$SESSION_WAIT at high frequency and show resulting 
+wat.sql|No documentation found
+wc.sql|No documentation found
+wp.sql|No documentation found
+wr.sql|....where rownum <= &1
+wrk.sql|Purpose:     List "last completed execution" SQL workarea memory and TEMP usage details 
+wrka.sql|Purpose:     List ACTIVE SQL workarea memory usage details at session/workarea level.
+wrkasum.sql|Purpose:     Show a summary of ACTIVE SQL workareas grouped by operation type (SORT, HASH, etc)
+x.sql|Display execution plan for last statement for this session from library cache...
+x101.sql|No documentation found
+x2.sql|No documentation found
+x9.sql|No documentation found
+x9a.sql|No documentation found
+x9all.sql|No documentation found
+xa.sql|No documentation found
+xad.sql|Display execution plan for last statement for this session from library cache...
+xall.sql|No documentation found
+xawr.sql|No documentation found
+xb.sql|Purpose:     Explain a SQL statements execution plan with execution 
+xbi.sql|Purpose:     Explain a SQL statements execution plan with execution 
+xbix.sql|Purpose:     Explain a SQL statements execution plan with execution 
+xbx.sql|Purpose:     Explain a SQL statements execution plan with execution 
+xco.sql|No documentation found
+xde.sql|No documentation found
+xde2.sql|Purpose:     Describe X$ tables, column offsets and report indexed fixed table
+xi.sql|eXplain the execution plan for sqlid &1 child &2....
+xia.sql|Display Execution plan in advanced format for sqlid &1
+xiad.sql|eXplain the execution plan for sqlid &1 child &2....
+xip.sql|eXplain the execution plan for sqlid &1 child &2....
+xls.sql|No documentation found
+xm.sql|Purpose:     Explain a SQL statements execution plan directly from library cache
+xma.sql|Purpose:     Explain a SQL statements execution plan directly from library cache
+xmai.sql|Purpose:     Explain a SQL statements execution plan with execution 
+xmon.sql|No documentation found
+xms.sql|Purpose:     Explain your last SQL statements execution plan with execution 
+xms2.sql|No documentation found
+xmsh.sql|Purpose:     Explain a SQL statements execution plan with execution 
+xmsi.sql|Purpose:     Explain a SQL statements execution plan with execution 
+xp.sql|eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &1....
+xpa.sql|eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &1.... (11.2+)
+xph.sql|eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &1....
+xpi.sql|eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SQL_ID &1....
+xpia.sql|eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SQL_ID &1.... (11.2+)
+xpih.sql|eXplain with Profile: Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SQL_ID &1.... (11.2+)
+xplto.sql|Show execution plan operations and options matching &1 (11g+)
+xpm.sql|No documentation found
+xprof.sql|prompt Running DBMS_SQLTUNE.REPORT_SQL_MONITOR for SID &3....
+xr.sql|No documentation found
+xs.sql|No documentation found
+xsid.sql|No documentation found
+xsida.sql|No documentation found
+xt.sql|No documentation found
+xte.sql|No documentation found
+xtreset.sql|No documentation found
+xx.sql|Display execution plan for last statement for this session from library cache...
+ash/ash_index_helper.sql|No documentation found
+ash/ash_index_helperx.sql|No documentation found
+ash/ash_log_file_sync.sql|No documentation found
+ash/ash_object_predicates.sql|No documentation found
+ash/ash_wait_chains.sql|Purpose:     Display ASH wait chains (multi-session wait signature, a session
+ash/ashmem.sql|No documentation found
+ash/ashpeak.sql|Purpose:     
+ash/ashpeaktop.sql|Purpose:     
+ash/ashtop.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/ashtop10.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/ashtopsum.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/asqlflame.sql|No documentation found
+ash/asqlmon.sql|Purpose:     Report SQL-monitoring-style drill-down into where in an execution plan the execution time is spent
+ash/asqlmon12.sql|Purpose:     Report SQL-monitoring-style drill-down into where in an execution plan the execution time is spent
+ash/asqlmonx.sql|Purpose:     Report SQL-monitoring-style drill-down into where in an execution plan the execution time is spent
+ash/bash_wait_chains.sql|Purpose:     Display ASH wait chains (multi-session wait signature, a session
+ash/bashtop.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/bevent_hist.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/bevent_hist_micro.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/bshortmon_logfilesync.sql|No documentation found
+ash/btime_model_phases.sql|No documentation found
+ash/cashtop.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/create_ash_without_timestamps.sql|No documentation found
+ash/daplanline.sql|Purpose:     Report response time consumption data from DBA_HIST_ACTIVE_SESS_HISTORY
+ash/dash_wait_chains.sql|Purpose:     Display ASH wait chains (multi-session wait signature, a session
+ash/dashpeak.sql|Purpose:     
+ash/dashpeaktop.sql|Purpose:     
+ash/dashtop.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/dashtopsum.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/dashtopsum_pga.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by your
+ash/dasqlmon.sql|Purpose:     Report SQL-monitoring-style drill-down into where in an execution plan the execution time is spent
+ash/dasqlmonx.sql|Purpose:     Report SQL-monitoring-style drill-down into where in an execution plan the execution time is spent
+ash/devent_hist.sql|Purpose:     Display wait event duration histogram from DBA_HIST_ACTIVE_SESS_HISTORY
+ash/devent_hist_micro.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/disk_rereads.sql|No documentation found
+ash/event_hist.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/event_hist_cell.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/event_hist_micro.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/evet_hist_cell.sql|No documentation found
+ash/examples/ash10.sql|No documentation found
+ash/examples/ash11.sql|No documentation found
+ash/examples/ash12a.sql|No documentation found
+ash/examples/ash13.sql|No documentation found
+ash/examples/ash13a.sql|No documentation found
+ash/examples/ash2.sql|No documentation found
+ash/examples/ash3.sql|FROM_TIME=&from_time TO_TIME=&to_time
+ash/examples/ash5.sql|No documentation found
+ash/examples/ash6.sql|No documentation found
+ash/examples/ash7.sql|No documentation found
+ash/examples/ash8.sql|No documentation found
+ash/examples/ash9.sql|No documentation found
+ash/examples/ashrelated.sql|No documentation found
+ash/gashtop.sql|usage: @ashtop sql_id
+ash/gasqlmon.sql|No documentation found
+ash/gen_ash_report_html.sql|No documentation found
+ash/gen_ash_report_text.sql|No documentation found
+ash/old.event_hist_cell.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/old_devent_hist.sql|https://www.slideshare.net/jberesni/ash-architecture-and-advanced-usage-rmoug2014-36611678
+ash/perfsheet_ash.sql|No documentation found
+ash/rowsource_events.sql|Purpose:     Display top ASH time (count of ASH samples) grouped by 
+ash/sample_drift.sql|No documentation found
+ash/shortmon.sql|No documentation found
+ash/shortmon_cell.sql|No documentation found
+ash/shortmon_logfilesync.sql|No documentation found
+ash/shortmon_numblocks.sql|No documentation found
+ash/sqlexec_duration_buckets.sql|No documentation found
+ash/sqlexec_longer_than.sql|No documentation found
+ash/sqlid_activity.sql|No documentation found
+ash/sqlid_dbtime_buckets.sql|No documentation found
+ash/sqlid_plan_activity.sql|No documentation found
+ash/time_model.sql|No documentation found
+ash/w.sql|What's going on? Showing top timed events of last minute from ASH...
+awr/awr_evh.sql|No documentation found
+awr/awr_last.sql|No documentation found
+awr/awr_lasth.sql|No documentation found
+awr/awr_log_file_sync.sql|No documentation found
+awr/awr_mem_resize.sql|No documentation found
+awr/awr_procmem.sql|No documentation found
+awr/awr_sqlid.sql|No documentation found
+awr/awr_sqlid_binds.sql|No documentation found
+awr/awr_sqlstats.sql|No documentation found
+awr/awr_sqlstats_per_exec.sql|No documentation found
+awr/awr_sqlstats_unstable.sql|usage examples:
+awr/awr_sysmetric_history.sql|No documentation found
+awr/awr_sysmetric_summary.sql|No documentation found
+awr/awr_sysstat.sql|No documentation found
+awr/awr_system_event.sql|No documentation found
+awr/create_event_histogram_view.sql|No documentation found
+awr/dbload.sql|No documentation found
+awr/dstat.sql|No documentation found
+awr/gen_awr_report.sql|Listing latest AWR snapshots ...
+awr/gen_perfhub_report.sql|No documentation found
+awr/get_settings.sql|No documentation found
+awr/other_xml.sql|No documentation found
+awr/settings.sql|AWR Data Retention (Includes DBA_HIST ASH):
