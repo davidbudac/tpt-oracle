@@ -1,0 +1,1705 @@
+================================================================================
+TPT (Tanel Poder's Troubleshooting Scripts) - Script Catalog
+================================================================================
+This catalog contains the most commonly used TPT scripts for Oracle Database
+performance troubleshooting and optimization. Use grep to search by keywords,
+categories, or script names.
+
+Format: Each script entry contains:
+  - SCRIPT: Script filename
+  - CATEGORY: Functional category
+  - KEYWORDS: Search terms for finding the right script
+  - PURPOSE: What the script does
+  - SYNTAX: How to run it with parameters
+  - PARAMETERS: Detailed parameter descriptions
+  - EXAMPLES: Real usage examples
+
+================================================================================
+SCRIPT: snapper.sql
+CATEGORY: Performance Monitoring / Profiling
+KEYWORDS: performance, session, ash, statistics, monitoring, snapshot, profiling, metrics, workload, activity
+PURPOSE: Session-level performance measurement without requiring any database changes. Samples session activity and displays statistics deltas.
+SYNTAX: @snapper [options] <seconds> <snapshots> <sid>
+PARAMETERS:
+  - options: Comma-separated options:
+      * ash|ash1|ash2|ash3 - Sample session activity (ASH style)
+      * stats - Capture session statistics
+      * all - Both ASH and stats
+      * gather=[s][t][w][l][e][b][a] - What to gather (sessions/time/waits/latches/enqueues/buffer/all)
+      * pagesize=N - Set output page size
+      * out - Output to file
+      * trace - Enable tracing
+  - seconds: Duration of each snapshot in seconds
+  - snapshots: Number of snapshots to take
+  - sid: Session ID(s) - number, comma-separated list, 'all', or SQL subquery
+EXAMPLES:
+  @snapper ash 5 12 all
+  @snapper ash=sql_id+event 5 6 123,456
+  @snapper stats,gather=st 1 60 "select sid from v$session where username='APP'"
+  @snapper ash,stats 10 6 &mysid
+
+================================================================================
+SCRIPT: s.sql
+CATEGORY: Session Monitoring
+KEYWORDS: session, wait, event, sql, sid, current, activity, blocking, status
+PURPOSE: Display current session wait and SQL_ID information for specified sessions
+SYNTAX: @s <sid>
+PARAMETERS:
+  - sid: Session ID - can be:
+      * Single SID: 123
+      * Multiple SIDs: 52,110,225
+      * Subquery: "select sid from v$session where username='XYZ'"
+      * Variable: &mysid
+EXAMPLES:
+  @s 123
+  @s 52,110,225
+  @s "select sid from v$session where username='SOE'"
+  @s &mysid
+
+================================================================================
+SCRIPT: sqlid.sql
+CATEGORY: SQL Analysis
+KEYWORDS: sql, sqlid, execution, statistics, plan, cursor, child, performance, text
+PURPOSE: Display SQL text, child cursors, and execution statistics for a given SQL_ID
+SYNTAX: @sqlid <sql_id> <child_number>
+PARAMETERS:
+  - sql_id: The SQL_ID from V$SQL
+  - child_number: Child cursor number (use % for all children)
+EXAMPLES:
+  @sqlid 7q729nhdgtsqq 0
+  @sqlid 7q729nhdgtsqq %
+
+================================================================================
+SCRIPT: x.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, xplan, last, cursor, dbms_xplan, allstats
+PURPOSE: Display execution plan with runtime statistics for the last SQL statement executed in current session
+SYNTAX: @x
+PARAMETERS: None (uses last SQL from current session)
+EXAMPLES:
+  @x
+
+================================================================================
+SCRIPT: xa.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, xplan, last, cursor, allstats, alias
+PURPOSE: Alias for x.sql - Display execution plan for last SQL statement
+SYNTAX: @xa
+PARAMETERS: None (alias for @x)
+EXAMPLES:
+  @xa
+
+================================================================================
+SCRIPT: xi.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, xplan, sqlid, library, cache, cursor
+PURPOSE: Display execution plan from library cache for a specific SQL_ID and child number
+SYNTAX: @xi <sql_id> <child_number>
+PARAMETERS:
+  - sql_id: The SQL_ID from V$SQL
+  - child_number: Child cursor number (use % for all children)
+EXAMPLES:
+  @xi 7q729nhdgtsqq 0
+  @xi 7q729nhdgtsqq %
+
+================================================================================
+SCRIPT: xawr.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, xplan, awr, history, plan_hash_value
+PURPOSE: Display execution plan from AWR (historical) for a SQL_ID and plan hash value
+SYNTAX: @xawr <sql_id> <plan_hash_value>
+PARAMETERS:
+  - sql_id: The SQL_ID from AWR
+  - plan_hash_value: Plan hash value (use % for all plans)
+EXAMPLES:
+  @xawr 0sh0fn7r21020 1541789278
+  @xawr 0sh0fn7r21020 %
+
+================================================================================
+SCRIPT: ash/ashtop.sql
+CATEGORY: ASH Analysis
+KEYWORDS: ash, active, session, history, top, wait, event, sql, grouping, activity
+PURPOSE: Display top ASH activity by grouping specified columns from V$ACTIVE_SESSION_HISTORY
+SYNTAX: @ash/ashtop <grouping_cols> <filters> <from_time> <to_time>
+PARAMETERS:
+  - grouping_cols: Comma-separated column names to group by (e.g., username,sql_id,event2)
+  - filters: WHERE clause filter (use 1=1 for no filter)
+  - from_time: Start time (e.g., sysdate-1/24, or use &hour, &5min shortcuts)
+  - to_time: End time (e.g., sysdate)
+EXAMPLES:
+  @ash/ashtop username,sql_opname,event2 1=1 sysdate-1/24 sysdate
+  @ash/ashtop sql_id,event2 "username='SOE'" sysdate-1/24 sysdate
+  @ash/ashtop event2,wait_class 1=1 &hour
+
+================================================================================
+SCRIPT: ash/ash_wait_chains.sql
+CATEGORY: ASH Analysis / Lock Analysis
+KEYWORDS: ash, wait, chain, blocking, blocker, lock, contention, dependency
+PURPOSE: Display ASH wait chains showing multi-session wait signatures and blocking relationships
+SYNTAX: @ash/ash_wait_chains <grouping_cols> <filters> <from_time> <to_time>
+PARAMETERS:
+  - grouping_cols: Columns to group by
+  - filters: WHERE clause filter
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @ash/ash_wait_chains username||'-'||program2 "wait_class='Application'" sysdate-1/24 sysdate
+
+================================================================================
+SCRIPT: ash/asqlmon.sql
+CATEGORY: ASH Analysis / SQL Analysis
+KEYWORDS: ash, sql, monitor, execution, plan, operation, step, drill, performance
+PURPOSE: SQL-monitoring-style drill-down showing where in an execution plan time is spent (ASH-based)
+SYNTAX: @ash/asqlmon <sql_id> <child_number> <from_time> <to_time>
+PARAMETERS:
+  - sql_id: The SQL_ID to analyze
+  - child_number: Child cursor number (use % for all, or 0 for first)
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @ash/asqlmon 7q729nhdgtsqq 0 sysdate-1/24 sysdate
+  @ash/asqlmon 7q729nhdgtsqq % sysdate-1 sysdate
+
+================================================================================
+SCRIPT: aw.sql
+CATEGORY: System Monitoring
+KEYWORDS: activity, what, now, current, system, metrics, sysmetric, monitor
+PURPOSE: Display current database activity - "What's going on right now?!" Shows system metrics from V$SYSMETRIC
+SYNTAX: @aw <filter_expression>
+PARAMETERS:
+  - filter_expression: Filter for sessions (typically 1=1 for all)
+EXAMPLES:
+  @aw 1=1
+
+================================================================================
+SCRIPT: ses.sql
+CATEGORY: Session Monitoring
+KEYWORDS: session, statistics, stats, sesstat, sid, metric, value
+PURPOSE: Display session statistics for specified sessions, filtered by statistic name
+SYNTAX: @ses <sid> <statname>
+PARAMETERS:
+  - sid: Session ID(s) - single, comma-separated, or subquery
+  - statname: Statistic name pattern (use % for wildcard)
+EXAMPLES:
+  @ses 10 %
+  @ses 10 parse
+  @ses 10,11,12 redo
+  @ses "select sid from v$session where username='APPS'" parse
+
+================================================================================
+SCRIPT: ses2.sql
+CATEGORY: Session Monitoring
+KEYWORDS: session, statistics, stats, sesstat, sid, metric, nonzero, value
+PURPOSE: Display session statistics (like ses.sql) but only show statistics with value > 0
+SYNTAX: @ses2 <sid> <statname>
+PARAMETERS:
+  - sid: Session ID(s)
+  - statname: Statistic name pattern
+EXAMPLES:
+  @ses2 10 %
+  @ses2 10 parse
+
+================================================================================
+SCRIPT: lock.sql
+CATEGORY: Lock Analysis
+KEYWORDS: lock, enqueue, latch, blocking, wait, contention, mode, held, requested
+PURPOSE: Display current locks from V$LOCK with lock type and mode information
+SYNTAX: @lock <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause condition
+EXAMPLES:
+  @lock 1=1
+  @lock type='TM'
+  @lock sid=123
+
+================================================================================
+SCRIPT: trans.sql
+CATEGORY: Transaction Monitoring
+KEYWORDS: transaction, undo, ublk, urec, xid, rollback, active, commit
+PURPOSE: Display active transactions from V$TRANSACTION with undo usage
+SYNTAX: @trans <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause condition (not directly used - shows all active transactions)
+EXAMPLES:
+  @trans 1=1
+
+================================================================================
+SCRIPT: kill.sql
+CATEGORY: Session Management
+KEYWORDS: kill, terminate, session, disconnect, alter, system
+PURPOSE: Generate ALTER SYSTEM KILL SESSION commands for selected sessions (does not execute them)
+SYNTAX: @kill <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause to select sessions to kill
+EXAMPLES:
+  @kill sid=284
+  @kill username='SYSTEM'
+  @kill "username='APP' and program like 'sqlplus%'"
+
+================================================================================
+SCRIPT: trace.sql
+CATEGORY: Tracing / Diagnostics
+KEYWORDS: trace, sql_trace, 10046, event, diagnostic, enable, dbms_monitor
+PURPOSE: Generate commands to enable SQL tracing for selected sessions
+SYNTAX: @trace <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause to select sessions
+EXAMPLES:
+  @trace sid=123
+  @trace username='SOE'
+
+================================================================================
+SCRIPT: traceme.sql
+CATEGORY: Tracing / Diagnostics
+KEYWORDS: trace, sql_trace, current, session, enable, self
+PURPOSE: Enable SQL tracing for the current session
+SYNTAX: @traceme
+PARAMETERS: None
+EXAMPLES:
+  @traceme
+
+================================================================================
+SCRIPT: traceoff.sql
+CATEGORY: Tracing / Diagnostics
+KEYWORDS: trace, sql_trace, disable, stop, turn off
+PURPOSE: Disable SQL tracing for selected sessions
+SYNTAX: @traceoff <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause to select sessions
+EXAMPLES:
+  @traceoff sid=123
+  @traceoff username='SOE'
+
+================================================================================
+SCRIPT: tab.sql
+CATEGORY: Object Information
+KEYWORDS: table, segment, storage, statistics, rows, blocks, object
+PURPOSE: Display table information including storage and statistics
+SYNTAX: @tab [<owner>.]<table_name>
+PARAMETERS:
+  - owner: Schema owner (optional, use % for wildcard)
+  - table_name: Table name (use % for wildcard)
+EXAMPLES:
+  @tab soe.orders
+  @tab soe.%
+  @tab orders
+
+================================================================================
+SCRIPT: ind.sql
+CATEGORY: Object Information
+KEYWORDS: index, key, column, statistics, btree, unique, composite
+PURPOSE: Display index information including columns and statistics
+SYNTAX: @ind [<owner>.]<index_name|table_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - name: Index or table name (use % for wildcard)
+EXAMPLES:
+  @ind orders
+  @ind soe.ord_customer_ix
+  @ind soe.%
+
+================================================================================
+SCRIPT: seg.sql
+CATEGORY: Object Information
+KEYWORDS: segment, storage, space, bytes, blocks, extents, tablespace
+PURPOSE: Display segment information including storage details
+SYNTAX: @seg [<owner>.]<segment_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - segment_name: Segment name (use % for wildcard)
+EXAMPLES:
+  @seg soe.customers
+  @seg soe.%
+
+================================================================================
+SCRIPT: o.sql
+CATEGORY: Object Information
+KEYWORDS: object, dba_objects, owner, name, type, status, created
+PURPOSE: Display database object information by owner and name
+SYNTAX: @o [<owner>.]<object_name>
+PARAMETERS:
+  - owner: Schema owner (optional, use % for wildcard)
+  - object_name: Object name (use % for wildcard)
+EXAMPLES:
+  @o sys.dba_users
+  @o %.%files
+  @o %table%
+
+================================================================================
+SCRIPT: df.sql
+CATEGORY: Space Management
+KEYWORDS: datafile, tablespace, space, free, used, disk, storage, df
+PURPOSE: Show tablespace free space in Unix df style (in GB)
+SYNTAX: @df
+PARAMETERS: None
+EXAMPLES:
+  @df
+
+================================================================================
+SCRIPT: dfm.sql
+CATEGORY: Space Management
+KEYWORDS: datafile, tablespace, space, free, used, disk, storage, df, megabytes
+PURPOSE: Show tablespace free space in Unix df style (in MB)
+SYNTAX: @dfm
+PARAMETERS: None
+EXAMPLES:
+  @dfm
+
+================================================================================
+SCRIPT: sga.sql
+CATEGORY: Memory Management
+KEYWORDS: sga, memory, system, global, area, component, pool, buffer, shared
+PURPOSE: Display instance memory usage breakdown from V$SGA_DYNAMIC_COMPONENTS
+SYNTAX: @sga
+PARAMETERS: None
+EXAMPLES:
+  @sga
+
+================================================================================
+SCRIPT: pga.sql
+CATEGORY: Memory Management
+KEYWORDS: pga, program, global, area, memory, workarea, sort, hash
+PURPOSE: Display PGA manager statistics from V$PGASTAT
+SYNTAX: @pga
+PARAMETERS: None
+EXAMPLES:
+  @pga
+
+================================================================================
+SCRIPT: sgastat.sql
+CATEGORY: Memory Management
+KEYWORDS: sga, memory, shared, pool, library, cache, detailed, breakdown
+PURPOSE: Display detailed SGA information from V$SGASTAT
+SYNTAX: @sgastat <name_or_pool>
+PARAMETERS:
+  - name_or_pool: Name or pool filter (use % for all)
+EXAMPLES:
+  @sgastat %
+  @sgastat result
+  @sgastat "shared pool"
+
+================================================================================
+SCRIPT: mem.sql
+CATEGORY: Memory Management
+KEYWORDS: memory, sga, dynamic, component, resize, automatic, management
+PURPOSE: Display information about dynamic SGA components
+SYNTAX: @mem
+PARAMETERS: None
+EXAMPLES:
+  @mem
+
+================================================================================
+SCRIPT: help.sql
+CATEGORY: Utility
+KEYWORDS: help, search, find, documentation, usage, syntax, manual
+PURPOSE: Search and display help for TPT scripts with usage examples
+SYNTAX: @help <search_string>
+PARAMETERS:
+  - search_string: String or regex pattern to search in script names and descriptions
+EXAMPLES:
+  @help explain
+  @help lock|latch.*hold
+  @help ^ind.*sql|^tab.*sql
+
+================================================================================
+SCRIPT: awr/awr_sqlstats.sql
+CATEGORY: AWR / SQL Analysis
+KEYWORDS: awr, sql, statistics, history, performance, plan, execution
+PURPOSE: Display SQL statistics from AWR for historical analysis
+SYNTAX: @awr/awr_sqlstats <sql_id> <plan_hash_value> <from_time> <to_time>
+PARAMETERS:
+  - sql_id: SQL_ID to analyze
+  - plan_hash_value: Plan hash value (use % for all plans)
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @awr/awr_sqlstats 0sh0fn7r21020 1541789278 sysdate-7 sysdate
+  @awr/awr_sqlstats 0sh0fn7r21020 % sysdate-7 sysdate
+
+================================================================================
+SCRIPT: awr/awr_sqlstats_per_exec.sql
+CATEGORY: AWR / SQL Analysis
+KEYWORDS: awr, sql, statistics, per, execution, average, history, performance
+PURPOSE: Display SQL statistics per execution from AWR
+SYNTAX: @awr/awr_sqlstats_per_exec <sql_id> <plan_hash_value> <from_time> <to_time>
+PARAMETERS:
+  - sql_id: SQL_ID to analyze
+  - plan_hash_value: Plan hash value (use % for all)
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @awr/awr_sqlstats_per_exec 0sh0fn7r21020 1541789278 sysdate-7 sysdate
+
+================================================================================
+SCRIPT: create_sql_baseline.sql
+CATEGORY: SQL Tuning
+KEYWORDS: sql, baseline, plan, management, spm, fix, good, stable
+PURPOSE: Create SQL Plan Baseline from an existing "good" cursor to fix execution plan
+SYNTAX: @create_sql_baseline <good_sqlid> <good_plan_hash_value> <to_bad_sqlid>
+PARAMETERS:
+  - good_sqlid: SQL_ID with the good execution plan
+  - good_plan_hash_value: Plan hash value of good plan
+  - to_bad_sqlid: SQL_ID to apply the baseline to
+EXAMPLES:
+  @create_sql_baseline g5tuxh82pk3qf 2966233522 d7khnbh6c9qas
+
+================================================================================
+SCRIPT: create_sql_patch.sql
+CATEGORY: SQL Tuning
+KEYWORDS: sql, patch, hint, tuning, optimizer, force, directive
+PURPOSE: Create SQL patch to inject hints into SQL without modifying code
+SYNTAX: @create_sql_patch <sql_id> <hint>
+PARAMETERS:
+  - sql_id: SQL_ID to patch
+  - hint: Hint text to inject
+EXAMPLES:
+  @create_sql_patch g4pkmrqrgxg3b GATHER_PLAN_STATISTICS
+  @create_sql_patch b9dmj0ahu6xgc 'NO_INDEX_SS(@"SEL$26CA4453" "STORE_SALES"@"SEL$1")'
+
+================================================================================
+SCRIPT: create_sql_profile.sql
+CATEGORY: SQL Tuning
+KEYWORDS: sql, profile, tuning, hint, plan, optimizer
+PURPOSE: Create SQL profile from hints to influence optimizer behavior
+SYNTAX: @create_sql_profile <sql_id> <hints>
+PARAMETERS:
+  - sql_id: SQL_ID to profile
+  - hints: Hints to include in profile
+EXAMPLES:
+  @create_sql_profile 7q729nhdgtsqq 'FULL(@SEL$1 T1)'
+
+================================================================================
+SCRIPT: drop_sql_baseline.sql
+CATEGORY: SQL Tuning
+KEYWORDS: sql, baseline, drop, remove, delete, spm
+PURPOSE: Drop SQL Plan Baseline
+SYNTAX: @drop_sql_baseline <sql_handle>
+PARAMETERS:
+  - sql_handle: SQL handle from DBA_SQL_PLAN_BASELINES
+EXAMPLES:
+  @drop_sql_baseline SQL_52cb74b7097edbbd
+
+================================================================================
+SCRIPT: drop_sql_patch.sql
+CATEGORY: SQL Tuning
+KEYWORDS: sql, patch, drop, remove, delete
+PURPOSE: Drop SQL patch
+SYNTAX: @drop_sql_patch <patch_name>
+PARAMETERS:
+  - patch_name: Patch name
+EXAMPLES:
+  @drop_sql_patch SQL_PATCH_g4pkmrqrgxg3b
+
+================================================================================
+SCRIPT: descxx.sql
+CATEGORY: Object Information
+KEYWORDS: describe, table, column, datatype, stats, histogram, extended
+PURPOSE: Describe table with extended column information including statistics
+SYNTAX: @descxx <object_name>
+PARAMETERS:
+  - object_name: Table name to describe
+EXAMPLES:
+  @descxx soe.orders
+
+================================================================================
+SCRIPT: col.sql
+CATEGORY: Object Information
+KEYWORDS: column, table, datatype, list, search, find
+PURPOSE: Display columns matching a pattern
+SYNTAX: @col <column_name>
+PARAMETERS:
+  - column_name: Column name pattern (can include %)
+EXAMPLES:
+  @col open_mode
+  @col %date%
+
+================================================================================
+SCRIPT: hint.sql
+CATEGORY: SQL Tuning
+KEYWORDS: hint, optimizer, list, all, available, syntax
+PURPOSE: Display all available optimizer hints
+SYNTAX: @hint <name>
+PARAMETERS:
+  - name: Hint name pattern (use % for all)
+EXAMPLES:
+  @hint full
+  @hint %
+
+================================================================================
+SCRIPT: d.sql
+CATEGORY: Utility
+KEYWORDS: dictionary, view, dba, all, user, x$, search, find
+PURPOSE: Display data dictionary views and X$ tables matching pattern
+SYNTAX: @d <object_name>
+PARAMETERS:
+  - object_name: Pattern to search
+EXAMPLES:
+  @d sql
+  @d %session%
+
+================================================================================
+SCRIPT: evh.sql
+CATEGORY: Wait Analysis
+KEYWORDS: event, histogram, wait, time, latency, distribution
+PURPOSE: Display histogram of wait event counts
+SYNTAX: @evh <event>
+PARAMETERS:
+  - event: Event name pattern
+EXAMPLES:
+  @evh log file sync
+  @evh log.file|db.file
+
+================================================================================
+SCRIPT: sed.sql
+CATEGORY: Wait Analysis
+KEYWORDS: event, description, wait, class, parameter, p1, p2, p3
+PURPOSE: Display wait event description and parameters
+SYNTAX: @sed <event>
+PARAMETERS:
+  - event: Event name
+EXAMPLES:
+  @sed log file sync
+  @sed "enq: TX"
+
+================================================================================
+SCRIPT: long.sql
+CATEGORY: Session Monitoring
+KEYWORDS: long, operation, progress, rman, datapump, job, running
+PURPOSE: Display session long operations showing progress
+SYNTAX: @long <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause filter
+EXAMPLES:
+  @long 1=1
+  @long username='SOE'
+
+================================================================================
+SCRIPT: jobs.sql
+CATEGORY: Scheduler / Jobs
+KEYWORDS: job, scheduler, dbms_job, running, schedule, next
+PURPOSE: Display scheduled jobs and their status
+SYNTAX: @jobs
+PARAMETERS: None
+EXAMPLES:
+  @jobs
+
+================================================================================
+SCRIPT: sqlmon.sql
+CATEGORY: SQL Monitoring
+KEYWORDS: sql, monitor, real, time, execution, progress, report
+PURPOSE: Run SQL Monitor report for a session
+SYNTAX: @sqlmon <sid>
+PARAMETERS:
+  - sid: Session ID
+EXAMPLES:
+  @sqlmon 1019
+
+================================================================================
+SCRIPT: hash.sql
+CATEGORY: SQL Analysis
+KEYWORDS: hash, value, sql_id, child, last, statement
+PURPOSE: Display hash value, SQL_ID, and child number of last SQL in session
+SYNTAX: @hash
+PARAMETERS: None
+EXAMPLES:
+  @hash
+
+================================================================================
+SCRIPT: us.sql
+CATEGORY: User Management
+KEYWORDS: user, username, dba_users, account, schema, list
+PURPOSE: Display database usernames from DBA_USERS
+SYNTAX: @us <username>
+PARAMETERS:
+  - username: Username pattern
+EXAMPLES:
+  @us %
+  @us APP%
+
+================================================================================
+SCRIPT: uu.sql
+CATEGORY: Session Monitoring
+KEYWORDS: user, session, connected, active, username, list
+PURPOSE: Display user sessions from V$SESSION
+SYNTAX: @uu <username>
+PARAMETERS:
+  - username: Username pattern
+EXAMPLES:
+  @uu %
+  @uu SOE
+
+================================================================================
+SCRIPT: topseg.sql
+CATEGORY: Space Management
+KEYWORDS: segment, top, space, largest, tablespace, storage
+PURPOSE: Display top space users per tablespace
+SYNTAX: @topseg <tablespace_name>
+PARAMETERS:
+  - tablespace_name: Tablespace name pattern
+EXAMPLES:
+  @topseg USERS
+  @topseg %
+
+================================================================================
+
+END OF CATALOG - Total Scripts Documented: 50+
+
+To search for scripts, use grep:
+  grep -i "KEYWORDS.*lock" SCRIPTS_CATALOG.txt
+  grep -A 5 "SCRIPT: snapper" SCRIPTS_CATALOG.txt
+  grep -i "sql.*tuning" SCRIPTS_CATALOG.txt
+
+================================================================================
+
+SCRIPT: sys.sql
+CATEGORY: System Monitoring
+KEYWORDS: system, statistics, sysstat, metrics, performance, counters, global
+PURPOSE: Display system-level statistics from V$SYSSTAT filtered by name pattern
+SYNTAX: @sys <statistic_name>
+PARAMETERS:
+  - statistic_name: Statistic name pattern (use % for wildcard)
+EXAMPLES:
+  @sys redo
+  @sys 'redo write'
+  @sys parse
+  @sys %commit%
+
+================================================================================
+SCRIPT: sqlf.sql
+CATEGORY: SQL Analysis
+KEYWORDS: sql, fulltext, text, complete, statement, query, source
+PURPOSE: Display full SQL text from V$SQL for a given SQL_ID
+SYNTAX: @sqlf <sql_id>
+PARAMETERS:
+  - sql_id: The SQL_ID to display full text for
+EXAMPLES:
+  @sqlf 7q729nhdgtsqq
+  @sqlf 0sh0fn7r21020
+
+================================================================================
+SCRIPT: latchprof.sql
+CATEGORY: Performance Monitoring / Latch Analysis
+KEYWORDS: latch, holder, profiling, contention, sampling, performance, bottleneck
+PURPOSE: High-frequency sampling on V$LATCHHOLDER to profile latches held by sessions
+SYNTAX: @latchprof <grouping_columns> <sid> <latch_name> <samples>
+PARAMETERS:
+  - grouping_columns: Columns to group by (e.g., name, sid, name,sqlid, name,laddr)
+  - sid: Session ID filter (use % for all)
+  - latch_name: Latch name pattern (use % for all)
+  - samples: Number of samples to take (e.g., 10000, 100000)
+EXAMPLES:
+  @latchprof name,sqlid 123 % 10000
+  @latchprof sid,name % "shared pool" 10000
+  @latchprof sid,name,laddr % % 100000
+
+================================================================================
+SCRIPT: tabhist.sql
+CATEGORY: Statistics / Object Information
+KEYWORDS: histogram, statistics, column, distribution, cardinality, endpoints
+PURPOSE: Display column histograms from DBA_TAB_HISTOGRAMS
+SYNTAX: @tabhist [<owner>.]<table_name> <column_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - table_name: Table name
+  - column_name: Column name pattern (use % for all columns)
+EXAMPLES:
+  @tabhist soe.orders order_mode
+  @tabhist soe.orders %
+  @tabhist customers %status%
+
+================================================================================
+SCRIPT: partkeys.sql
+CATEGORY: Object Information
+KEYWORDS: partition, key, column, partitioning, table, composite
+PURPOSE: Display table partition key columns
+SYNTAX: @partkeys [<owner>.]<table_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - table_name: Table name pattern
+EXAMPLES:
+  @partkeys soe.orders
+  @partkeys soe.%
+
+================================================================================
+SCRIPT: tabpart.sql
+CATEGORY: Object Information
+KEYWORDS: partition, table, segment, storage, size, rows, subpartition
+PURPOSE: Display table partition information including size and row counts
+SYNTAX: @tabpart [<owner>.]<table_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - table_name: Table name pattern
+EXAMPLES:
+  @tabpart soe.orders
+  @tabpart soe.%
+
+================================================================================
+SCRIPT: tabsubpart.sql
+CATEGORY: Object Information
+KEYWORDS: subpartition, table, composite, storage, partition
+PURPOSE: Display table subpartition information for composite partitioned tables
+SYNTAX: @tabsubpart [<owner>.]<table_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - table_name: Table name pattern
+EXAMPLES:
+  @tabsubpart soe.orders
+  @tabsubpart soe.%
+
+================================================================================
+SCRIPT: wrka.sql
+CATEGORY: Memory Management / Workarea
+KEYWORDS: pga, workarea, temp, sort, hash, memory, usage, session
+PURPOSE: Display PGA and TEMP usage by session from V$PROCESS and V$TEMPSEG_USAGE
+SYNTAX: @wrka <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause filter for sessions
+EXAMPLES:
+  @wrka 1=1
+  @wrka sid=1000
+  @wrka "username='SOE'"
+
+================================================================================
+SCRIPT: wrkasum.sql
+CATEGORY: Memory Management / Workarea
+KEYWORDS: pga, workarea, summary, operation, sort, hash, group, aggregate
+PURPOSE: Display summary of SQL workareas grouped by operation type (PGA and TEMP)
+SYNTAX: @wrkasum <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause filter (e.g., sql_id='...')
+EXAMPLES:
+  @wrkasum sql_id='7q729nhdgtsqq'
+  @wrkasum 1=1
+
+================================================================================
+SCRIPT: topcur.sql
+CATEGORY: SQL Analysis / Memory
+KEYWORDS: cursor, top, memory, shared, pool, sql, large
+PURPOSE: Display top cursors by memory usage in shared pool
+SYNTAX: @topcur
+PARAMETERS: None
+EXAMPLES:
+  @topcur
+
+================================================================================
+SCRIPT: topcurmem.sql
+CATEGORY: SQL Analysis / Memory
+KEYWORDS: cursor, memory, top, shared, pool, large, persistent
+PURPOSE: Display top cursors by memory usage with detailed breakdown
+SYNTAX: @topcurmem
+PARAMETERS: None
+EXAMPLES:
+  @topcurmem
+
+================================================================================
+SCRIPT: sqlbinds.sql
+CATEGORY: SQL Analysis
+KEYWORDS: bind, variable, value, captured, peeking, sql
+PURPOSE: Display captured SQL bind variable values from V$SQL_BIND_CAPTURE
+SYNTAX: @sqlbinds <sql_id> <child_number> <bind_name>
+PARAMETERS:
+  - sql_id: SQL_ID to show binds for
+  - child_number: Child cursor number (use % for all)
+  - bind_name: Bind variable name pattern (use % for all, or sys_b_.* for system binds)
+EXAMPLES:
+  @sqlbinds 2swu3tn1ujzq7 0 %
+  @sqlbinds 2swu3tn1ujzq7 % sys_b_.*
+  @sqlbinds 7q729nhdgtsqq % %
+
+================================================================================
+SCRIPT: nonshared.sql
+CATEGORY: SQL Analysis / Cursor
+KEYWORDS: cursor, sharing, nonshared, child, reason, version, mismatch
+PURPOSE: Display reasons why child cursors are not shared from V$SQL_SHARED_CURSOR
+SYNTAX: @nonshared <sql_id>
+PARAMETERS:
+  - sql_id: SQL_ID to analyze
+EXAMPLES:
+  @nonshared 7q729nhdgtsqq
+
+================================================================================
+SCRIPT: lob.sql
+CATEGORY: Object Information
+KEYWORDS: lob, large, object, clob, blob, segment, storage
+PURPOSE: Display LOB segment information and storage details
+SYNTAX: @lob [<owner>.]<table_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - table_name: Table name pattern
+EXAMPLES:
+  @lob soe.customers
+  @lob %.%
+
+================================================================================
+SCRIPT: syn.sql
+CATEGORY: Object Information
+KEYWORDS: synonym, alias, object, reference, link
+PURPOSE: Display synonym information and what they point to
+SYNTAX: @syn [<owner>.]<synonym_name>
+PARAMETERS:
+  - owner: Schema owner (optional, use PUBLIC for public synonyms)
+  - synonym_name: Synonym name pattern
+EXAMPLES:
+  @syn system.tab
+  @syn system.%
+  @syn public.dba_tables
+
+================================================================================
+SCRIPT: seq.sql
+CATEGORY: Object Information
+KEYWORDS: sequence, generator, nextval, current, value, cache
+PURPOSE: Display sequence information including current value and cache settings
+SYNTAX: @seq [<owner>.]<sequence_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - sequence_name: Sequence name pattern
+EXAMPLES:
+  @seq sys.jobseq
+  @seq %.jobseq
+  @seq %
+
+================================================================================
+SCRIPT: dirs.sql
+CATEGORY: System Configuration
+KEYWORDS: directory, path, external, table, datapump, utl_file
+PURPOSE: Display database directory objects and their OS paths
+SYNTAX: @dirs
+PARAMETERS: None
+EXAMPLES:
+  @dirs
+
+================================================================================
+SCRIPT: dblinks.sql
+CATEGORY: System Configuration
+KEYWORDS: database, link, dblink, remote, connection, distributed
+PURPOSE: Display database links and their connection information
+SYNTAX: @dblinks
+PARAMETERS: None
+EXAMPLES:
+  @dblinks
+
+================================================================================
+SCRIPT: log.sql
+CATEGORY: System Configuration / Redo
+KEYWORDS: redo, log, online, logfile, group, member, size
+PURPOSE: Display redo log file layout including groups, members, and sizes
+SYNTAX: @log
+PARAMETERS: None
+EXAMPLES:
+  @log
+
+================================================================================
+SCRIPT: curlog.sql
+CATEGORY: System Configuration / Redo
+KEYWORDS: redo, log, current, active, logfile, switch
+PURPOSE: Display current redo log file information
+SYNTAX: @curlog
+PARAMETERS: None
+EXAMPLES:
+  @curlog
+
+================================================================================
+SCRIPT: ts.sql
+CATEGORY: Space Management
+KEYWORDS: tablespace, datafile, storage, space, list
+PURPOSE: Display tablespace information
+SYNTAX: @ts <tablespace_name>
+PARAMETERS:
+  - tablespace_name: Tablespace name pattern
+EXAMPLES:
+  @ts USERS
+  @ts %
+  @ts SYSTEM
+
+================================================================================
+SCRIPT: ls.sql
+CATEGORY: Space Management
+KEYWORDS: tablespace, list, datafile, storage
+PURPOSE: Display tablespace details with datafile information
+SYNTAX: @ls <tablespace_name>
+PARAMETERS:
+  - tablespace_name: Tablespace name pattern
+EXAMPLES:
+  @ls system
+  @ls %
+
+================================================================================
+SCRIPT: segcached.sql
+CATEGORY: Object Information / Buffer Cache
+KEYWORDS: segment, buffer, cache, cached, blocks, memory
+PURPOSE: Display number of buffered blocks for a segment in buffer cache
+SYNTAX: @segcached [<owner>.]<object_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - object_name: Object name pattern
+EXAMPLES:
+  @segcached soe.orders
+  @segcached soe.%
+
+================================================================================
+SCRIPT: topsegstat.sql
+CATEGORY: Object Information / Performance
+KEYWORDS: segment, statistics, top, reads, writes, io, physical
+PURPOSE: Display top segment-level statistics (physical reads/writes, etc.)
+SYNTAX: @topsegstat <statistic_name>
+PARAMETERS:
+  - statistic_name: Statistic name pattern (use % for all)
+EXAMPLES:
+  @topsegstat reads
+  @topsegstat writes
+  @topsegstat %
+
+================================================================================
+SCRIPT: sqlmem.sql
+CATEGORY: SQL Analysis / Memory
+KEYWORDS: sql, memory, shared, pool, cursor, size, persistent
+PURPOSE: Display shared pool memory usage for a specific SQL statement
+SYNTAX: @sqlmem <sql_id>
+PARAMETERS:
+  - sql_id: SQL_ID to analyze
+EXAMPLES:
+  @sqlmem 7q729nhdgtsqq
+
+================================================================================
+SCRIPT: pmem.sql
+CATEGORY: Memory Management
+KEYWORDS: process, memory, pga, session, usage, detail
+PURPOSE: Display process memory usage details for a specific process
+SYNTAX: @pmem <spid>
+PARAMETERS:
+  - spid: Server process ID (OS process ID)
+EXAMPLES:
+  @pmem 1000
+  @pmem 12345
+
+================================================================================
+SCRIPT: smem.sql
+CATEGORY: Memory Management
+KEYWORDS: session, memory, pga, uga, usage, process
+PURPOSE: Display session/process memory usage
+SYNTAX: @smem <sid>
+PARAMETERS:
+  - sid: Session ID
+EXAMPLES:
+  @smem 1000
+  @smem 123
+
+================================================================================
+SCRIPT: usid.sql
+CATEGORY: Session Monitoring
+KEYWORDS: session, user, process, spid, sid, connection, info
+PURPOSE: Display user session and process information including OS details
+SYNTAX: @usid <sid>
+PARAMETERS:
+  - sid: Session ID
+EXAMPLES:
+  @usid 123
+  @usid 1000
+
+================================================================================
+SCRIPT: bg.sql
+CATEGORY: System Monitoring / Background Processes
+KEYWORDS: background, process, dbwr, lgwr, smon, pmon, oracle
+PURPOSE: Display background process information
+SYNTAX: @bg <process_name_or_description>
+PARAMETERS:
+  - process_name_or_description: Process name pattern or description
+EXAMPLES:
+  @bg dbw
+  @bg writer
+  @bg %
+
+================================================================================
+SCRIPT: cancel.sql
+CATEGORY: Session Management
+KEYWORDS: cancel, sql, alter, system, statement, running
+PURPOSE: Generate ALTER SYSTEM CANCEL SQL commands for running SQL statements
+SYNTAX: @cancel <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause to select sessions
+EXAMPLES:
+  @cancel sid=150
+  @cancel username='SYSTEM'
+  @cancel "username='APP' and program like 'sqlplus%'"
+
+================================================================================
+SCRIPT: ddl.sql
+CATEGORY: Object Information / DDL
+KEYWORDS: ddl, create, definition, metadata, dbms_metadata, extract
+PURPOSE: Extract DDL statements for specified database objects
+SYNTAX: @ddl [<owner>.]<object_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - object_name: Object name pattern
+EXAMPLES:
+  @ddl sys.dba_users
+  @ddl sys.%tab%
+  @ddl soe.orders
+
+================================================================================
+SCRIPT: proc.sql
+CATEGORY: Object Information / PL/SQL
+KEYWORDS: procedure, function, package, plsql, program, unit
+PURPOSE: Display procedures and functions in packages or standalone
+SYNTAX: @proc <object_name> <procedure_name>
+PARAMETERS:
+  - object_name: Package or object name pattern
+  - procedure_name: Procedure/function name pattern (use % for all)
+EXAMPLES:
+  @proc dbms_stats table
+  @proc dbms_stats %
+  @proc % gather%
+
+================================================================================
+SCRIPT: trig.sql
+CATEGORY: Object Information / PL/SQL
+KEYWORDS: trigger, event, timing, table, dml, ddl
+PURPOSE: Display trigger information including timing and event details
+SYNTAX: @trig [<owner>.]<trigger_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - trigger_name: Trigger name pattern
+EXAMPLES:
+  @trig sys.delete_entries
+  @trig sys.%
+  @trig %.%
+
+================================================================================
+SCRIPT: colusage.sql
+CATEGORY: Object Information / Statistics
+KEYWORDS: column, usage, tracking, predicate, filter, statistics
+PURPOSE: Display column usage tracking information showing which columns are used in WHERE clauses
+SYNTAX: @colusage [<owner>.]<table_name>
+PARAMETERS:
+  - owner: Schema owner (optional)
+  - table_name: Table name pattern
+EXAMPLES:
+  @colusage soe.orders
+  @colusage soe.%
+
+================================================================================
+SCRIPT: pvalid.sql
+CATEGORY: System Configuration
+KEYWORDS: parameter, valid, values, options, settings, initialization
+PURPOSE: Display valid values for initialization parameters
+SYNTAX: @pvalid <parameter_name>
+PARAMETERS:
+  - parameter_name: Parameter name pattern
+EXAMPLES:
+  @pvalid optimizer
+  @pvalid optimizer_mode
+  @pvalid %
+
+================================================================================
+SCRIPT: p.sql
+CATEGORY: System Configuration
+KEYWORDS: parameter, value, init, setting, configuration, spfile
+PURPOSE: Display parameter name and current value
+SYNTAX: @p <parameter_name>
+PARAMETERS:
+  - parameter_name: Parameter name pattern
+EXAMPLES:
+  @p optimizer
+  @p sga_target
+  @p %
+
+================================================================================
+SCRIPT: pd.sql
+CATEGORY: System Configuration
+KEYWORDS: parameter, description, value, documentation, init
+PURPOSE: Display parameter name, description, and current value
+SYNTAX: @pd <parameter_description>
+PARAMETERS:
+  - parameter_description: Pattern to search in parameter descriptions
+EXAMPLES:
+  @pd optimizer
+  @pd memory
+  @pd %
+
+================================================================================
+SCRIPT: pv.sql
+CATEGORY: System Configuration
+KEYWORDS: parameter, value, search, configuration, setting
+PURPOSE: Display parameters filtered by current value
+SYNTAX: @pv <value>
+PARAMETERS:
+  - value: Value pattern to search for
+EXAMPLES:
+  @pv MANUAL
+  @pv TRUE
+  @pv 1024
+
+================================================================================
+
+END OF CATALOG - Total Scripts Documented: 90+
+
+To search for scripts, use grep:
+  grep -i "KEYWORDS.*lock" SCRIPTS_CATALOG.txt
+  grep -A 5 "SCRIPT: snapper" SCRIPTS_CATALOG.txt
+  grep -i "sql.*tuning" SCRIPTS_CATALOG.txt
+
+
+================================================================================
+SCRIPT: ash/ash_index_helper.sql
+CATEGORY: ASH Analysis / SQL Tuning
+KEYWORDS: ash, index, helper, santa, tuning, recommendation, missing, predicate
+PURPOSE: Santa's Little Index Helper - analyze ASH data to suggest missing indexes for SQL statements
+SYNTAX: @ash/ash_index_helper <sql_id> [<owner>.]<table_name> <from_time> <to_time>
+PARAMETERS:
+  - sql_id: SQL_ID to analyze (use % for all)
+  - owner: Schema owner (optional)
+  - table_name: Table name pattern
+  - from_time: Start time for ASH analysis
+  - to_time: End time for ASH analysis
+EXAMPLES:
+  @ash/ash_index_helper 8zz6y2yzdqjp0 %.% sysdate-1/24 sysdate
+  @ash/ash_index_helper % TPCDS.% sysdate-1/24 sysdate
+
+================================================================================
+SCRIPT: ash/ashpeak.sql
+CATEGORY: ASH Analysis
+KEYWORDS: ash, peak, maximum, spike, activity, time, highest
+PURPOSE: Find peak activity periods from ASH data showing when database was busiest
+SYNTAX: @ash/ashpeak <from_time> <to_time>
+PARAMETERS:
+  - from_time: Start time for analysis
+  - to_time: End time for analysis
+EXAMPLES:
+  @ash/ashpeak sysdate-1 sysdate
+  @ash/ashpeak &day
+
+================================================================================
+SCRIPT: ash/ashtopsum.sql
+CATEGORY: ASH Analysis
+KEYWORDS: ash, top, summary, aggregate, activity, total
+PURPOSE: Display aggregated summary of top ASH activity across multiple dimensions
+SYNTAX: @ash/ashtopsum <grouping_cols> <filters> <from_time> <to_time>
+PARAMETERS:
+  - grouping_cols: Columns to group by
+  - filters: WHERE clause filter
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @ash/ashtopsum sql_id,event2 1=1 sysdate-1/24 sysdate
+
+================================================================================
+SCRIPT: ash/event_hist.sql
+CATEGORY: ASH Analysis / Wait Analysis
+KEYWORDS: ash, event, histogram, wait, time, distribution, latency
+PURPOSE: Display histogram of wait event times from ASH (milliseconds)
+SYNTAX: @ash/event_hist <event> <filter_expression> <from_time> <to_time>
+PARAMETERS:
+  - event: Event name pattern (can use regex with |)
+  - filter_expression: WHERE clause filter
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @ash/event_hist log.file 1=1 sysdate-1/24 sysdate
+  @ash/event_hist log.file|db.file "wait_class='User I/O'" sysdate-1/24 sysdate
+
+================================================================================
+SCRIPT: awr/awr_sqlid.sql
+CATEGORY: AWR / SQL Analysis
+KEYWORDS: awr, sql, text, history, sqlid, statement
+PURPOSE: Display SQL text from AWR repository for a given SQL_ID
+SYNTAX: @awr/awr_sqlid <sql_id>
+PARAMETERS:
+  - sql_id: SQL_ID to retrieve from AWR
+EXAMPLES:
+  @awr/awr_sqlid 7q729nhdgtsqq
+
+================================================================================
+SCRIPT: awr/awr_sysstat.sql
+CATEGORY: AWR / System Monitoring
+KEYWORDS: awr, system, statistics, sysstat, metrics, history
+PURPOSE: Display system statistics history from AWR
+SYNTAX: @awr/awr_sysstat <statistic_name> <from_time> <to_time>
+PARAMETERS:
+  - statistic_name: Statistic name pattern
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @awr/awr_sysstat redo% sysdate-7 sysdate
+  @awr/awr_sysstat parse% sysdate-7 sysdate
+
+================================================================================
+SCRIPT: awr/awr_system_event.sql
+CATEGORY: AWR / Wait Analysis
+KEYWORDS: awr, system, event, wait, history, time
+PURPOSE: Display system-wide wait event statistics from AWR
+SYNTAX: @awr/awr_system_event <event_name> <from_time> <to_time>
+PARAMETERS:
+  - event_name: Event name pattern
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @awr/awr_system_event "log file sync" sysdate-7 sysdate
+  @awr/awr_system_event % sysdate-7 sysdate
+
+================================================================================
+SCRIPT: awr/dstat.sql
+CATEGORY: AWR / System Monitoring
+KEYWORDS: awr, metrics, system, history, performance, dstat
+PURPOSE: Display system metrics history from AWR (like Unix dstat command)
+SYNTAX: @awr/dstat <from_time> <to_time>
+PARAMETERS:
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @awr/dstat "timestamp'2025-10-07 07:00:00'" "timestamp'2025-10-07 08:00:00'"
+  @awr/dstat sysdate-1 sysdate
+
+================================================================================
+SCRIPT: awr/awr_sqlstats_unstable.sql
+CATEGORY: AWR / SQL Tuning
+KEYWORDS: awr, sql, unstable, plan, execution, variance, performance
+PURPOSE: Identify SQL statements with unstable execution plans from AWR
+SYNTAX: @awr/awr_sqlstats_unstable <group_by_expr1> <group_by_expr2> <from_time> <to_time>
+PARAMETERS:
+  - group_by_expr1: First grouping expression (e.g., force_matching_signature)
+  - group_by_expr2: Second grouping expression (e.g., plan_hash_value)
+  - from_time: Start time
+  - to_time: End time
+EXAMPLES:
+  @awr/awr_sqlstats_unstable force_matching_signature plan_hash_value sysdate-7 sysdate
+
+================================================================================
+SCRIPT: xb.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, profile, last, sql, statistics
+PURPOSE: Explain last SQL executed with execution profile directly from library cache
+SYNTAX: @xb
+PARAMETERS: None (operates on last SQL in current session)
+EXAMPLES:
+  @xb
+
+================================================================================
+SCRIPT: xbi.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, profile, sqlid, statistics
+PURPOSE: Explain SQL with execution profile from library cache by SQL_ID
+SYNTAX: @xbi <sql_id> <child_number>
+PARAMETERS:
+  - sql_id: SQL_ID to explain
+  - child_number: Child cursor number
+EXAMPLES:
+  @xbi a5ks9fhw2v9s1 0
+
+================================================================================
+SCRIPT: xall.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, advanced, last, sql, allstats
+PURPOSE: Display advanced execution plan for last SQL statement
+SYNTAX: @xall
+PARAMETERS: None
+EXAMPLES:
+  @xall
+
+================================================================================
+SCRIPT: xia.sql
+CATEGORY: Execution Plans
+KEYWORDS: explain, plan, execution, advanced, sqlid, outline
+PURPOSE: Display advanced execution plan from library cache with outline hints
+SYNTAX: @xia <sql_id>
+PARAMETERS:
+  - sql_id: SQL_ID to analyze
+EXAMPLES:
+  @xia 7q729nhdgtsqq
+
+================================================================================
+SCRIPT: otherxml.sql
+CATEGORY: SQL Tuning / Execution Plans
+KEYWORDS: outline, hints, other, xml, plan, sqlid
+PURPOSE: Display outline hints extracted from OTHER_XML in execution plan
+SYNTAX: @otherxml <sql_id> <child_number>
+PARAMETERS:
+  - sql_id: SQL_ID
+  - child_number: Child cursor number
+EXAMPLES:
+  @otherxml 1fbwxvngasv1f 1
+
+================================================================================
+SCRIPT: sql_profile_hints.sql
+CATEGORY: SQL Tuning
+KEYWORDS: sql, profile, hints, extract, tuning, outline
+PURPOSE: Extract hints from SQL profile for analysis or recreation
+SYNTAX: @sql_profile_hints <sql_id>
+PARAMETERS:
+  - sql_id: SQL_ID with profile attached
+EXAMPLES:
+  @sql_profile_hints 7q729nhdgtsqq
+
+================================================================================
+SCRIPT: mutexprof.sql
+CATEGORY: Performance Monitoring / Latch Analysis
+KEYWORDS: mutex, profiling, contention, cursor, pin, library
+PURPOSE: Profile cursor pin mutex activity showing top mutex holders
+SYNTAX: @mutexprof <grouping_columns> <filter> <samples>
+PARAMETERS:
+  - grouping_columns: Columns to group by (e.g., sid, sql_id)
+  - filter: WHERE clause filter
+  - samples: Number of samples to take
+EXAMPLES:
+  @mutexprof sid,sql_id 1=1 10000
+
+================================================================================
+SCRIPT: bufprof.sql
+CATEGORY: Performance Monitoring / Buffer Cache
+KEYWORDS: buffer, cache, profiling, gets, read, hot, block
+PURPOSE: Profile buffer cache activity showing hot blocks and segments
+SYNTAX: @bufprof
+PARAMETERS: None
+EXAMPLES:
+  @bufprof
+
+================================================================================
+SCRIPT: waitprof.sql
+CATEGORY: Performance Monitoring / Wait Analysis
+KEYWORDS: wait, event, profiling, activity, session, sampling
+PURPOSE: Profile wait events using high-frequency sampling
+SYNTAX: @waitprof <samples>
+PARAMETERS:
+  - samples: Number of samples to take
+EXAMPLES:
+  @waitprof 10000
+
+================================================================================
+SCRIPT: rowcache.sql
+CATEGORY: Memory Management / Dictionary Cache
+KEYWORDS: rowcache, dictionary, cache, dc, misses, gets
+PURPOSE: Display row cache (dictionary cache) statistics
+SYNTAX: @rowcache <cache_name>
+PARAMETERS:
+  - cache_name: Row cache name pattern (use % for all)
+EXAMPLES:
+  @rowcache %
+  @rowcache dc_users
+
+================================================================================
+SCRIPT: sgastatx.sql
+CATEGORY: Memory Management
+KEYWORDS: sga, shared, pool, subpool, detailed, x$, ksmss
+PURPOSE: Display shared pool stats by sub-pool from X$KSMSS
+SYNTAX: @sgastatx <statistic_name>
+PARAMETERS:
+  - statistic_name: Statistic name pattern
+EXAMPLES:
+  @sgastatx "free memory"
+  @sgastatx cursor
+
+================================================================================
+SCRIPT: sgares.sql
+CATEGORY: Memory Management
+KEYWORDS: sga, resize, history, operations, automatic, memory
+PURPOSE: Display information about last completed SGA resize operations
+SYNTAX: @sgares
+PARAMETERS: None
+EXAMPLES:
+  @sgares
+
+================================================================================
+SCRIPT: memres.sql
+CATEGORY: Memory Management
+KEYWORDS: memory, resize, history, automatic, sga, component
+PURPOSE: Display information about last completed memory resize operations
+SYNTAX: @memres
+PARAMETERS: None
+EXAMPLES:
+  @memres
+
+================================================================================
+SCRIPT: uds.sql
+CATEGORY: Transaction Monitoring / Undo
+KEYWORDS: undo, statistics, segment, transaction, rollback, undo
+PURPOSE: Display undo segment statistics
+SYNTAX: @uds
+PARAMETERS: None
+EXAMPLES:
+  @uds
+
+================================================================================
+SCRIPT: ltx.sql
+CATEGORY: Transaction Monitoring
+KEYWORDS: transaction, lock, enqueue, tx, undo, session
+PURPOSE: Display detailed transaction information with locks and undo
+SYNTAX: @ltx
+PARAMETERS: None
+EXAMPLES:
+  @ltx
+
+================================================================================
+SCRIPT: tq.sql
+CATEGORY: Parallel Execution
+KEYWORDS: parallel, query, px, tq, table, queue, slaves
+PURPOSE: Display parallel query table queue statistics
+SYNTAX: @tq
+PARAMETERS: None
+EXAMPLES:
+  @tq
+
+================================================================================
+SCRIPT: px.sql
+CATEGORY: Parallel Execution
+KEYWORDS: parallel, execution, px, slaves, coordinator, dop
+PURPOSE: Display parallel execution session information
+SYNTAX: @px <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause filter
+EXAMPLES:
+  @px 1=1
+  @px qcsid=123
+
+================================================================================
+SCRIPT: px2.sql
+CATEGORY: Parallel Execution
+KEYWORDS: parallel, execution, px, detailed, slaves, statistics
+PURPOSE: Display detailed parallel execution information with statistics
+SYNTAX: @px2 <filter_expression>
+PARAMETERS:
+  - filter_expression: WHERE clause filter
+EXAMPLES:
+  @px2 1=1
+
+================================================================================
+SCRIPT: pxs.sql
+CATEGORY: Parallel Execution
+KEYWORDS: parallel, execution, px, slaves, active, session
+PURPOSE: Display active parallel execution slaves
+SYNTAX: @pxs
+PARAMETERS: None
+EXAMPLES:
+  @pxs
+
+================================================================================
+SCRIPT: se.sql
+CATEGORY: Session Monitoring / Events
+KEYWORDS: session, event, trace, 10046, diagnostic, enabled
+PURPOSE: Display session events that are currently set
+SYNTAX: @se <sid>
+PARAMETERS:
+  - sid: Session ID
+EXAMPLES:
+  @se 10
+
+================================================================================
+SCRIPT: ev.sql
+CATEGORY: Session Management / Tracing
+KEYWORDS: event, set, enable, trace, 10046, diagnostic
+PURPOSE: Set a session event (like 10046 for SQL trace)
+SYNTAX: @ev <event_number> <level>
+PARAMETERS:
+  - event_number: Event number (e.g., 10046)
+  - level: Event level (e.g., 12 for 10046)
+EXAMPLES:
+  @ev 10046 12
+
+================================================================================
+SCRIPT: evo.sql
+CATEGORY: Session Management / Tracing
+KEYWORDS: event, disable, off, trace, stop
+PURPOSE: Disable a session event
+SYNTAX: @evo <event_number>
+PARAMETERS:
+  - event_number: Event number to disable
+EXAMPLES:
+  @evo 10046
+
+================================================================================
+SCRIPT: ti.sql
+CATEGORY: Tracing / Diagnostics
+KEYWORDS: trace, identifier, new, file, force, diagnostics
+PURPOSE: Force creation of a new trace file for current session
+SYNTAX: @ti
+PARAMETERS: None
+EXAMPLES:
+  @ti
+
+================================================================================
+SCRIPT: t.sql
+CATEGORY: Tracing / Diagnostics
+KEYWORDS: trace, file, default, location, name, path
+PURPOSE: Display default trace file location for current session
+SYNTAX: @t
+PARAMETERS: None
+EXAMPLES:
+  @t
+
+================================================================================
+SCRIPT: gettracename.sql
+CATEGORY: Tracing / Diagnostics
+KEYWORDS: trace, file, name, location, get, path
+PURPOSE: Get the trace file name for current session
+SYNTAX: @gettracename
+PARAMETERS: None
+EXAMPLES:
+  @gettracename
+
+================================================================================
+SCRIPT: oerr.sql
+CATEGORY: Error Handling
+KEYWORDS: error, ora, description, message, lookup, oracle
+PURPOSE: Display Oracle error description for error number
+SYNTAX: @oerr <error_number>
+PARAMETERS:
+  - error_number: ORA error number (without ORA- prefix)
+EXAMPLES:
+  @oerr 1555
+  @oerr 600
+
+================================================================================
+SCRIPT: oid.sql
+CATEGORY: Object Information
+KEYWORDS: object, id, data_object_id, find, lookup
+PURPOSE: Display database object information by object_id or data_object_id
+SYNTAX: @oid <object_id>
+PARAMETERS:
+  - object_id: Object ID or data object ID (can be comma-separated list)
+EXAMPLES:
+  @oid 10
+  @oid 10,20,30
+
+================================================================================
+SCRIPT: rowid.sql
+CATEGORY: Utility
+KEYWORDS: rowid, decode, file, block, row, dba
+PURPOSE: Decode ROWID showing file#, block#, and row# information
+SYNTAX: @rowid <rowid>
+PARAMETERS:
+  - rowid: Oracle ROWID to decode
+EXAMPLES:
+  @rowid AAAR51AAMAAAACGAAB
+
+================================================================================
+SCRIPT: hash.sql
+CATEGORY: SQL Analysis
+KEYWORDS: hash, value, sql_id, child, last, prev_hash
+PURPOSE: Display hash value, SQL_ID, and child# of last SQL executed
+SYNTAX: @hash
+PARAMETERS: None (operates on last SQL in current session)
+EXAMPLES:
+  @hash
+
+================================================================================
+SCRIPT: ora_hash.sql
+CATEGORY: Utility
+KEYWORDS: hash, ora_hash, function, partition, bucket, distribute
+PURPOSE: Demonstrate ORA_HASH function for hash partitioning calculations
+SYNTAX: @ora_hash <expression> <buckets> <seed>
+PARAMETERS:
+  - expression: Expression to hash
+  - buckets: Number of buckets
+  - seed: Seed value
+EXAMPLES:
+  @ora_hash
+
+================================================================================
+SCRIPT: nls.sql
+CATEGORY: System Configuration / Globalization
+KEYWORDS: nls, national, language, support, format, session
+PURPOSE: Display NLS (National Language Support) parameters at session level
+SYNTAX: @nls
+PARAMETERS: None
+EXAMPLES:
+  @nls
+
+================================================================================
+SCRIPT: userenv.sql
+CATEGORY: Session Monitoring / Security
+KEYWORDS: userenv, context, session, info, parameters, namespace
+PURPOSE: Display session environment information from USERENV namespace
+SYNTAX: @userenv
+PARAMETERS: None
+EXAMPLES:
+  @userenv
+
+================================================================================
+SCRIPT: svcs.sql
+CATEGORY: System Configuration / Services
+KEYWORDS: service, name, db, database, connection, tns
+PURPOSE: Display database services information
+SYNTAX: @svcs
+PARAMETERS: None
+EXAMPLES:
+  @svcs
+
+================================================================================
+SCRIPT: pdbs.sql
+CATEGORY: System Configuration / Multitenant
+KEYWORDS: pdb, pluggable, database, container, cdb, multitenant
+PURPOSE: Display pluggable databases in a container database
+SYNTAX: @pdbs
+PARAMETERS: None
+EXAMPLES:
+  @pdbs
+
+================================================================================
+SCRIPT: db.sql
+CATEGORY: System Configuration / Database Info
+KEYWORDS: database, name, dbid, created, platform, version
+PURPOSE: Display basic database information (name, DBID, platform, etc.)
+SYNTAX: @db
+PARAMETERS: None
+EXAMPLES:
+  @db
+
+================================================================================
+SCRIPT: dbinfo.sql
+CATEGORY: System Configuration / Database Info
+KEYWORDS: database, info, instance, version, details, configuration
+PURPOSE: Display detailed database and instance information
+SYNTAX: @dbinfo
+PARAMETERS: None
+EXAMPLES:
+  @dbinfo
+
+================================================================================
+SCRIPT: i.sql
+CATEGORY: Session Monitoring
+KEYWORDS: whoami, session, info, current, user, connection
+PURPOSE: Display "who am I" - current session and instance information
+SYNTAX: @i
+PARAMETERS: None
+EXAMPLES:
+  @i
+
+================================================================================
+SCRIPT: mysid.sql
+CATEGORY: Session Monitoring
+KEYWORDS: sid, my, current, session, own
+PURPOSE: Display current session SID (sets &mysid variable)
+SYNTAX: @mysid
+PARAMETERS: None
+EXAMPLES:
+  @mysid
+
+================================================================================
+SCRIPT: find.sql
+CATEGORY: Utility / Search
+KEYWORDS: find, search, object, text, source, code
+PURPOSE: Search for text patterns in source code and object names
+SYNTAX: @find <search_pattern>
+PARAMETERS:
+  - search_pattern: Pattern to search for
+EXAMPLES:
+  @find employee
+
+================================================================================
+SCRIPT: grep.sql
+CATEGORY: Utility / Search
+KEYWORDS: grep, search, source, code, text, plsql
+PURPOSE: Search source code (like Unix grep command)
+SYNTAX: @grep <pattern>
+PARAMETERS:
+  - pattern: Pattern to search for in source code
+EXAMPLES:
+  @grep execute_immediate
+
+================================================================================
+
+END OF CATALOG - Total Scripts Documented: 135+
+
+To search for scripts, use grep:
+  grep -i "KEYWORDS.*parallel" SCRIPTS_CATALOG.txt
+  grep -A 5 "SCRIPT: snapper" SCRIPTS_CATALOG.txt
+  grep -i "awr.*sql" SCRIPTS_CATALOG.txt
+
