@@ -942,6 +942,14 @@ body {
   min-width: 0;
 }
 .card.expanded .card-purpose { white-space: normal; }
+.purpose-generated { opacity: 0.82; }
+.purpose-generated::before {
+  content: '~';
+  display: inline-block;
+  margin-right: 6px;
+  opacity: 0.5;
+  font-style: normal;
+}
 .card-badges {
   display: flex;
   gap: 6px;
@@ -960,6 +968,7 @@ body {
 }
 .badge.cat { border-color: var(--accent-muted); color: var(--accent); }
 .badge.doc { border-color: var(--green-bg); color: var(--green); }
+.badge.gen { border-color: rgba(200,121,65,0.25); color: var(--text2); font-style: italic; }
 .badge.dir { border-color: rgba(212,145,94,0.2); color: var(--orange); }
 
 /* Daylight card overrides */
@@ -994,6 +1003,8 @@ body {
 }
 [data-theme="daylight"] .badge.cat { background: var(--accent-muted); color: var(--accent); border: none; }
 [data-theme="daylight"] .badge.doc { background: var(--green-bg); color: var(--green); border: none; }
+[data-theme="daylight"] .badge.gen { background: #f4f4f4; color: #6b7280; border: none; font-style: italic; }
+[data-theme="daylight"][data-mode="dark"] .badge.gen { background: #262626; color: #9ca3af; }
 [data-theme="daylight"] .badge.dir { background: #fffbeb; color: var(--orange); border: none; }
 [data-theme="daylight"][data-mode="dark"] .badge.dir { background: #fbbf2415; }
 
@@ -1042,6 +1053,11 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.row-purpose-generated { opacity: 0.7; }
+.row-purpose-generated::before {
+  content: '~ ';
+  opacity: 0.5;
+}
 .row-cat {
   width: 180px;
   min-width: 180px;
@@ -1059,9 +1075,10 @@ body {
   min-width: 40px;
   padding: 6px 8px;
   text-align: center;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   color: #ff0000;
+  line-height: 1;
 }
 .row:hover .row-file,
 .row:hover .row-purpose,
@@ -1938,20 +1955,56 @@ document.getElementById('mode-toggle').addEventListener('click', () => {
 // FUZZY SEARCH
 // ============================================================
 
-function fuzzyScore(query, text) {
+function escapeRegex(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function normalizeText(text) {
+  return String(text || '').toLowerCase().trim();
+}
+
+function tokenize(text) {
+  return normalizeText(text).split(/[^a-z0-9_$./#-]+/).filter(Boolean);
+}
+
+function fuzzyScore(query, text, opts = {}) {
+  const { allowSubsequence = false } = opts;
   if (!query || !text) return 0;
-  const q = query.toLowerCase();
-  const t = text.toLowerCase();
 
-  if (t.includes(q)) return 100;
+  const q = normalizeText(query);
+  const raw = String(text);
+  const t = normalizeText(text);
+  if (!q || !t) return 0;
 
-  const qWords = q.split(/\s+/);
-  let wordMatches = 0;
-  for (const w of qWords) {
-    if (t.includes(w)) wordMatches++;
+  const qWords = tokenize(q);
+  const tWords = tokenize(t);
+
+  if (t === q) return 220;
+  if (t.startsWith(q)) return 180;
+
+  const wholePhrase = new RegExp(`\\b${escapeRegex(q)}\\b`, 'i');
+  if (wholePhrase.test(raw)) return 160;
+  if (t.includes(q)) return 120;
+
+  let exactWords = 0;
+  let prefixWords = 0;
+  for (const word of qWords) {
+    if (tWords.includes(word)) {
+      exactWords++;
+    } else if (tWords.some(candidate => candidate.startsWith(word))) {
+      prefixWords++;
+    }
   }
-  if (wordMatches === qWords.length) return 90;
-  if (wordMatches > 0) return 40 + (wordMatches / qWords.length) * 40;
+
+  if (qWords.length > 1) {
+    if (exactWords === qWords.length) return 110 + exactWords * 8;
+    if (exactWords + prefixWords === qWords.length) return 90 + exactWords * 6 + prefixWords * 4;
+  }
+
+  if (exactWords > 0) return 55 + exactWords * 16;
+  if (prefixWords > 0) return 35 + prefixWords * 12;
+
+  if (!allowSubsequence || q.length < 5) return 0;
 
   let qi = 0;
   let score = 0;
@@ -1960,35 +2013,55 @@ function fuzzyScore(query, text) {
     if (t[ti] === q[qi]) {
       score += 10;
       if (ti === prevMatch + 1) score += 5;
-      if (ti === 0 || t[ti - 1] === ' ' || t[ti - 1] === '_' || t[ti - 1] === '/' || t[ti - 1] === '.') score += 8;
+      if (ti === 0 || [' ', '_', '/', '.', '-'].includes(t[ti - 1])) score += 8;
       prevMatch = ti;
       qi++;
     }
   }
-  return qi === q.length ? score : 0;
+
+  return qi === q.length ? Math.min(score, 45) : 0;
+}
+
+function minimumScore(query) {
+  const words = tokenize(query);
+  if (words.length >= 2) return 70;
+  if (normalizeText(query).length <= 3) return 60;
+  return 35;
 }
 
 function scoreScript(script, query) {
   if (!query) return 50;
 
   const weights = {
-    name: 3.0,
-    keywords: 2.5,
-    purpose: 2.0,
-    category: 1.5,
-    file: 1.2,
+    name: { weight: 4.0, allowSubsequence: true },
+    file: { weight: 3.2, allowSubsequence: true },
+    keywords: { weight: 2.8, allowSubsequence: true },
+    category: { weight: 2.0, allowSubsequence: false },
+    purpose: { weight: 1.8, allowSubsequence: false },
     syntax: 1.0,
-    examples: 0.8,
-    parameters: 0.5,
+    examples: 0.6,
+    parameters: 0.3,
   };
 
   let total = 0;
-  for (const [field, weight] of Object.entries(weights)) {
+  for (const [field, config] of Object.entries(weights)) {
     const val = script[field] || '';
-    total += fuzzyScore(query, val) * weight;
+    if (typeof config === 'number') {
+      total += fuzzyScore(query, val) * config;
+    } else {
+      total += fuzzyScore(query, val, { allowSubsequence: config.allowSubsequence }) * config.weight;
+    }
   }
 
-  if (script.documented) total += 5;
+  const q = normalizeText(query);
+  const baseName = normalizeText((script.name || '').replace(/\.sql$/i, ''));
+  const filePath = normalizeText(script.file || '');
+
+  if (baseName === q) total += 45;
+  else if (baseName.startsWith(q)) total += 25;
+
+  if (filePath === q || filePath.endsWith('/' + q)) total += 35;
+  if (script.documented) total += 8;
   return total;
 }
 
@@ -2002,13 +2075,48 @@ let currentSort = 'relevance';
 let currentQuery = '';
 let expandedCards = new Set();
 
+function readStateFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const nextQuery = params.get('q');
+  const nextCategory = params.get('cat');
+  const nextSort = params.get('sort');
+
+  if (nextQuery) currentQuery = nextQuery;
+  if (nextCategory) activeCategory = nextCategory;
+  if (['relevance', 'name', 'category', 'documented'].includes(nextSort)) {
+    currentSort = nextSort;
+  }
+}
+
+function writeStateToUrl() {
+  const params = new URLSearchParams();
+  if (currentQuery) params.set('q', currentQuery);
+  if (activeCategory) params.set('cat', activeCategory);
+  if (currentSort !== 'relevance') params.set('sort', currentSort);
+
+  const next = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
+  window.history.replaceState(null, '', next);
+}
+
 // ============================================================
 // CATEGORIES
 // ============================================================
 
+function getQueryMatchedScripts() {
+  if (!currentQuery) {
+    return allScripts.map(s => ({ ...s, _score: 50 }));
+  }
+
+  const minScore = minimumScore(currentQuery);
+  return allScripts
+    .map(s => ({ ...s, _score: scoreScript(s, currentQuery) }))
+    .filter(s => s._score >= minScore);
+}
+
 function getCategories() {
+  const source = currentQuery ? getQueryMatchedScripts() : allScripts;
   const counts = {};
-  for (const s of allScripts) {
+  for (const s of source) {
     counts[s.category] = (counts[s.category] || 0) + 1;
   }
   return Object.entries(counts)
@@ -2026,8 +2134,8 @@ function renderCategories() {
 
   if (currentTheme === 'daylight') {
     html += `<div class="cat-item ${!activeCategory ? 'active' : ''}" data-cat="">
-      <span>All Scripts</span><span class="cat-count">${allScripts.length}</span>
-      <span class="cat-tooltip">${allScripts.length} scripts</span>
+      <span>All Scripts</span><span class="cat-count">${currentQuery ? cats.reduce((sum, cat) => sum + cat.count, 0) : allScripts.length}</span>
+      <span class="cat-tooltip">${currentQuery ? cats.reduce((sum, cat) => sum + cat.count, 0) : allScripts.length} scripts</span>
     </div>`;
     for (const cat of cats) {
       const active = activeCategory === cat.name ? 'active' : '';
@@ -2038,7 +2146,7 @@ function renderCategories() {
     }
   } else {
     html += `<div class="cat-item ${!activeCategory ? 'active' : ''}" data-cat="">
-      <span>All Scripts</span><span class="cat-count">${currentTheme === 'brutalist' ? '(' + allScripts.length + ')' : allScripts.length}</span>
+      <span>All Scripts</span><span class="cat-count">${currentTheme === 'brutalist' ? '(' + (currentQuery ? cats.reduce((sum, cat) => sum + cat.count, 0) : allScripts.length) + ')' : (currentQuery ? cats.reduce((sum, cat) => sum + cat.count, 0) : allScripts.length)}</span>
     </div>`;
     for (const cat of cats) {
       const active = activeCategory === cat.name ? 'active' : '';
@@ -2079,19 +2187,10 @@ function renderCategories() {
 // ============================================================
 
 function getFilteredScripts() {
-  let scripts = allScripts;
+  let scripts = getQueryMatchedScripts();
 
   if (activeCategory) {
     scripts = scripts.filter(s => s.category === activeCategory);
-  }
-
-  if (currentQuery) {
-    scripts = scripts.map(s => ({
-      ...s,
-      _score: scoreScript(s, currentQuery)
-    })).filter(s => s._score > 0);
-  } else {
-    scripts = scripts.map(s => ({ ...s, _score: 50 }));
   }
 
   switch (currentSort) {
@@ -2149,9 +2248,10 @@ let currentFiltered = [];
 function renderResults() {
   currentFiltered = getFilteredScripts();
   renderedCount = 0;
+  const queryMatched = currentQuery ? getQueryMatchedScripts().length : allScripts.length;
 
   document.getElementById('shown-count').textContent = currentFiltered.length;
-  document.getElementById('total-count').textContent = allScripts.length;
+  document.getElementById('total-count').textContent = activeCategory || currentQuery ? queryMatched : allScripts.length;
 
   const info = document.getElementById('results-info');
   if (currentTheme === 'brutalist') {
@@ -2197,6 +2297,7 @@ function renderResults() {
   // Update watermark
   const wm = document.getElementById('watermark');
   if (wm) wm.textContent = allScripts.length;
+  writeStateToUrl();
 }
 
 function renderBatch(count) {
@@ -2223,7 +2324,10 @@ function renderBrutalistCard(container, s, index) {
   const row = document.createElement('div');
   row.className = 'row' + (expanded ? ' expanded' : '');
   row.dataset.file = s.file;
-  row.innerHTML = `<div class="row-file">${highlight(s.name, currentQuery)}</div><div class="row-purpose">${highlight(s.purpose || '---', currentQuery)}</div><div class="row-cat">${esc(s.category)}</div><div class="row-doc">${s.documented ? '*' : ''}</div>`;
+  const mark = s.documented ? '*' : (s.generated ? '~' : '');
+  const markTitle = s.documented ? 'Hand-documented' : (s.generated ? 'Auto-generated description' : '');
+  const purposeCls = s.generated ? 'row-purpose row-purpose-generated' : 'row-purpose';
+  row.innerHTML = `<div class="row-file">${highlight(s.name, currentQuery)}</div><div class="${purposeCls}">${highlight(s.purpose || '---', currentQuery)}</div><div class="row-cat">${esc(s.category)}</div><div class="row-doc" title="${markTitle}">${mark}</div>`;
 
   const details = document.createElement('div');
   details.className = 'row-details' + (expanded ? ' open' : '');
@@ -2294,10 +2398,11 @@ function renderStandardCard(container, s, index) {
     <div class="card-top">
       ${currentQuery && relClass ? `<div class="relevance-dot ${relClass}" title="Score: ${Math.round(s._score)}"></div>` : ''}
       <span class="card-name">${highlight(s.name, currentQuery)}</span>
-      <span class="card-purpose">${highlight(s.purpose || 'No description available', currentQuery)}</span>
+      <span class="card-purpose${s.generated ? ' purpose-generated' : ''}">${highlight(s.purpose || 'No description available', currentQuery)}</span>
       <div class="card-badges">
         <span class="badge cat">${esc(s.category)}</span>
-        ${s.documented ? '<span class="badge doc">Documented</span>' : ''}
+        ${s.documented ? '<span class="badge doc" title="Hand-curated catalog entry">Documented</span>' : ''}
+        ${s.generated ? '<span class="badge gen" title="Description synthesized from SQL content">Generated</span>' : ''}
         ${s.directory && s.directory !== 'root' ? `<span class="badge dir">${esc(s.directory)}/</span>` : ''}
       </div>
     </div>
@@ -2364,6 +2469,7 @@ searchInput.addEventListener('input', () => {
   debounceTimer = setTimeout(() => {
     currentQuery = searchInput.value.trim();
     expandedCards.clear();
+    renderCategories();
     renderResults();
   }, 150);
 });
@@ -2385,6 +2491,7 @@ document.addEventListener('keydown', (e) => {
       searchInput.value = '';
       currentQuery = '';
       expandedCards.clear();
+      renderCategories();
       renderResults();
     }
     searchInput.blur();
@@ -2523,6 +2630,11 @@ codeCopyBtn.addEventListener('click', () => {
 // ============================================================
 
 applyThemeMode();
+readStateFromUrl();
+searchInput.value = currentQuery;
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.classList.toggle('active', btn.dataset.sort === currentSort);
+});
 renderCategories();
 renderResults();
 </script>
