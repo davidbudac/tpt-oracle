@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="copper" data-mode="dark">
+<html lang="en" data-theme="brutalist" data-mode="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,76 +21,80 @@
    CSS CUSTOM PROPERTIES PER THEME / MODE
    ============================================================ */
 
-/* ---------- BRUTALIST light (default) ---------- */
+/* ---------- BRUTALIST light (default) ----------
+   Paper + ink, not pure white + pure black. Yellow
+   newsprint highlighter + a deeper red as accents.
+   Grotesk for UI type, mono reserved for code. */
 [data-theme="brutalist"] {
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface2: #ffffff;
-  --border: #000000;
-  --border-light: #000000;
-  --text: #000000;
-  --text2: #000000;
-  --accent: #ff0000;
-  --accent-bright: #ff0000;
+  --bg: #f2efe8;
+  --surface: #f2efe8;
+  --surface2: #ebe7dd;
+  --border: #111111;
+  --border-light: #111111;
+  --text: #111111;
+  --text2: #5a5752;
+  --accent: #e8291c;
+  --accent-bright: #e8291c;
   --accent-muted: transparent;
   --accent-glow: transparent;
-  --green: #ff0000;
+  --green: #e8291c;
   --green-bg: transparent;
-  --orange: #000000;
-  --red: #000000;
-  --highlight: transparent;
-  --hover: #000000;
-  --hover-text: #ffffff;
+  --orange: #111111;
+  --red: #111111;
+  --highlight: #ffe600;
+  --hover: #111111;
+  --hover-text: #f2efe8;
   --radius: 0px;
   --radius-lg: 0px;
   --radius-pill: 0px;
   --border-width: 2px;
-  --transition: 0s;
-  --font-heading: 'JetBrains Mono', monospace;
-  --font-body: 'JetBrains Mono', monospace;
+  --transition: 0.08s;
+  --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Bricolage Grotesque', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --sidebar-bg: #000000;
-  --sidebar-text: #ffffff;
-  --sidebar-active: #ff0000;
+  --sidebar-bg: #111111;
+  --sidebar-text: #f2efe8;
+  --sidebar-active: #e8291c;
   --sidebar-active-bg: transparent;
-  --sidebar-border: #ffffff;
-  --header-bg: #000000;
-  --header-text: #ffffff;
-  --card-bg: #ffffff;
-  --card-border: #000000;
-  --code-bg: #000000;
-  --code-text: #ffffff;
-  --code-border: #ffffff;
-  --overlay-bg: #000000;
+  --sidebar-border: #3a3a36;
+  --header-bg: #111111;
+  --header-text: #f2efe8;
+  --card-bg: #f2efe8;
+  --card-border: #111111;
+  --code-bg: #111111;
+  --code-text: #f2efe8;
+  --code-border: #f2efe8;
+  --overlay-bg: #111111;
   --backdrop: none;
   --shadow: none;
   --shadow-hover: none;
 }
 
 [data-theme="brutalist"][data-mode="dark"] {
-  --bg: #000000;
-  --surface: #000000;
-  --surface2: #000000;
-  --border: #ffffff;
-  --border-light: #ffffff;
-  --text: #ffffff;
-  --text2: #ffffff;
-  --accent: #ff0000;
-  --accent-bright: #ff0000;
-  --hover: #ffffff;
-  --hover-text: #000000;
-  --sidebar-bg: #ffffff;
-  --sidebar-text: #000000;
-  --sidebar-active: #ff0000;
-  --sidebar-border: #000000;
-  --header-bg: #ffffff;
-  --header-text: #000000;
-  --card-bg: #000000;
-  --card-border: #ffffff;
-  --code-bg: #000000;
-  --code-text: #ffffff;
-  --code-border: #ffffff;
-  --overlay-bg: #000000;
+  --bg: #111111;
+  --surface: #111111;
+  --surface2: #1a1a18;
+  --border: #f2efe8;
+  --border-light: #f2efe8;
+  --text: #f2efe8;
+  --text2: #a5a29b;
+  --accent: #ff3a2c;
+  --accent-bright: #ff3a2c;
+  --highlight: #ffe600;
+  --hover: #f2efe8;
+  --hover-text: #111111;
+  --sidebar-bg: #f2efe8;
+  --sidebar-text: #111111;
+  --sidebar-active: #e8291c;
+  --sidebar-border: #c9c6be;
+  --header-bg: #f2efe8;
+  --header-text: #111111;
+  --card-bg: #111111;
+  --card-border: #f2efe8;
+  --code-bg: #111111;
+  --code-text: #f2efe8;
+  --code-border: #f2efe8;
+  --overlay-bg: #111111;
 }
 
 /* ---------- COPPER dark (default) ---------- */
@@ -278,8 +282,8 @@ body {
   color: #ffffff;
 }
 [data-theme="brutalist"] ::selection {
-  background: #ff0000;
-  color: #ffffff;
+  background: var(--highlight);
+  color: #111111;
 }
 
 /* ============================================================
@@ -320,7 +324,7 @@ body {
 [data-theme="brutalist"] .header {
   background: var(--header-bg);
   color: var(--header-text);
-  padding: 10px 20px;
+  padding: 14px 24px;
 }
 
 .header-top {
@@ -345,10 +349,10 @@ body {
 }
 
 [data-theme="brutalist"] .header h1 {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
 }
 
 [data-theme="daylight"] .header h1 {
@@ -560,14 +564,29 @@ body {
 }
 [data-theme="copper"] .search-wrap:focus-within svg { color: var(--accent); }
 
-/* Brutalist: flat */
+/* Brutalist: flat bar, ink rule above/below via wrap */
 [data-theme="brutalist"] #search {
   border-radius: 0;
-  padding: 10px 20px;
+  padding: 14px 24px;
   border: none;
   background: var(--bg);
-  caret-color: #ff0000;
-  font-size: 13px;
+  color: var(--text);
+  caret-color: var(--accent);
+  font-size: 15px;
+  font-family: var(--font-body);
+  letter-spacing: -0.005em;
+}
+[data-theme="brutalist"] #search::placeholder {
+  color: var(--text2);
+  opacity: 1;
+}
+[data-theme="brutalist"] #search:focus {
+  background: var(--highlight);
+  color: #111111;
+}
+[data-theme="brutalist"] #search:focus::placeholder {
+  color: #111111;
+  opacity: 0.45;
 }
 
 /* Daylight: subtle */
@@ -678,13 +697,15 @@ body {
   font-weight: 500;
 }
 [data-theme="brutalist"] .sidebar h3 {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  padding: 12px 14px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px 16px 10px;
   border-bottom: 2px solid var(--sidebar-border);
-  color: var(--sidebar-text);
+  color: var(--accent);
   margin-bottom: 0;
+  opacity: 1;
 }
 
 /* Category items */
@@ -712,27 +733,44 @@ body {
 }
 
 [data-theme="brutalist"] .cat-item {
-  padding: 5px 14px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
   color: var(--sidebar-text);
   border-bottom: 1px solid var(--sidebar-border);
   border-left: none;
   margin: 0;
+  position: relative;
 }
 [data-theme="brutalist"] .cat-item:hover {
-  background: var(--sidebar-text);
-  color: var(--sidebar-bg);
+  background: var(--accent);
+  color: #f2efe8;
 }
 [data-theme="brutalist"] .cat-item.active {
-  color: #ff0000;
+  color: var(--sidebar-text);
   background: transparent;
   border-left: none;
+  font-weight: 700;
+  padding-left: 30px;
+}
+[data-theme="brutalist"] .cat-item.active::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
 }
 [data-theme="brutalist"] .cat-item.active:hover {
-  background: var(--sidebar-text);
-  color: #ff0000;
+  background: var(--accent);
+  color: #f2efe8;
+}
+[data-theme="brutalist"] .cat-item.active:hover::before {
+  background: #f2efe8;
 }
 
 [data-theme="daylight"] .cat-item {
@@ -950,6 +988,7 @@ body {
   opacity: 0.5;
   font-style: normal;
 }
+.purpose-ai { font-style: italic; opacity: 0.92; }
 .card-badges {
   display: flex;
   gap: 6px;
@@ -970,6 +1009,26 @@ body {
 .badge.doc { border-color: var(--green-bg); color: var(--green); }
 .badge.gen { border-color: rgba(200,121,65,0.25); color: var(--text2); font-style: italic; }
 .badge.dir { border-color: rgba(212,145,94,0.2); color: var(--orange); }
+.badge.ai {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 10px;
+  padding: 1px 7px;
+}
+[data-theme="daylight"] .badge.ai {
+  background: var(--accent-muted);
+  color: var(--accent);
+  border: none;
+}
+[data-theme="brutalist"] .badge.ai {
+  background: var(--highlight);
+  color: #111111;
+  border: none;
+  border-radius: 0;
+  padding: 1px 6px;
+}
 
 /* Daylight card overrides */
 [data-theme="daylight"] .card {
@@ -1023,12 +1082,13 @@ body {
 .row {
   display: flex;
   align-items: stretch;
-  border-bottom: 2px solid var(--border);
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   background: var(--bg);
   color: var(--text);
-  transition: none;
+  transition: background var(--transition), color var(--transition);
+  line-height: 1.45;
 }
 .row:hover {
   background: var(--hover);
@@ -1036,19 +1096,24 @@ body {
 }
 .row.expanded { border-bottom: none; }
 .row-file {
-  width: 200px;
-  min-width: 200px;
-  padding: 6px 12px;
-  border-right: 2px solid var(--border);
-  font-weight: 700;
+  width: 220px;
+  min-width: 220px;
+  padding: 10px 16px;
+  border-right: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  color: var(--accent);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.row:hover .row-file { color: var(--hover-text); }
 .row-purpose {
   flex: 1;
-  padding: 6px 12px;
-  border-right: 2px solid var(--border);
+  padding: 10px 16px;
+  border-right: 1px solid var(--border);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1058,90 +1123,112 @@ body {
   content: '~ ';
   opacity: 0.5;
 }
+.row-purpose-ai { font-style: italic; }
+.row-doc-ai {
+  font-size: 10px !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+[data-theme="brutalist"] .row-doc-ai {
+  background: var(--highlight);
+  color: #111111 !important;
+}
+[data-theme="copper"] .row-doc-ai,
+[data-theme="daylight"] .row-doc-ai {
+  color: var(--accent) !important;
+}
 .row-cat {
   width: 180px;
   min-width: 180px;
-  padding: 6px 12px;
-  font-size: 12px;
+  padding: 10px 16px;
+  border-right: 1px solid var(--border);
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-right: 2px solid var(--border);
+  letter-spacing: 0.08em;
+  color: var(--text2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.row-doc {
-  width: 40px;
-  min-width: 40px;
-  padding: 6px 8px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 700;
-  color: #ff0000;
-  line-height: 1;
+  display: flex;
+  align-items: center;
 }
 .row:hover .row-file,
 .row:hover .row-purpose,
 .row:hover .row-cat {
   border-right-color: var(--hover-text);
 }
-.row.expanded .row-file,
-.row.expanded .row-purpose,
-.row.expanded .row-cat {
-  border-right-color: var(--border);
+.row:hover .row-cat { color: var(--hover-text); opacity: 0.7; }
+.row-doc {
+  width: 44px;
+  min-width: 44px;
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.45;
 }
+.row:hover .row-doc { color: var(--hover-text); }
 
 /* Row details (brutalist expanded) */
 .row-details {
   display: none;
-  padding: 12px 20px;
-  border-bottom: 2px solid var(--border);
-  border-top: 4px solid var(--border);
-  background: var(--bg);
+  padding: 20px 24px 24px;
+  border-bottom: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+  background: var(--surface2);
+  line-height: 1.55;
 }
 .row-details.open { display: block; }
 .detail-line {
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   display: flex;
-  gap: 10px;
+  gap: 16px;
 }
 .detail-line .detail-label {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  min-width: 90px;
+  letter-spacing: 0.12em;
+  min-width: 88px;
   flex-shrink: 0;
+  color: var(--accent);
+  padding-top: 3px;
 }
 .detail-line .detail-val {
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.55;
   white-space: pre-wrap;
   word-break: break-word;
+  max-width: 70ch;
 }
 .kw-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
 }
 .kw-tag-brutalist {
   font-size: 11px;
-  border: 2px solid var(--text);
-  padding: 0 6px;
-  text-transform: uppercase;
+  border: 1px solid var(--text);
+  padding: 2px 8px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
 }
 .view-src-brutalist {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
-  background: none;
+  background: var(--accent);
   border: none;
-  font-family: var(--font-mono);
-  padding: 0;
-  margin-top: 8px;
-  color: var(--text);
-  letter-spacing: 0.05em;
+  font-family: var(--font-body);
+  padding: 8px 14px;
+  margin-top: 14px;
+  color: #f2efe8;
+  letter-spacing: 0.08em;
+  transition: background var(--transition), color var(--transition);
 }
 .view-src-brutalist:hover {
   background: var(--text);
@@ -1212,11 +1299,13 @@ mark {
   padding: 0 2px;
 }
 [data-theme="brutalist"] mark {
-  background: none;
-  color: #ff0000;
+  background: var(--highlight);
+  color: #111111;
   font-weight: 700;
-  padding: 0;
+  padding: 0 3px;
   border-radius: 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 [data-theme="daylight"] mark {
   background: var(--highlight);
@@ -1860,13 +1949,8 @@ const THEME_DEFAULTS = {
   daylight: 'light'
 };
 
-let currentTheme = localStorage.getItem('tpt-theme') || 'copper';
-let currentMode = localStorage.getItem('tpt-mode') || null;
-
-// If no saved mode, use system preference
-if (!currentMode) {
-  currentMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
+let currentTheme = localStorage.getItem('tpt-theme') || 'brutalist';
+let currentMode = localStorage.getItem('tpt-mode') || 'light';
 
 function applyThemeMode() {
   document.documentElement.setAttribute('data-theme', currentTheme);
@@ -2324,14 +2408,16 @@ function renderBrutalistCard(container, s, index) {
   const row = document.createElement('div');
   row.className = 'row' + (expanded ? ' expanded' : '');
   row.dataset.file = s.file;
-  const mark = s.documented ? '*' : (s.generated ? '~' : '');
-  const markTitle = s.documented ? 'Hand-documented' : (s.generated ? 'Auto-generated description' : '');
-  const purposeCls = s.generated ? 'row-purpose row-purpose-generated' : 'row-purpose';
-  row.innerHTML = `<div class="row-file">${highlight(s.name, currentQuery)}</div><div class="${purposeCls}">${highlight(s.purpose || '---', currentQuery)}</div><div class="row-cat">${esc(s.category)}</div><div class="row-doc" title="${markTitle}">${mark}</div>`;
+  const mark = s.documented ? '*' : (s.ai_generated ? 'AI' : (s.generated ? '~' : ''));
+  const markTitle = s.documented ? 'Hand-documented' : (s.ai_generated ? 'AI-generated description (Claude)' : (s.generated ? 'Auto-generated description (rule-based)' : ''));
+  const markCls = s.ai_generated ? 'row-doc row-doc-ai' : 'row-doc';
+  const purposeCls = s.ai_generated ? 'row-purpose row-purpose-ai' : (s.generated ? 'row-purpose row-purpose-generated' : 'row-purpose');
+  row.innerHTML = `<div class="row-file">${highlight(s.name, currentQuery)}</div><div class="${purposeCls}">${highlight(s.purpose || '---', currentQuery)}</div><div class="row-cat">${esc(s.category)}</div><div class="${markCls}" title="${markTitle}">${mark}</div>`;
 
   const details = document.createElement('div');
   details.className = 'row-details' + (expanded ? ' open' : '');
   details.innerHTML = `
+    ${s.purpose ? `<div class="detail-line"><span class="detail-label">Description</span><span class="detail-val">${highlight(s.purpose, currentQuery)}</span></div>` : ''}
     ${s.file ? `<div class="detail-line"><span class="detail-label">File</span><span class="detail-val">${highlight(s.file, currentQuery)}</span></div>` : ''}
     ${s.syntax ? `<div class="detail-line"><span class="detail-label">Syntax</span><span class="detail-val">${highlight(s.syntax, currentQuery)}</span></div>` : ''}
     ${s.parameters ? `<div class="detail-line"><span class="detail-label">Params</span><span class="detail-val">${highlight(s.parameters, currentQuery)}</span></div>` : ''}
@@ -2398,10 +2484,11 @@ function renderStandardCard(container, s, index) {
     <div class="card-top">
       ${currentQuery && relClass ? `<div class="relevance-dot ${relClass}" title="Score: ${Math.round(s._score)}"></div>` : ''}
       <span class="card-name">${highlight(s.name, currentQuery)}</span>
-      <span class="card-purpose${s.generated ? ' purpose-generated' : ''}">${highlight(s.purpose || 'No description available', currentQuery)}</span>
+      <span class="card-purpose${s.ai_generated ? ' purpose-ai' : (s.generated ? ' purpose-generated' : '')}">${highlight(s.purpose || 'No description available', currentQuery)}</span>
       <div class="card-badges">
         <span class="badge cat">${esc(s.category)}</span>
         ${s.documented ? '<span class="badge doc" title="Hand-curated catalog entry">Documented</span>' : ''}
+        ${s.ai_generated ? '<span class="badge ai" title="Summary generated by Claude — not hand-verified">AI</span>' : ''}
         ${s.generated ? '<span class="badge gen" title="Description synthesized from SQL content">Generated</span>' : ''}
         ${s.directory && s.directory !== 'root' ? `<span class="badge dir">${esc(s.directory)}/</span>` : ''}
       </div>
