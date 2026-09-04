@@ -197,8 +197,12 @@ def extract_header(filepath):
                                  "alter ", "insert ", "update ", "delete ", "grant ",
                                  "begin ", "declare ", "exec ", "set ", "col ",
                                  "v$", "dba_", "all_", "user_", "sys.", "....",
-                                 "from_time", "to_time", "dropping"))
-            or d_lower.endswith((" from", " where", " and", " or"))
+                                 "from_time", "to_time", "dropping",
+                                 "notes:", "note:", "todo", "warning", "prompt ",
+                                 "this script uses", "running ", "attaching ",
+                                 "for unix", "bug ", "experimental"))
+            or d_lower.endswith((" from", " where", " and", " or", ",", "(", ";"))
+            or re.search(r"&\w+|\|\||\bput_line\b|^\w+\.\w+,", desc)
             or len(desc) < 12
             or re.match(r'^[\.\-\*=\s]+$', desc)
             or re.match(r'^[A-Z_]+=&', desc)):
@@ -963,129 +967,158 @@ def extract_keywords(filepath, desc, category):
     return ", ".join(final[:12])
 
 
-CATEGORY_NORMALIZE = {
-    "ASH Analysis / Lock Analysis": "ASH Analysis",
-    "ASH Analysis / SQL Analysis": "ASH Analysis",
-    "ASH Analysis / SQL Tuning": "ASH Analysis",
-    "ASH Analysis / Wait Analysis": "ASH Analysis",
-    "AWR / SQL Analysis": "AWR Analysis",
-    "AWR / SQL Tuning": "AWR Analysis",
-    "AWR / System Monitoring": "AWR Analysis",
-    "AWR / Wait Analysis": "AWR Analysis",
-    "Memory Management / Workarea": "Memory Management",
-    "Memory Management / Dictionary Cache": "Memory Management",
-    "Object Information / Buffer Cache": "Object Information",
-    "Object Information / DDL": "Object Information",
-    "Object Information / Performance": "Object Information",
-    "Object Information / PL/SQL": "Object Information",
-    "Object Information / Statistics": "Object Information",
-    "Performance Monitoring / Buffer Cache": "Performance Monitoring",
-    "Performance Monitoring / Latch Analysis": "Performance Monitoring",
-    "Performance Monitoring / Profiling": "Performance Monitoring",
-    "Performance Monitoring / Wait Analysis": "Performance Monitoring",
-    "SQL Analysis / Cursor": "SQL Analysis",
-    "SQL Analysis / Memory": "SQL Analysis",
-    "SQL Monitoring": "SQL Analysis",
-    "SQL Tuning / Execution Plans": "SQL Tuning",
-    "Session Management / Tracing": "Session Management",
-    "Session Monitoring / Events": "Session Monitoring",
-    "Session Monitoring / Security": "Session Monitoring",
-    "Statistics / Object Information": "Object Information",
-    "System Configuration / Database Info": "System Configuration",
-    "System Configuration / Globalization": "System Configuration",
-    "System Configuration / Multitenant": "System Configuration",
-    "System Configuration / Redo": "System Configuration",
-    "System Configuration / Services": "System Configuration",
-    "System Monitoring / Background Processes": "System Monitoring",
-    "Transaction Monitoring": "Session Monitoring",
-    "Transaction Monitoring / Undo": "Session Monitoring",
-    "Parallel Execution": "Performance Monitoring",
-    "RAC / Cluster": "System Configuration",
-    "Error Handling": "Utility",
-    "Utility / Search": "Utility",
-    "Tracing / Diagnostics": "Tracing & Diagnostics",
-    "Scheduler / Jobs": "System Configuration",
-    "User Management": "System Configuration",
-    "Bug Test Cases": "Experiments",
-    "Statspack": "AWR Analysis",
-    "Deprecated": "Other",
+# The 12 canonical categories (shared with tools/ai_describe.py).
+CATEGORIES = [
+    "Session & Process", "SQL & Execution Plans", "Waits, Locks & Latches",
+    "ASH Analysis", "AWR & History", "Memory", "Objects & Storage",
+    "Instance & Configuration", "Tracing & Diagnostics", "Exadata",
+    "Demos & Experiments", "SQL*Plus Utilities",
+]
+
+# Legacy category names (from SCRIPTS_CATALOG.txt and infer_category) -> canonical.
+# Matched on the part before " / " so sub-categories collapse too.
+CATEGORY_MAP = {
+    "ash analysis": "ASH Analysis",
+    "awr analysis": "AWR & History", "awr": "AWR & History", "statspack": "AWR & History",
+    "memory management": "Memory",
+    "object information": "Objects & Storage", "space management": "Objects & Storage",
+    "statistics": "Objects & Storage",
+    "performance monitoring": "Session & Process", "performance profiling": "Session & Process",
+    "session monitoring": "Session & Process", "session management": "Session & Process",
+    "transaction monitoring": "Session & Process", "system monitoring": "Session & Process",
+    "parallel execution": "Session & Process",
+    "sql analysis": "SQL & Execution Plans", "sql monitoring": "SQL & Execution Plans",
+    "sql tuning": "SQL & Execution Plans", "execution plans": "SQL & Execution Plans",
+    "advanced sql tuning": "SQL & Execution Plans", "in-memory": "SQL & Execution Plans",
+    "lock analysis": "Waits, Locks & Latches", "wait analysis": "Waits, Locks & Latches",
+    "system configuration": "Instance & Configuration", "rac / cluster": "Instance & Configuration",
+    "scheduler / jobs": "Instance & Configuration", "user management": "Instance & Configuration",
+    "setup / configuration": "Instance & Configuration",
+    "tracing / diagnostics": "Tracing & Diagnostics", "tracing & diagnostics": "Tracing & Diagnostics",
+    "advanced oracle troubleshooting": "Tracing & Diagnostics",
+    "exadata": "Exadata",
+    "demos": "Demos & Experiments", "experiments": "Demos & Experiments",
+    "bug test cases": "Demos & Experiments",
+    "utility": "SQL*Plus Utilities", "tools / utilities": "SQL*Plus Utilities",
+    "error handling": "SQL*Plus Utilities", "deprecated": "SQL*Plus Utilities",
 }
 
 
 def normalize_category(cat):
-    return CATEGORY_NORMALIZE.get(cat, cat)
+    if cat in CATEGORIES:
+        return cat
+    key = (cat or "").lower().split(" / ")[0].strip()
+    return CATEGORY_MAP.get(key) or CATEGORY_MAP.get((cat or "").lower().strip()) or "SQL*Plus Utilities"
+
+
+def load_ai_cache():
+    path = os.path.join(REPO, ".ai_descriptions.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path) as f:
+        return json.load(f)
+
+
+def file_hash(filepath):
+    import hashlib
+    with open(filepath, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()[:16]
+
+
+def params_from_ai(params):
+    return ", ".join(
+        f"&{p['n']}: {p['name']}" + (f" ({p['desc']})" if p.get("desc") else "")
+        for p in params
+    )
+
+
+def syntax_from_ai(relpath, params):
+    base = f"@{relpath}"
+    if not params:
+        return base
+    return base + " " + " ".join(f"<{p['name']}>" for p in params)
 
 
 def main():
     catalog_path = os.path.join(REPO, "SCRIPTS_CATALOG.txt")
     catalog = parse_catalog(catalog_path) if os.path.exists(catalog_path) else {}
+    ai_cache = load_ai_cache()
 
-    all_sql = []
-    for pattern in ["*.sql", "**/*.sql"]:
-        all_sql.extend(glob.glob(os.path.join(REPO, pattern), recursive=True))
+    all_sql = glob.glob(os.path.join(REPO, "**", "*.sql"), recursive=True)
     all_sql = sorted(set(all_sql))
 
     scripts = []
-    seen = set()
-
     for filepath in all_sql:
         relpath = os.path.relpath(filepath, REPO)
-        if relpath.startswith("."):
+        if any(part.startswith(".") for part in relpath.split(os.sep)):
             continue
-        if relpath in seen:
-            continue
-        seen.add(relpath)
 
         cat_entry = catalog.get(relpath) or catalog.get(os.path.basename(relpath))
+        ai = ai_cache.get(relpath)
+        if ai and (ai.get("hash") != file_hash(filepath) or "category" not in ai):
+            ai = None  # stale (script changed) or old-schema record; ignore
 
+        desc, author, usage, example = extract_header(filepath)
+        rule_desc = None
+        if not desc:
+            rule_desc = generate_description(filepath)
+        params_str = extract_parameters(filepath)
+
+        entry = {
+            "file": relpath,
+            "name": os.path.basename(relpath),
+            "documented": bool(cat_entry),
+            "ai_generated": False,
+            "generated": False,
+        }
+
+        # --- purpose / syntax / params / examples: curated > AI > header > rules
         if cat_entry:
-            entry = {
-                "file": relpath,
-                "name": os.path.basename(relpath),
-                "category": normalize_category(cat_entry.get("category", "Other")),
-                "keywords": cat_entry.get("keywords", ""),
-                "purpose": cat_entry.get("purpose", ""),
-                "syntax": cat_entry.get("syntax", ""),
-                "parameters": cat_entry.get("parameters", ""),
-                "examples": cat_entry.get("examples", ""),
-                "documented": True,
-                "generated": False,
-            }
+            entry["purpose"] = cat_entry.get("purpose", "")
+            entry["syntax"] = cat_entry.get("syntax", "")
+            entry["parameters"] = cat_entry.get("parameters", "")
+            entry["examples"] = cat_entry.get("examples", "")
+        elif ai:
+            entry["purpose"] = ai["purpose"]
+            entry["ai_generated"] = True
+            entry["parameters"] = params_from_ai(ai.get("params", [])) or params_str
+            entry["syntax"] = (usage.split("\n")[0] if usage and "@" in usage
+                               else syntax_from_ai(relpath, ai.get("params", [])))
+            entry["examples"] = example
         else:
-            desc, author, usage, example = extract_header(filepath)
-            generated = False
+            entry["purpose"] = desc or rule_desc or ""
+            entry["generated"] = bool(not desc and rule_desc)
+            entry["parameters"] = params_str
+            entry["syntax"] = infer_syntax(filepath, usage, params_str)
+            entry["examples"] = example
 
-            # If no header description, generate one from SQL content
-            if not desc:
-                gen = generate_description(filepath)
-                if gen:
-                    desc = gen
-                    generated = True
+        # --- category / kind: AI > curated > inferred
+        if ai:
+            entry["category"] = ai["category"]
+            entry["kind"] = ai["kind"]
+        elif cat_entry:
+            entry["category"] = normalize_category(cat_entry.get("category", ""))
+            entry["kind"] = "tool"
+        else:
+            entry["category"] = normalize_category(infer_category(filepath, entry["purpose"]))
+            entry["kind"] = "tool"
 
-            params_str = extract_parameters(filepath)
-            category = normalize_category(infer_category(filepath, desc))
-            syntax = infer_syntax(filepath, usage, params_str)
-            keywords = extract_keywords(filepath, desc, category)
-
-            entry = {
-                "file": relpath,
-                "name": os.path.basename(relpath),
-                "category": category,
-                "keywords": keywords,
-                "purpose": desc,
-                "syntax": syntax,
-                "parameters": params_str,
-                "examples": example,
-                "documented": False,
-                "generated": generated,
-            }
+        # --- keywords: curated + AI tags + extracted, deduped
+        kws = []
+        if cat_entry:
+            kws += [k.strip() for k in cat_entry.get("keywords", "").split(",")]
+        if ai:
+            kws += ai.get("tags", [])
+        kws += [k.strip() for k in extract_keywords(filepath, entry["purpose"], entry["category"]).split(",")]
+        seen = set()
+        entry["keywords"] = ", ".join(k for k in kws if k and not (k.lower() in seen or seen.add(k.lower())))[:400]
 
         dirname = os.path.dirname(relpath)
         entry["directory"] = dirname if dirname else "root"
         scripts.append(entry)
 
     scripts.sort(key=lambda s: (not s["documented"], s["category"], s["name"]))
-    print(json.dumps(scripts, indent=2))
+    print(json.dumps(scripts, separators=(",", ":"), ensure_ascii=False))
 
 
 if __name__ == "__main__":

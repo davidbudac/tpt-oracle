@@ -89,7 +89,8 @@ ${BOLD}TIPS:${NC}
     - Use quotes for multi-word search terms
     - Partial matches are supported
     - Case-insensitive by default
-    - Use | in script directory for quick access: alias tpt='$SCRIPT_DIR/$(basename $0)'
+    - This tool searches the curated SCRIPTS_CATALOG.txt reference catalog
+    - For quick access: alias tpt='$SCRIPT_DIR/$(basename "$0")'
 
 EOF
 }
