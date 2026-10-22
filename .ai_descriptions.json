@@ -9603,27 +9603,27 @@
  },
  "exadata/exafriendly.sql": {
   "category": "ASH Analysis",
-  "hash": "60be7cbe51b8fa15",
+  "hash": "5485612bd60c76e8",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-haiku-4-5",
   "params": [
    {
-    "desc": "ASH data source, e.g. gv$active_session_history or dba_hist table with filter",
+    "desc": "ASH data source for analysis (real-time or historical)",
     "n": 1,
-    "name": "ash"
+    "name": "ash_data_source"
    }
   ],
-  "purpose": "Reports Exadata-unfriendly SQL doing buffered scans/reads instead of smart scans, via ASH breakdowns",
+  "purpose": "Reports SQL bypassing Exadata smart scanning optimizations via buffered read analysis",
   "schema": 2,
   "tags": [
    "ash",
    "exadata",
-   "smart scan",
+   "smart_scan",
    "v$active_session_history",
-   "sql_plan_operation",
-   "cell single block physical read",
-   "wait_class",
-   "gv$active_session_history"
+   "v$sql_plan",
+   "wait_event",
+   "single_block_read",
+   "full_table_scan"
   ]
  },
  "exadata/exasnap.sql": {
@@ -9980,6 +9980,24 @@
    "dbms_xplan"
   ]
  },
+ "exadf.sql": {
+  "category": "Exadata",
+  "hash": "2d62c60c9e61e15c",
+  "kind": "tool",
+  "model": "claude-haiku-4-5",
+  "params": [],
+  "purpose": "Shows Exadata vault storage and IOPS provisioning across storage tiers",
+  "schema": 2,
+  "tags": [
+   "exadata",
+   "v$exa_vault",
+   "storage",
+   "vault",
+   "iops",
+   "provisioning",
+   "space"
+  ]
+ },
  "expandlast.sql": {
   "category": "SQL & Execution Plans",
   "hash": "c235dd65d445766a",
@@ -10286,6 +10304,23 @@
    "bug",
    "sql_feature",
    "optimizer_feature_enable"
+  ]
+ },
+ "fra.sql": {
+  "category": "Instance & Configuration",
+  "hash": "8181825ec39ff373",
+  "kind": "tool",
+  "model": "claude-haiku-4-5",
+  "params": [],
+  "purpose": "Shows Flash Recovery Area usage statistics and space consumption",
+  "schema": 2,
+  "tags": [
+   "v$recovery_area_usage",
+   "flash recovery area",
+   "fra",
+   "recovery",
+   "archive logs",
+   "backup"
   ]
  },
  "ft.sql": {
@@ -15382,17 +15417,19 @@
  },
  "pdbs.sql": {
   "category": "Instance & Configuration",
-  "hash": "d723dcc0183ddfd0",
+  "hash": "af0bd7446585bbbb",
   "kind": "tool",
   "model": "claude-haiku-4-5",
   "params": [],
-  "purpose": "Lists pluggable databases in the current instance",
+  "purpose": "Shows all pluggable databases with their container ID, database ID, and open mode",
   "schema": 2,
   "tags": [
-   "pdb",
    "v$pdbs",
-   "multitenant",
-   "cdb"
+   "pdb",
+   "cdb",
+   "open_mode",
+   "dbid",
+   "multitenant"
   ]
  },
  "pdv.sql": {
@@ -15525,25 +15562,25 @@
  },
  "pmem.sql": {
   "category": "Memory",
-  "hash": "abfb4dede1d41af4",
+  "hash": "e55b1e7ac904941f",
   "kind": "tool",
   "model": "claude-haiku-4-5",
   "params": [
    {
-    "desc": "Server process ID to query memory for",
+    "desc": "OS process ID (SPID) to analyze",
     "n": 1,
     "name": "spid"
    }
   ],
-  "purpose": "Shows memory allocation breakdown for a server process by SPID",
+  "purpose": "Shows process memory usage breakdown for specified OS process ID",
   "schema": 2,
   "tags": [
    "v$process_memory",
-   "spid",
    "v$process",
    "v$session",
-   "memory_allocation",
-   "process"
+   "spid",
+   "pid",
+   "pga"
   ]
  },
  "pmem_detail.sql": {
@@ -17473,6 +17510,42 @@
    "v$sql_hint"
   ]
  },
+ "setup/wordfile_23ai.sql": {
+  "category": "SQL*Plus Utilities",
+  "hash": "b0ad7cfe711ac625",
+  "kind": "tool",
+  "model": "claude-haiku-4-5",
+  "params": [],
+  "purpose": "Generates SQL*Plus wordfile containing Oracle keywords, hints, procedures and parameters for syntax highlighting",
+  "schema": 2,
+  "tags": [
+   "wordfile",
+   "sql*plus",
+   "v$reserved_words",
+   "dba_procedures",
+   "dba_arguments",
+   "v$sql_hint",
+   "x$ksppi"
+  ]
+ },
+ "setup/wordfile_26ai.sql": {
+  "category": "SQL*Plus Utilities",
+  "hash": "cdca640f64b8cf2d",
+  "kind": "setup",
+  "model": "claude-haiku-4-5",
+  "params": [],
+  "purpose": "Generates SQL*Plus wordfile from Oracle keywords, hints, parameters, and procedures for syntax completion",
+  "schema": 2,
+  "tags": [
+   "wordfile",
+   "sql*plus",
+   "syntax_completion",
+   "v$reserved_words",
+   "v$sql_hint",
+   "dba_procedures",
+   "parameters"
+  ]
+ },
  "sga.sql": {
   "category": "Memory",
   "hash": "70b933790da61716",
@@ -17720,25 +17793,26 @@
  },
  "smem.sql": {
   "category": "Memory",
-  "hash": "1cc87c89b00d784e",
+  "hash": "508871ccd4e4ab14",
   "kind": "tool",
   "model": "claude-haiku-4-5",
   "params": [
    {
-    "desc": "Session ID(s) to display memory for",
+    "desc": "session ID to analyze",
     "n": 1,
     "name": "sid"
    }
   ],
-  "purpose": "Shows process memory usage breakdown for a specified session ID",
+  "purpose": "Shows process memory usage breakdown for a specific session",
   "schema": 2,
   "tags": [
+   "session_memory",
    "v$process_memory",
    "v$session",
    "v$process",
+   "memory_breakdown",
    "pga",
-   "memory",
-   "sid"
+   "pid"
   ]
  },
  "smem_detail.sql": {
@@ -17889,42 +17963,41 @@
  },
  "snapper.sql": {
   "category": "ASH Analysis",
-  "hash": "ddb41a805a4f72dd",
+  "hash": "cdb5bb6f29fdaad8",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-haiku-4-5",
   "params": [
    {
-    "desc": "mode: ash/stats/all plus out,trace,pagesize,gather flags",
+    "desc": "Report type: ash|stats|all with modifiers like trace",
     "n": 1,
-    "name": "options"
+    "name": "report_options"
    },
    {
-    "desc": "seconds between/per snapshot",
+    "desc": "Seconds to wait between each snapshot",
     "n": 2,
-    "name": "interval_secs"
+    "name": "seconds_in_snap"
    },
    {
-    "desc": "number of snapshots to take",
+    "desc": "Number of snapshots to collect",
     "n": 3,
-    "name": "snap_count"
+    "name": "snapshot_count"
    },
    {
-    "desc": "session id(s) to snap, or all",
+    "desc": "Session IDs, comma-separated or % for all",
     "n": 4,
-    "name": "sids"
+    "name": "sids_to_snap"
    }
   ],
-  "purpose": "Samples session/wait/stat activity live via GV$SESSION and stats views for ad-hoc performance diagnosis",
+  "purpose": "Samples session activity and reports performance metrics and wait events",
   "schema": 2,
   "tags": [
    "ash",
    "gv$session",
-   "gv$sesstat",
-   "gv$session_event",
-   "latch",
-   "wait event",
+   "wait_event",
    "sql_id",
-   "dbms_system"
+   "v$sesstat",
+   "v$session_event",
+   "v$session_wait"
   ]
  },
  "snapper3.sql": {
@@ -19123,6 +19196,30 @@
    "session"
   ]
  },
+ "sqlmon_info.sql": {
+  "category": "SQL & Execution Plans",
+  "hash": "9cc2a5de461fd803",
+  "kind": "tool",
+  "model": "claude-haiku-4-5",
+  "params": [
+   {
+    "desc": "SQL statement ID to display monitoring for",
+    "n": 1,
+    "name": "sql_id"
+   }
+  ],
+  "purpose": "Shows execution plan and monitoring details for a given SQL_ID",
+  "schema": 2,
+  "tags": [
+   "sql_id",
+   "v$sql_monitor",
+   "v$sql_plan_monitor",
+   "execution plan",
+   "dop",
+   "parallel execution",
+   "real-time monitoring"
+  ]
+ },
  "sqlmon_restarts.sql": {
   "category": "SQL & Execution Plans",
   "hash": "0feedd55edd95bf1",
@@ -19142,19 +19239,18 @@
  },
  "sqlmon_sn.sql": {
   "category": "SQL & Execution Plans",
-  "hash": "4e019e35ef642b3b",
+  "hash": "a44a1da73eddf4eb",
   "kind": "tool",
   "model": "claude-haiku-4-5",
   "params": [],
-  "purpose": "Shows SQL Monitor statistic names and their metadata definitions",
+  "purpose": "Lists SQL Monitor statistics with their types and descriptions",
   "schema": 2,
   "tags": [
    "sql_monitor",
    "v$sql_monitor_statname",
-   "real_time_sql",
-   "execution_metrics",
+   "execution",
    "statistics",
-   "diagnostics"
+   "real-time"
   ]
  },
  "sqlmoni.sql": {
@@ -22527,6 +22623,22 @@
    "userhost",
    "audit_trail",
    "user_activity"
+  ]
+ },
+ "ver.sql": {
+  "category": "Instance & Configuration",
+  "hash": "d252d582a2e29202",
+  "kind": "tool",
+  "model": "claude-haiku-4-5",
+  "params": [],
+  "purpose": "Lists database version and instance ID for all cluster instances",
+  "schema": 2,
+  "tags": [
+   "gv$instance",
+   "version",
+   "rac",
+   "instance_id",
+   "cluster"
   ]
  },
  "vstat.sql": {
