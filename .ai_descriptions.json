@@ -237,10 +237,11 @@
  "aot/bigcomment.sql": {
   "category": "Demos & Experiments",
   "hash": "b8ae8a7902a752fe",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Test case: creates a procedure containing a multi-thousand-line comment block to exercise huge-source handling",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "plsql",
@@ -252,10 +253,11 @@
  "aot/bigp.sql": {
   "category": "Demos & Experiments",
   "hash": "3bbf88e4ece130cc",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Test case: creates procedure bigp with ~14,000 lines of PL/SQL to exercise huge-source compile/execute behavior",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "plsql",
@@ -268,10 +270,11 @@
  "aot/bigsql.sql": {
   "category": "Demos & Experiments",
   "hash": "cf5805fdbc797b6c",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Test case: runs a DELETE with a huge chain of OR 1=1 predicates to exercise very large SQL statement parsing",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "delete",
@@ -581,12 +584,13 @@
   ]
  },
  "aot/hang_2.sql": {
-  "category": "Waits, Locks & Latches",
+  "category": "Demos & Experiments",
   "hash": "c624ac990c960a53",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates hanging scenario with lock contention across multiple tables",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "hang",
@@ -616,10 +620,11 @@
  "aot/hang_4.sql": {
   "category": "Demos & Experiments",
   "hash": "958d92d48bc091b2",
-  "kind": "fragment",
-  "model": "claude-haiku-4-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Creates row-level lock contention scenario",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "hang",
@@ -672,7 +677,7 @@
   "category": "Tracing & Diagnostics",
   "hash": "d4d7bdaab176af32",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "object name pattern to search for",
@@ -680,7 +685,8 @@
     "name": "object_name"
    }
   ],
-  "purpose": "Shows internal hash values and identifiers for database objects by name",
+  "purpose": "Shows library cache hash values, SQL_ID and plan hash for objects matching a name pattern (from X$KGLOB)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "x$kglob",
@@ -882,12 +888,13 @@
   ]
  },
  "aot/shared_pool_leak_bug.sql": {
-  "category": "Memory",
+  "category": "Demos & Experiments",
   "hash": "28fdc8f51c1b8a83",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Documents MOS Bug 13250244 KGLHD stored-outline shared pool leak and its workaround",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "shared pool",
@@ -1059,7 +1066,7 @@
   "category": "SQL*Plus Utilities",
   "hash": "4941469e47e13081",
   "kind": "fragment",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "maximum number of rows to return",
@@ -1067,7 +1074,8 @@
     "name": "row_limit"
    }
   ],
-  "purpose": "Shows ROWNUM predicate to limit query results by row count",
+  "purpose": "Appends 'and rownum <= N' to the last SQL in the buffer and re-executes it to limit rows returned",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "rownum",
@@ -1731,7 +1739,7 @@
   "category": "ASH Analysis",
   "hash": "6e3729447b882621",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "expression to group wait chain paths by",
@@ -1754,7 +1762,8 @@
     "name": "to_time"
    }
   ],
-  "purpose": "Displays multi-session ASH wait chains showing who is waiting on whom, in-memory",
+  "purpose": "Displays ASH wait chains (who waits for whom) from a saved copy of ASH data (&ashtable)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -1769,7 +1778,7 @@
   "category": "ASH Analysis",
   "hash": "8d2f8271fc2ce984",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated columns to group by",
@@ -1792,7 +1801,8 @@
     "name": "to_time"
    }
   ],
-  "purpose": "Shows top ASH time from V$ACTIVE_SESSION_HISTORY grouped by user-specified columns and filters",
+  "purpose": "Shows top ASH time grouped by chosen columns/filters from a saved copy of ASH data (&ashtable)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -1845,7 +1855,7 @@
   "category": "ASH Analysis",
   "hash": "128fec99bfdc6ef0",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "regex pattern to match wait events",
@@ -1868,7 +1878,8 @@
     "name": "end_time"
    }
   ],
-  "purpose": "Shows wait event distribution by time bucket with estimated event counts and duration",
+  "purpose": "Wait event duration distribution in power-of-2 buckets with estimated counts via ASH math, from saved ASH table (&ashtable)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -1884,7 +1895,7 @@
   "category": "ASH Analysis",
   "hash": "6dad3b2a25028d8d",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Wait class or event name filter pattern",
@@ -1907,7 +1918,8 @@
     "name": "to_time"
    }
   ],
-  "purpose": "Shows wait event frequency distribution and percentages from Active Session History",
+  "purpose": "Histogram of ASH TIME_WAITED (power-of-2 microsec buckets) by wait class/event from the DBA_HIST_ASH_AUG copy",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2044,10 +2056,10 @@
   ]
  },
  "ash/dash_index_helper.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "43c49252a146d8f8",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL_ID pattern (LIKE) to restrict analysis, or %",
@@ -2071,6 +2083,7 @@
    }
   ],
   "purpose": "Profiles ASH time spent on a table's TABLE ACCESS/INDEX plan steps across all SQLs touching it",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2084,10 +2097,10 @@
   ]
  },
  "ash/dash_wait_chains.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "27cecdecd7e303d3",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "expression to group/label chain nodes by",
@@ -2111,6 +2124,7 @@
    }
   ],
   "purpose": "Displays ASH wait chains from history showing which sessions block which via CONNECT BY",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dba_hist_active_sess_history",
@@ -2161,10 +2175,10 @@
   ]
  },
  "ash/dashpeaktop.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "e94804c7b0951057",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated columns to group by",
@@ -2187,7 +2201,8 @@
     "name": "to_time"
    }
   ],
-  "purpose": "Shows top ASH activity peaks grouped by given columns using in-memory GV$ACTIVE_SESSION_HISTORY",
+  "purpose": "Ranks top ASH activity peaks by AAS over a time range from DBA_HIST_ACTIVE_SESS_HISTORY (AWR)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2200,10 +2215,10 @@
   ]
  },
  "ash/dashtop.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "70b905366abdb381",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated columns to group by",
@@ -2227,6 +2242,7 @@
    }
   ],
   "purpose": "Shows top ASH time from DBA_HIST_ACTIVE_SESS_HISTORY grouped by chosen columns over a time range",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2238,10 +2254,10 @@
   ]
  },
  "ash/dashtopsum.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "f4b35a7b72b48b4f",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated columns to group by",
@@ -2265,6 +2281,7 @@
    }
   ],
   "purpose": "Shows top ASH activity by given dimensions with summed IO/PGA/temp metrics from AWR history",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2277,10 +2294,10 @@
   ]
  },
  "ash/dashtopsum_pga.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "3f15d7d0fb7b50c4",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated columns to group by",
@@ -2304,6 +2321,7 @@
    }
   ],
   "purpose": "Shows top ASH activity by chosen dimensions with summed IO/PGA/temp metrics from AWR history",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2316,10 +2334,10 @@
   ]
  },
  "ash/dasqlmon.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "48cd7c2c96a4c823",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL ID to analyze",
@@ -2343,6 +2361,7 @@
    }
   ],
   "purpose": "Shows SQL Monitor-style ASH activity breakdown per execution plan line for a SQL statement",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2355,10 +2374,10 @@
   ]
  },
  "ash/dasqlmonx.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "ea98d75b4e0bfa4b",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL_ID to analyze",
@@ -2382,6 +2401,7 @@
    }
   ],
   "purpose": "Displays SQL Monitor style ASH activity breakdown per execution plan line for a SQL_ID",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2432,10 +2452,10 @@
   ]
  },
  "ash/devent_hist_micro.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "8f5fba9a2c94699a",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "event name regex pattern to filter",
@@ -2459,6 +2479,7 @@
    }
   ],
   "purpose": "Shows wait event duration distribution and estimated event counts from ASH",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2628,12 +2649,13 @@
   ]
  },
  "ash/examples/ash10.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "50796a2e7f455253",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Profiles index transaction lock contention from ASH with blocking sessions and plan steps",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2646,12 +2668,13 @@
   ]
  },
  "ash/examples/ash11.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "da7caf722ece9ccc",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows top ASH activity during a time range grouped by session type, state, event, and SQL ID",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2794,10 +2817,10 @@
   ]
  },
  "ash/examples/ash6.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "4a24fbe9b2985617",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL identifier to analyze",
@@ -2816,6 +2839,7 @@
    }
   ],
   "purpose": "Shows historical ASH activity for a specific SQL ID, grouped by session state, wait event, and parameters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2828,12 +2852,13 @@
   ]
  },
  "ash/examples/ash7.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "4a24fbe9b2985617",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Analyzes wait event and session state distribution for a specific SQL ID using ASH",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2844,12 +2869,13 @@
   ]
  },
  "ash/examples/ash8.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "3a3a9efdf6eae9f2",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Profiles top historical activity by session state, event, program, SQL ID, and wait parameters for a time range",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2883,7 +2909,7 @@
   "category": "ASH Analysis",
   "hash": "5e339a65e1ff2ee0",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Column to group by (sql_id, event, etc)",
@@ -2906,7 +2932,8 @@
     "name": "end_time"
    }
   ],
-  "purpose": "Profiles ASH activity by specified dimension with AAS, percentages, and timeframe",
+  "purpose": "Shows ASH activity (AAS, % share) of every session matching a filter in a time range, grouped by a column",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -2987,8 +3014,8 @@
  "ash/gen_ash_report_html.sql": {
   "category": "ASH Analysis",
   "hash": "b38401c5ce652502",
-  "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "begin time in YYYY-MM-DD HH24:MI format",
@@ -3001,7 +3028,8 @@
     "name": "edate"
    }
   ],
-  "purpose": "Generates an HTML ASH report for a specified time range and displays it in browser",
+  "purpose": "Prompts for a time range, spools DBMS_WORKLOAD_REPOSITORY.ASH_REPORT_HTML to ash_report.html and opens it",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -3679,9 +3707,10 @@
   "category": "SQL & Execution Plans",
   "hash": "2a81fb939c4438cb",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Lists active SQL statements by frequency across current sessions",
+  "purpose": "Counts currently ACTIVE foreground sessions per SQL_ID/child from V$SESSION (excluding self)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -3692,12 +3721,13 @@
   ]
  },
  "ast/01_sql_plan_layout_intro.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "95edb11b393a44d2",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates SQL view merging optimization behavior with hints and plan display",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "view_merging",
@@ -3709,12 +3739,13 @@
   ]
  },
  "ast/02_advanced_rewrite.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "be89ccd4f70c6ebc",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates Oracle query rewriting using DBMS_ADVANCED_REWRITE equivalences",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "query_rewrite",
@@ -3817,12 +3848,13 @@
   ]
  },
  "ast/02_choosing_join_order.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "7d633e6f9fa2932f",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates fixing join order using SQL Profiles and Plan Baselines",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "join_order",
@@ -3836,12 +3868,13 @@
   ]
  },
  "ast/02_distinct_agg_transform.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "2e41d04b9b68e39a",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates how distinct aggregation transformation optimizations affect the ORDERED hint in execution plans",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "distinct_agg_transform",
@@ -3853,12 +3886,13 @@
   ]
  },
  "ast/02_join_nested_loops.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "3c43ae4cec32bf3f",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Compares nested loop join execution plans with prefetch and batching hints enabled and disabled",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "nested_loop_join",
@@ -3870,12 +3904,13 @@
   ]
  },
  "ast/02_leading_sq.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "8ae1f449112ccf2b",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates leading hint and query block naming for controlling execution plans in subqueries",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "leading",
@@ -3888,12 +3923,13 @@
   ]
  },
  "ast/02_outline_force_plan_from_cursor.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "d3fe7ede5b912182",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Creates outlines from two query versions and applies the optimized plan to the bad query",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "stored_outline",
@@ -3924,10 +3960,10 @@
   ]
  },
  "ast/02_sql_plan_baseline_from_cursor.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "ef8376a3d071e98a",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL ID of the suboptimal query",
@@ -3951,6 +3987,7 @@
    }
   ],
   "purpose": "Loads a better SQL execution plan as a baseline to replace a suboptimal query plan",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql_plan_baseline",
@@ -3963,12 +4000,13 @@
   ]
  },
  "ast/02_sqlprofile_force_plan_with_custom_hints.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "ff4b231fe8361322",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Creates SQL Profiles with custom hints to force specific execution plans",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql_profile",
@@ -3981,10 +4019,11 @@
  "ast/03_bitmap_star_transformation.sql": {
   "category": "Demos & Experiments",
   "hash": "4f0c833a0e3d148c",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates star_transformation hint behavior on multi-table fact-dimension joins",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "star_transformation",
@@ -3997,12 +4036,13 @@
   ]
  },
  "ast/03_constraints_not_null.sql": {
-  "category": "Objects & Storage",
+  "category": "Demos & Experiments",
   "hash": "22167b8dd1992ee9",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows NOT NULL and CHECK constraint enforcement modes including NOVALIDATE and DEFERRABLE",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "not_null",
@@ -4031,12 +4071,13 @@
   ]
  },
  "ast/03_index_inefficiency_1.sql": {
-  "category": "Objects & Storage",
+  "category": "Demos & Experiments",
   "hash": "576d2851c84885cd",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows index inefficiency when filtering on multiple columns with single-column index",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "index",
@@ -4100,12 +4141,13 @@
   ]
  },
  "ast/04_cbo_troubleshoot_1.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "9f9a7b9bcf124190",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates CBO execution plan for complex query with adaptive feedback disabled",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "cbo",
@@ -4135,12 +4177,13 @@
   ]
  },
  "ast/04_cbo_troubleshoot_3.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "02eaf2fbaaebc200",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Tests how CBO responds to manual cardinality hints and optimizer parameters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "cbo",
@@ -4153,12 +4196,13 @@
   ]
  },
  "ast/04_cbo_troubleshoot_denormalized.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "d6e51514666490aa",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates CBO behavior with complex denormalized multi-table query optimization challenges",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "cbo",
@@ -4171,12 +4215,13 @@
   ]
  },
  "ast/04_cbo_troubleshoot_save.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "bd518ffe3acdf856",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates CBO execution plan behavior with specific hints for join order control",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "cbo",
@@ -4206,12 +4251,13 @@
   ]
  },
  "ast/ast_setup.sql": {
-  "category": "Instance & Configuration",
+  "category": "Demos & Experiments",
   "hash": "14157407b616f43c",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Creates test user and tablespace with diagnostic package privileges",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "user",
@@ -4304,12 +4350,13 @@
   ]
  },
  "ast/index_range_scan_rereads.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Demos & Experiments",
   "hash": "3cdd81ac13ee439c",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Profiles index range scan re-read behavior with 10298 physical IO tracing",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "index_range_scan",
@@ -4341,12 +4388,13 @@
   ]
  },
  "ast/scalar_subquery_in_where_clause.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "a8d5b4bffbe831de",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates scalar subquery optimization with different hints and cell offload parameters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "scalar_subquery",
@@ -4359,12 +4407,13 @@
   ]
  },
  "ast/scalar_subquery_unnesting.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "888e448024779454",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Compares execution plans for scalar subqueries with and without optimizer unnesting",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "scalar_subquery",
@@ -4401,12 +4450,13 @@
   ]
  },
  "ast/subquery_execution.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "e70e869d3c5780ae",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows how push_subq and no_unnest hints control subquery execution",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "subquery",
@@ -4489,10 +4539,10 @@
   ]
  },
  "audo.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Instance & Configuration",
   "hash": "c8fce426835d18f5",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "first argument passed to audo2",
@@ -4506,6 +4556,7 @@
    }
   ],
   "purpose": "Invokes audo2 script with two parameterized arguments",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wrapper",
@@ -4543,12 +4594,13 @@
   ]
  },
  "aw.sql": {
-  "category": "Instance & Configuration",
+  "category": "ASH Analysis",
   "hash": "cfd064c1344a1e74",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows current system performance metrics from the last 60 seconds",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$sysmetric",
@@ -5227,10 +5279,10 @@
   ]
  },
  "bgact.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Session & Process",
   "hash": "b55ac8192c12d617",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "LIKE pattern for process or action name match",
@@ -5239,6 +5291,7 @@
    }
   ],
   "purpose": "Lists background process actions from X$KSBTABACT matching a given search pattern",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "x$ksbtabact",
@@ -5271,7 +5324,7 @@
   "category": "Memory",
   "hash": "3614545bfb9c8dcc",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "buffer class ID to filter blocks by",
@@ -5279,7 +5332,8 @@
     "name": "buffer_class"
    }
   ],
-  "purpose": "Shows buffer cache blocks for a given class with segment names and touch counts",
+  "purpose": "Lists X$BH buffers of a given buffer class# with object, touch count, state and DBA",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "buffer_cache",
@@ -5452,10 +5506,10 @@
   ]
  },
  "bufprof.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Memory",
   "hash": "aa47d3face8ce22d",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "session ID to profile buffer gets for",
@@ -5469,6 +5523,7 @@
    }
   ],
   "purpose": "Profiles buffer gets from a session grouped by reason and location",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "buffer_gets",
@@ -5510,12 +5565,13 @@
   ]
  },
  "bugs/sql_monitor_force.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Demos & Experiments",
   "hash": "3f71fb6ccf18c559",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Forces SQL Monitoring on a specific SQL ID using event parameter",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql_monitor",
@@ -5527,12 +5583,13 @@
   ]
  },
  "bugs/sqldev_break.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Demos & Experiments",
   "hash": "bf7429646616f4a1",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates SQL*Plus BREAK formatting on manager_id grouping with skip spacing",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "break",
@@ -5631,9 +5688,10 @@
   "category": "Tracing & Diagnostics",
   "hash": "21f915741c724c9c",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Enables CBO and SQL event tracing and retrieves trace file contents",
+  "purpose": "Creates the e2sn_monitor package and UDUMP directory used to enable CBO/SQL trace and read the trace file via SQL",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "10046",
@@ -5676,8 +5734,8 @@
  "cbothis.sql": {
   "category": "Tracing & Diagnostics",
   "hash": "329aa71e76ac3e69",
-  "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "regex or literal pattern to filter trace output",
@@ -5685,7 +5743,8 @@
     "name": "filter_pattern"
    }
   ],
-  "purpose": "Captures CBO optimizer trace filtered by search pattern in text editor",
+  "purpose": "Re-runs the SQL in the SQL*Plus buffer under CBO (10053) trace and shows trace lines matching a filter",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "cbo",
@@ -5718,12 +5777,13 @@
   ]
  },
  "ccr.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Instance & Configuration",
   "hash": "4d2b3f39f494e618",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Connects to the root container database via the cc script",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "cdb",
@@ -5933,10 +5993,10 @@
   ]
  },
  "cnta.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Objects & Storage",
   "hash": "d395cc36e38022b6",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Table name to count rows from",
@@ -5950,6 +6010,7 @@
    }
   ],
   "purpose": "Counts rows in a table matching the specified WHERE condition",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "row count",
@@ -7229,9 +7290,10 @@
   "category": "Demos & Experiments",
   "hash": "9b6ba7796bf30d68",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Creates load for multi-session demo to test concurrent behavior",
+  "purpose": "Inserts, commits and deletes row a=0 in T without committing, to set up a blocking demo with load_2",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "concurrent",
@@ -7245,9 +7307,10 @@
   "category": "Demos & Experiments",
   "hash": "4621f17df2e665ac",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Clears test data to start demo load scenario",
+  "purpose": "Deletes row a=0 from T in a second session, blocking on the uncommitted delete from load_1",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "demo",
@@ -7329,10 +7392,11 @@
  "demos/lotsofselects.sql": {
   "category": "Demos & Experiments",
   "hash": "c8a8774d3a3cc5a3",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "fragment",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Spooled output of generated 'select * from t where a = N' statements used by the cursor_sharing demos",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "demo",
@@ -7548,12 +7612,13 @@
   ]
  },
  "demos/scalar_subquery_unnesting.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "888e448024779454",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Compares execution plans for scalar subqueries with and without unnesting hints",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "scalar_subquery",
@@ -7621,9 +7686,10 @@
   "category": "Demos & Experiments",
   "hash": "f42c3d12b0f40859",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Demonstrates deleting rows and tracking row count in a PL/SQL function",
+  "purpose": "Creates a PL/SQL function that deletes rows for an owner, commits and prints the count (state objects demo)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "plsql",
@@ -7771,10 +7837,10 @@
   ]
  },
  "demos/xa_rollback.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Demos & Experiments",
   "hash": "1f400760c0d9603c",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Distributed transaction ID to force rollback",
@@ -7782,7 +7848,8 @@
     "name": "trans_id"
    }
   ],
-  "purpose": "Shows redo log contents and operations from a forced distributed transaction rollback",
+  "purpose": "Runs ROLLBACK FORCE on a distributed transaction and mines the redo with LogMiner to show its operations",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "logmnr",
@@ -8141,8 +8208,8 @@
  "diag_sid.sql": {
   "category": "Session & Process",
   "hash": "2f9f717540a8d6ea",
-  "kind": "wrapper",
-  "model": "claude-sonnet-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated SIDs (or subquery) to diagnose",
@@ -8150,7 +8217,8 @@
     "name": "sid_list"
    }
   ],
-  "purpose": "Dumps session, wait event and PX slave details for given SIDs then runs a Snapper snapshot",
+  "purpose": "Diagnoses given SIDs (and their PX slaves): session, wait, latch details plus an embedded Snapper-style sample",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -8518,7 +8586,7 @@
   "category": "Tracing & Diagnostics",
   "hash": "6661d8751ee27c08",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Oracle trace event name to dump immediately",
@@ -8526,7 +8594,8 @@
     "name": "trace_event"
    }
   ],
-  "purpose": "Dumps immediate trace file with specified name",
+  "purpose": "Writes a named diagnostic dump (ALTER SESSION SET EVENTS 'immediate trace name <dump>') to a trace file tagged with that name",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "trace",
@@ -8540,7 +8609,7 @@
   "category": "Tracing & Diagnostics",
   "hash": "fb8c6fbbe1e40e90",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "kernel variable or X$ structure name",
@@ -8553,7 +8622,8 @@
     "name": "address"
    }
   ],
-  "purpose": "Dumps kernel variables and memory structures for internal diagnostics",
+  "purpose": "Dumps an Oracle kernel variable via ORADEBUG DUMPVAR <sga|pga|uga> <variable_name>",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "oradebug",
@@ -8569,7 +8639,7 @@
   "category": "Tracing & Diagnostics",
   "hash": "fb8c6fbbe1e40e90",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "memory address or process context",
@@ -8582,7 +8652,8 @@
     "name": "variable"
    }
   ],
-  "purpose": "Dumps specified kernel variable values using oradebug",
+  "purpose": "Dumps an Oracle kernel variable via ORADEBUG DUMPVAR <sga|pga|uga> <variable_name>",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "oradebug",
@@ -8690,10 +8761,11 @@
  "eon.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "45c828e01ac839a4",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "fragment",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Turns SQL*Plus command echo on (SET ECHO ON); counterpart of eoff.sql",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "stub",
@@ -8739,10 +8811,10 @@
   ]
  },
  "equiv.sql": {
-  "category": "Instance & Configuration",
+  "category": "SQL & Execution Plans",
   "hash": "80f4a2b7098232dd",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Name pattern, optionally with schema prefix",
@@ -8751,6 +8823,7 @@
    }
   ],
   "purpose": "Shows query rewrite equivalences filtered by optional schema and name",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dba_rewrite_equivalences",
@@ -8865,7 +8938,7 @@
   "category": "SQL*Plus Utilities",
   "hash": "889eb47ab5d76550",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Trace file or parameter name",
@@ -8873,7 +8946,8 @@
     "name": "trc"
    }
   ],
-  "purpose": "Invokes ed script with trace parameter for diagnostics",
+  "purpose": "Opens the current session's trace file (&trc, set by @ti) in the SQL*Plus editor via @ed",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "trace",
@@ -9051,12 +9125,13 @@
   ]
  },
  "exadata/badfetch.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "2424f1f5605d7601",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Monitors a query's execution using the SQL MONITOR hint",
+  "purpose": "Runs a monitored full-table SELECT (MONITOR hint) on tanel.sales, for a bad-fetch/SQL Monitor test",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "monitor",
@@ -9602,10 +9677,10 @@
   ]
  },
  "exadata/exafriendly.sql": {
-  "category": "ASH Analysis",
+  "category": "Exadata",
   "hash": "5485612bd60c76e8",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "ASH data source for analysis (real-time or historical)",
@@ -9614,6 +9689,7 @@
    }
   ],
   "purpose": "Reports SQL bypassing Exadata smart scanning optimizations via buffered read analysis",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ash",
@@ -9848,10 +9924,10 @@
   ]
  },
  "exadata/mon_topsql2.sql": {
-  "category": "ASH Analysis",
+  "category": "AWR & History",
   "hash": "2fcc4182a161c368",
   "kind": "tool",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "lookback window in days (default 7)",
@@ -9870,6 +9946,7 @@
    }
   ],
   "purpose": "Ranks top SQL by ASH time per weekday over recent days, joining AWR sqlstat for exec/IO/CPU stats",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dba_hist_active_sess_history",
@@ -9884,10 +9961,11 @@
  "exadata/nls_smart_scan.sql": {
   "category": "Exadata",
   "hash": "40805688edadd82a",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Demonstrates how NLS_COMP and NLS_SORT settings affect Exadata smart scan capability",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "smart_scan",
@@ -10001,10 +10079,11 @@
  "expandlast.sql": {
   "category": "SQL & Execution Plans",
   "hash": "c235dd65d445766a",
-  "kind": "fragment",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Displays expanded SQL text after Oracle resolves views and subqueries",
+  "purpose": "Expands the SQL in the buffer (resolving views) using DBMS_UTILITY.EXPAND_SQL_TEXT and prints it",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dbms_utility",
@@ -10072,9 +10151,10 @@
   "category": "Demos & Experiments",
   "hash": "60728c4d29ee5b40",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Shows SELECT FOR UPDATE locking behavior with large CLOB objects",
+  "purpose": "Tests redo/log activity from SELECT FOR UPDATE on a large CLOB row, with log switches and @log",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "clob",
@@ -10157,10 +10237,10 @@
   ]
  },
  "fcha.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Memory",
   "hash": "f487a0020e5384f9",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "memory address in hexadecimal format",
@@ -10169,6 +10249,7 @@
    }
   ],
   "purpose": "Shows which memory heap contains a specified memory address",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "memory_address",
@@ -10181,10 +10262,10 @@
   ]
  },
  "fcura.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Memory",
   "hash": "28cac7cad2e92e7a",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "hexadecimal memory address to search for",
@@ -10193,6 +10274,7 @@
    }
   ],
   "purpose": "Traces which KGL objects reference a specific shared pool memory address",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "x$kglob",
@@ -10206,10 +10288,11 @@
  "fd.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "e38e7ebc698550cd",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Appends 'from dual' to the SQL buffer (editing shortcut)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "fragment",
@@ -10241,10 +10324,10 @@
   ]
  },
  "find.sql": {
-  "category": "Waits, Locks & Latches",
+  "category": "Instance & Configuration",
   "hash": "18401abc9b5d92fa",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Pattern to match in statistic/event/latch/enqueue names",
@@ -10253,6 +10336,7 @@
    }
   ],
   "purpose": "Searches system statistics, events, latches and enqueues by name pattern",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$sysstat",
@@ -10368,10 +10452,10 @@
   ]
  },
  "fv.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Memory",
   "hash": "0f772d3b17b0b5b9",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Partial view name to search for",
@@ -10379,7 +10463,8 @@
     "name": "view_pattern"
    }
   ],
-  "purpose": "Finds database views by name pattern, wrapping fv2",
+  "purpose": "Searches Fixed SGA variables (X$KSMFSV) by name or type pattern, wrapping fv2",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "view",
@@ -10437,10 +10522,10 @@
   ]
  },
  "fval.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Memory",
   "hash": "92e0c18295f362ca",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "value to search for (wrapped in SQL LIKE wildcards)",
@@ -10448,7 +10533,8 @@
     "name": "search_string"
    }
   ],
-  "purpose": "Searches for values matching a pattern using fval2",
+  "purpose": "Searches Fixed SGA variables by value pattern via fval2 (wraps with %pattern%)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wrapper",
@@ -10761,8 +10847,8 @@
  "gsqlmon.sql": {
   "category": "SQL & Execution Plans",
   "hash": "553a242674a7aa72",
-  "kind": "wrapper",
-  "model": "claude-sonnet-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "single key=value arg, e.g. sid= or sql_id=",
@@ -10785,7 +10871,8 @@
     "name": "arg_four"
    }
   ],
-  "purpose": "Generates a SQL Monitoring report for a session, SQL_ID, or execution by wrapping OFFLOAD_TOOLS.SQLMON",
+  "purpose": "Gluent-augmented SQL Monitor report for a SID, SQL_ID or execution (needs Gluent OFFLOAD_TOOLS package)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql monitor",
@@ -11179,10 +11266,10 @@
   ]
  },
  "hist2.sql": {
-  "category": "AWR & History",
+  "category": "SQL*Plus Utilities",
   "hash": "1de420bab34b0d3a",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Primary filter or grouping condition",
@@ -11195,7 +11282,8 @@
     "name": "secondary_filter"
    }
   ],
-  "purpose": "Queries historical activity using hist_generic with mode 2 parameter and filtering",
+  "purpose": "Row-count histogram of a value in power-of-2 buckets, via hist_generic with base 2",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "hist_generic",
@@ -11209,7 +11297,7 @@
   "category": "SQL*Plus Utilities",
   "hash": "ff86915050e87af7",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "value or column to bucket into histogram",
@@ -11227,7 +11315,8 @@
     "name": "bucket_base"
    }
   ],
-  "purpose": "Generates value buckets using logarithmic distribution for histogram analysis",
+  "purpose": "Counts rows per logarithmic value bucket (power of given base) by calling grp",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "histogram",
@@ -11242,10 +11331,11 @@
  "hof.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "a019dcc34ee011c2",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "wrapper",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Disables HTML output formatting in SQL*Plus",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sqlplus",
@@ -11271,10 +11361,11 @@
  "hon.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "15d775c813fe51bf",
-  "kind": "fragment",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Configures SQL*Plus HTML markup formatting and begins spooling styled report output to file",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql*plus",
@@ -11378,9 +11469,10 @@
   "category": "SQL*Plus Utilities",
   "hash": "9835537ce1025b0b",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Formats current SQL buffer as HTML and opens in browser",
+  "purpose": "Re-runs the SQL buffer with HTML markup spooled to a temp file and opens it in a browser",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "html",
@@ -11428,8 +11520,8 @@
  "html_.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "ee169325a9dc5217",
-  "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "CSS white-space property value for table cells (nowrap, normal, pre-wrap)",
@@ -11438,6 +11530,7 @@
    }
   ],
   "purpose": "Spools SQL*Plus output as styled HTML and opens result in browser",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "markup",
@@ -11500,10 +11593,11 @@
  "htmlon.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "1a47e2c80f5eafc1",
-  "kind": "fragment",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Enables HTML markup in SQL*Plus output when spooling to files",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql*plus",
@@ -12096,10 +12190,10 @@
   ]
  },
  "kcboqh.sql": {
-  "category": "Objects & Storage",
+  "category": "Memory",
   "hash": "7d21cfd882057e5f",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Segment owner or name filter",
@@ -12107,7 +12201,8 @@
     "name": "segment_filter"
    }
   ],
-  "purpose": "Wraps segcached.sql to profile segment cache statistics",
+  "purpose": "Shows buffered blocks (MB/count) per segment in the buffer cache from X$KCBOQH, via segcached.sql",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "segment",
@@ -12151,12 +12246,13 @@
   ]
  },
  "kcbsw_11.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Memory",
   "hash": "ba2fa6d0c5dc9956",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Profiles buffer cache wait reasons using X$ internals",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "buffer_cache",
@@ -12202,10 +12298,10 @@
   ]
  },
  "kcbwh.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Memory",
   "hash": "388034ac7a569269",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "description, hex index, or decimal index to match",
@@ -12214,6 +12310,7 @@
    }
   ],
   "purpose": "Searches kernel cache buffer wait structures by description or index",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "x$kcbwh",
@@ -12227,9 +12324,10 @@
   "category": "Memory",
   "hash": "2c4d3897cf9d00cc",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Shows buffer cache sub-pool statistics for LRU operations and chunk management",
+  "purpose": "Shows shared pool sub-pool LRU statistics (flushed/recurrent/transient chunks, reserved scans) from X$KGHLU",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "x$kghlu",
@@ -12271,10 +12369,10 @@
   ]
  },
  "kgllk.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Waits, Locks & Latches",
   "hash": "67a5792064936e91",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "WHERE clause filter condition, use 1=1 for all",
@@ -12283,6 +12381,7 @@
    }
   ],
   "purpose": "Shows library cache locks held by sessions with hold and request modes",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "library_cache_locks",
@@ -12729,10 +12828,10 @@
   ]
  },
  "lastchanged.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Objects & Storage",
   "hash": "86393e4996ad1943",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "table name or schema.table_name",
@@ -12745,7 +12844,8 @@
     "name": "where_predicate"
    }
   ],
-  "purpose": "Detect when table rows were last changed using ORA_ROWSCN",
+  "purpose": "Shows when the data block of matching table rows was last changed, using ORA_ROWSCN and SCN-to-time mapping",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "ora_rowscn",
@@ -13145,10 +13245,10 @@
   ]
  },
  "li.sql": {
-  "category": "Objects & Storage",
+  "category": "Waits, Locks & Latches",
   "hash": "39b318417e0fc994",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "object name search pattern",
@@ -13156,7 +13256,8 @@
     "name": "pattern"
    }
   ],
-  "purpose": "Lists objects matching the specified pattern via li2",
+  "purpose": "Wraps li2: shows DBA_LOCK_INTERNAL lock holders/requesters for a lock ID pattern",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "object search",
@@ -13190,10 +13291,10 @@
   ]
  },
  "lib.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Objects & Storage",
   "hash": "3100f4fe51283f1f",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Text to search, wrapped in SQL LIKE wildcards",
@@ -13202,6 +13303,7 @@
    }
   ],
   "purpose": "Wraps lib2 script with parameter as SQL LIKE pattern",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wrapper",
@@ -13237,9 +13339,10 @@
   "category": "AWR & History",
   "hash": "ca765b0a3926eefe",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Shows snapshot metadata including capture time, mode, and session counts",
+  "purpose": "Lists snapshots from the custom SAWR$SNAPSHOTS/SAWR$SESSIONS tables with capture time, taker, mode and session count",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "snapshots",
@@ -13299,10 +13402,11 @@
  "loadset.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "06745d0db0c114d0",
-  "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "kind": "fragment",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Loads settings from a generated temp SQL file",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql*plus",
@@ -13395,10 +13499,11 @@
  "login.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "757fc6d120f5c90f",
-  "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "kind": "setup",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Initializes SQL*Plus environment and displays session information on login",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "login",
@@ -13563,12 +13668,13 @@
   ]
  },
  "lotsparses.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Demos & Experiments",
   "hash": "813e3258eb7705c1",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Executes lotshparses to analyze hard parse patterns",
+  "purpose": "Wrapper that runs lotshparses.sql to generate a hard-parse load for testing",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "parses",
@@ -13649,9 +13755,10 @@
   "category": "Demos & Experiments",
   "hash": "4f2e91c7835cc37b",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Generates high-volume transaction load for redo logging and I/O stress testing",
+  "purpose": "Creates a GTT and loops APPEND inserts with COMMIT WRITE NOWAIT to generate temp/redo activity for testing",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "gtt",
@@ -13901,12 +14008,13 @@
   ]
  },
  "m.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "SQL & Execution Plans",
   "hash": "8b4311ac4dc80191",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Wraps xp.sql, passing the current session ID as parameter",
+  "purpose": "Wraps xp.sql to show a text SQL Monitor report (DBMS_SQLTUNE) for the current session",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sid",
@@ -13916,10 +14024,10 @@
   ]
  },
  "measure_io.sql": {
-  "category": "Objects & Storage",
+  "category": "SQL & Execution Plans",
   "hash": "cfdeea9bf66cdac5",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SELECT statement to profile for I/O",
@@ -13927,7 +14035,8 @@
     "name": "query"
    }
   ],
-  "purpose": "Profiles I/O operations and data transfer rates for a query execution",
+  "purpose": "Shows I/O request counts, MB and avg request sizes by function/file type for a query, via V$IOSTAT_FUNCTION_DETAIL deltas",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$iostat_function_detail",
@@ -14310,10 +14419,10 @@
   ]
  },
  "netstat.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Session & Process",
   "hash": "1ee1728819ae84fa",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Session ID(s), comma-separated for multiple",
@@ -14322,6 +14431,7 @@
    }
   ],
   "purpose": "Shows network statistics for specified session IDs",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "x$ksugblnetstat",
@@ -14358,8 +14468,8 @@
  "newxpa.sql": {
   "category": "SQL & Execution Plans",
   "hash": "f02a04098484af54",
-  "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "13-character SQL ID to monitor",
@@ -14367,7 +14477,8 @@
     "name": "sqlid"
    }
   ],
-  "purpose": "Generates active SQL monitoring report in HTML for a specified SQL ID",
+  "purpose": "Spools an Active (HTML) SQL Monitor report for a prompted SQL ID using DBMS_SQLTUNE.REPORT_SQL_MONITOR",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql_id",
@@ -15091,12 +15202,13 @@
   ]
  },
  "ostackprof.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Tracing & Diagnostics",
   "hash": "b8f3cd19867a0e63",
-  "kind": "wrapper",
-  "model": "claude-sonnet-5",
+  "kind": "stub",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Wrapper stub pointing users to ostackprofw.sql or ostackprofu.sql instead",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "stack profiler",
@@ -15369,10 +15481,10 @@
   ]
  },
  "pd.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Instance & Configuration",
   "hash": "7856b321820c49a5",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Search term, wrapped with % wildcards for LIKE matching",
@@ -15381,6 +15493,7 @@
    }
   ],
   "purpose": "Wraps pd2 adding automatic wildcard pattern matching to input parameters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "tpt",
@@ -15696,10 +15809,10 @@
   ]
  },
  "ppx/range_hash_subpart.sql": {
-  "category": "Objects & Storage",
+  "category": "Demos & Experiments",
   "hash": "47d639c5d1e254d6",
   "kind": "demo",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Schema name for the partitioned table",
@@ -15718,6 +15831,7 @@
    }
   ],
   "purpose": "Creates a range-hash subpartitioned test table and loads sample data for demonstrations",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "range",
@@ -15941,7 +16055,7 @@
   "category": "Instance & Configuration",
   "hash": "94cb21b59502f79e",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "User or role name pattern to search for",
@@ -15949,7 +16063,8 @@
     "name": "grantee_pattern"
    }
   ],
-  "purpose": "Shows all roles and privileges granted to users matching a search pattern",
+  "purpose": "Generates GRANT statements (roles, system and object privileges) for grantees matching a name pattern",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dba_role_privs",
@@ -15965,7 +16080,7 @@
   "category": "Instance & Configuration",
   "hash": "14bcd5d92dc734a5",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "User or role name pattern to find grants",
@@ -15973,7 +16088,8 @@
     "name": "grantee"
    }
   ],
-  "purpose": "Generates GRANT statements to recreate all privileges and roles granted to a user",
+  "purpose": "Generates GRANT statements (roles, system and object privileges) to recreate a given user's grants",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dba_role_privs",
@@ -16089,8 +16205,8 @@
  "prq.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "f4a6793040544dc9",
-  "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL query to display in vertical format",
@@ -16099,6 +16215,7 @@
    }
   ],
   "purpose": "Wraps Tom Kyte's printtbl to display SQL results vertically",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dbms_sql",
@@ -16280,9 +16397,10 @@
   "category": "SQL*Plus Utilities",
   "hash": "29584031defed840",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Sets up SQL*Plus environment formatting for RAC diagnostic script execution",
+  "purpose": "Resets SQL*Plus SET options to a fixed list of 11.2 default values",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sqlplus",
@@ -16344,10 +16462,10 @@
   ]
  },
  "repo.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Instance & Configuration",
   "hash": "b16048e3405e9b07",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "First search pattern for repo2",
@@ -16360,7 +16478,8 @@
     "name": "pattern2"
    }
   ],
-  "purpose": "Passes two parameters to repo2 repository search script",
+  "purpose": "Wrapper for repo2: lists replication objects (DBA_REPOBJECT) by group and object name patterns",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wrapper",
@@ -16446,7 +16565,7 @@
   "category": "Instance & Configuration",
   "hash": "6cb15ee6f436f551",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "starting redo log sequence number",
@@ -16459,7 +16578,8 @@
     "name": "to_sequence"
    }
   ],
-  "purpose": "Shows RMAN-backed archived redo logs for specified sequence range",
+  "purpose": "Lists RMAN backup pieces containing archived logs from V$BACKUP_REDOLOG for hardcoded sequences 8000-8600",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "rman",
@@ -16795,10 +16915,10 @@
   ]
  },
  "sed.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Waits, Locks & Latches",
   "hash": "98687c58e6fa60e9",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Pattern to search for",
@@ -16807,6 +16927,7 @@
    }
   ],
   "purpose": "Wraps sed2 script, passing parameter with wildcard delimiters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sed2",
@@ -16863,10 +16984,10 @@
   ]
  },
  "sedx.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Waits, Locks & Latches",
   "hash": "220b1d29b0a92347",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Hexadecimal value to convert to decimal",
@@ -16875,6 +16996,7 @@
    }
   ],
   "purpose": "Converts hexadecimal parameter to decimal, passes result to sedn",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "hex",
@@ -17094,12 +17216,13 @@
   ]
  },
  "segstatint.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Objects & Storage",
   "hash": "861af2d5f39b7eea",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Shows segment-level statistics from internal X$ views",
+  "purpose": "Shows segment-level statistics (name, value, previous value) from X$KSOLSFTS joined to OBJ$",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "segment",
@@ -17135,10 +17258,10 @@
   ]
  },
  "sel.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "SQL*Plus Utilities",
   "hash": "0febe7baa1d6ee68",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "table or view name to SELECT from",
@@ -17147,6 +17270,7 @@
    }
   ],
   "purpose": "Queries all rows and columns from a specified table or view",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "select_all",
@@ -17160,9 +17284,10 @@
   "category": "Session & Process",
   "hash": "4c1ea4c9656f2b27",
   "kind": "stub",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Draft query counting PX slaves per query coordinator with requested vs granted DOP (incomplete SQL)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "gv$px_session",
@@ -17367,12 +17492,13 @@
   ]
  },
  "setup/drop_xviews.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Instance & Configuration",
   "hash": "3a1f57a0b99f3e04",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Generates drop commands for custom X$ fixed table views and public synonyms",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "x$",
@@ -17494,10 +17620,11 @@
  "setup/wordfile_18c.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "65034c60ae13bcc5",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "setup",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Generates a SQL*Plus wordfile with Oracle keywords, objects, procedures, parameters, and hints for completion",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sqlplus",
@@ -17513,10 +17640,11 @@
  "setup/wordfile_23ai.sql": {
   "category": "SQL*Plus Utilities",
   "hash": "b0ad7cfe711ac625",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "setup",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Generates SQL*Plus wordfile containing Oracle keywords, hints, procedures and parameters for syntax highlighting",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wordfile",
@@ -17641,10 +17769,10 @@
   ]
  },
  "sgav.sql": {
-  "category": "Instance & Configuration",
+  "category": "Tracing & Diagnostics",
   "hash": "9d3674fdfff32592",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SGA variable name or search pattern",
@@ -17652,7 +17780,8 @@
     "name": "variable_name"
    }
   ],
-  "purpose": "Displays SGA parameter values for given variable name",
+  "purpose": "Dumps an SGA variable's value using oradebug dumpvar (via dumpvar.sql)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sga",
@@ -17679,7 +17808,7 @@
   "category": "SQL*Plus Utilities",
   "hash": "7f072c02eea46647",
   "kind": "fragment",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Oracle instance SID value",
@@ -17687,7 +17816,8 @@
     "name": "sid"
    }
   ],
-  "purpose": "Defines a SQL*Plus substitution variable for the Oracle instance SID",
+  "purpose": "Defines SQL*Plus substitution variable SID from the first argument",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sqlplus",
@@ -17725,7 +17855,7 @@
   "category": "Tracing & Diagnostics",
   "hash": "df59554013e1415a",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Diagnostic level: BASIC, TYPICAL, or ALL",
@@ -17733,7 +17863,8 @@
     "name": "level"
    }
   ],
-  "purpose": "Enables SQL execution statistics collection at the specified diagnostic level",
+  "purpose": "Sets the session STATISTICS_LEVEL (e.g. ALL to collect row source execution statistics)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "statistics_level",
@@ -17891,10 +18022,10 @@
   ]
  },
  "snapio.sql": {
-  "category": "ASH Analysis",
+  "category": "Session & Process",
   "hash": "119cd93d79055b0d",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "snapshot duration in seconds",
@@ -17902,7 +18033,8 @@
     "name": "duration_seconds"
    }
   ],
-  "purpose": "Snapshots physical database file I/O activity for a specified duration",
+  "purpose": "Snapper snapshot of physical I/O stats and db file waits for all sessions over N seconds",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "snapper",
@@ -18157,10 +18289,10 @@
   ]
  },
  "snappio.sql": {
-  "category": "ASH Analysis",
+  "category": "Session & Process",
   "hash": "5ffcfe4e5cddc314",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "number of seconds to sample for",
@@ -18169,6 +18301,7 @@
    }
   ],
   "purpose": "Samples IO request and physical bytes statistics over a time window",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "snapper",
@@ -18327,10 +18460,10 @@
   ]
  },
  "snb.sql": {
-  "category": "ASH Analysis",
+  "category": "Session & Process",
   "hash": "383e7337576f6a37",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Session ID to sample",
@@ -18338,7 +18471,8 @@
     "name": "mysid"
    }
   ],
-  "purpose": "Initiates snapper sampling of session statistics for specified SID",
+  "purpose": "Takes the 'begin' snapshot of Snapper session stats for the current session (manual snapshot mode)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "snapper",
@@ -18353,7 +18487,7 @@
   "category": "Session & Process",
   "hash": "a884923bdb79b23a",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "session ID or SID to analyze",
@@ -18361,7 +18495,8 @@
     "name": "session_id"
    }
   ],
-  "purpose": "Samples database activity and wait statistics for a specified session",
+  "purpose": "Takes the 'end' Snapper snapshot for the current session and shows deltas since snb.sql",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "snapper",
@@ -18377,7 +18512,7 @@
   "category": "Tracing & Diagnostics",
   "hash": "7135ede4da084a77",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SELECT statement to execute and profile",
@@ -18385,7 +18520,8 @@
     "name": "sql_query"
    }
   ],
-  "purpose": "Profiles a SQL query with performance statistics captured before and after",
+  "purpose": "Runs a query between Snapper begin/end snapshots to show the session stats it consumed",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "snapper",
@@ -18651,7 +18787,7 @@
   "category": "Instance & Configuration",
   "hash": "bf66dd50f632ae5b",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Username or privilege name pattern to search",
@@ -18659,7 +18795,8 @@
     "name": "search_pattern"
    }
   ],
-  "purpose": "Lists user privileges matching the search pattern via wrapper call",
+  "purpose": "Lists grantees of system privileges matching a name pattern (DBA_SYS_PRIVS) via sprivs2",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "privileges",
@@ -18674,7 +18811,7 @@
   "category": "Instance & Configuration",
   "hash": "06aab60f3eaec019",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Privilege name pattern for LIKE search",
@@ -18682,7 +18819,8 @@
     "name": "privilege_pattern"
    }
   ],
-  "purpose": "Lists system privileges matching the specified name pattern",
+  "purpose": "Lists grantees of system privileges matching a name pattern from DBA_SYS_PRIVS",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dba_sys_privs",
@@ -18908,7 +19046,7 @@
   "category": "SQL & Execution Plans",
   "hash": "7b6fb239b2448d53",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL ID of the query to profile",
@@ -18921,7 +19059,8 @@
     "name": "child_number"
    }
   ],
-  "purpose": "Profiles SQL execution plan performance as a flame chart",
+  "purpose": "Generates a flame graph of a cursor's plan by self elapsed time (V$SQL_PLAN_STATISTICS_ALL, needs flamegraph.pl)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql_id",
@@ -19200,7 +19339,7 @@
   "category": "SQL & Execution Plans",
   "hash": "9cc2a5de461fd803",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL statement ID to display monitoring for",
@@ -19208,7 +19347,8 @@
     "name": "sql_id"
    }
   ],
-  "purpose": "Shows execution plan and monitoring details for a given SQL_ID",
+  "purpose": "Shows SQL Monitor plan lines per session/PX slave with operator-specific OTHERSTAT metrics for a SQL_ID",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sql_id",
@@ -19409,7 +19549,7 @@
   "category": "AWR & History",
   "hash": "c3ae1657bdfeb8d2",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Columns to group results by (comma-separated)",
@@ -19427,7 +19567,8 @@
     "name": "end_snap"
    }
   ],
-  "purpose": "Compares session wait events and statistics between snapshots grouped by specified dimension",
+  "purpose": "Compares session statistics and wait events between two sesspack (SAWR$) snapshots, grouped by given columns",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wait_event",
@@ -19442,7 +19583,7 @@
   "category": "AWR & History",
   "hash": "09941b5cd2600193",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated columns to group by",
@@ -19460,7 +19601,8 @@
     "name": "end_snap"
    }
   ],
-  "purpose": "Reports session wait event metrics from AWR snapshots for a snapshot range",
+  "purpose": "Sesspack (SAWR$) session wait event deltas between two snapshots, grouped by given columns",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wait_event",
@@ -19474,7 +19616,7 @@
   "category": "AWR & History",
   "hash": "0856b05b6d5bb4f7",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "column to group by, e.g. sid",
@@ -19492,7 +19634,8 @@
     "name": "end_snap"
    }
   ],
-  "purpose": "Reports session-level wait event metrics from historical snapshots",
+  "purpose": "Older sesspack report of session wait event deltas between two SAWR$ snapshots",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wait_event",
@@ -19508,7 +19651,7 @@
   "category": "AWR & History",
   "hash": "6dc43b0110405fd1",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Beginning snapshot ID for the interval",
@@ -19521,7 +19664,8 @@
     "name": "end_snapid"
    }
   ],
-  "purpose": "Reports session wait events with timing metrics between two AWR snapshots",
+  "purpose": "Sesspack report of session wait events and timings between two SAWR$ snapshot IDs",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wait_event",
@@ -19533,12 +19677,13 @@
   ]
  },
  "srs.sql": {
-  "category": "Session & Process",
+  "category": "AWR & History",
   "hash": "0bd082d63cfab51b",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Wraps the sesspack session resource script, passing through provided parameters",
+  "purpose": "Wrapper calling sesspack srs to compare session stats and waits between snapshots",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "session",
@@ -19552,7 +19697,7 @@
   "category": "Session & Process",
   "hash": "49d45afaae14c7f8",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "session ID to query resource consumption",
@@ -19560,7 +19705,8 @@
     "name": "sid"
    }
   ],
-  "purpose": "Shows resource consumption details for a specific session",
+  "purpose": "Shows per-session resource-limit usage (CPU, IO, logical reads etc.) from X$KSURU by resource name",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "resource_usage",
@@ -19572,10 +19718,10 @@
   ]
  },
  "srun.sql": {
-  "category": "ASH Analysis",
+  "category": "Session & Process",
   "hash": "abafc188338aa78f",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SQL command or statement to execute",
@@ -19583,7 +19729,8 @@
     "name": "command"
    }
   ],
-  "purpose": "Samples active session statistics before and after executing a SQL command",
+  "purpose": "Runs a SQL command bracketed by Snapper stats begin/end snapshots of the current session",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "snapper4",
@@ -19617,10 +19764,10 @@
   ]
  },
  "statn.sql": {
-  "category": "Instance & Configuration",
+  "category": "Session & Process",
   "hash": "38e68aaefd8cdc62",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "statistic name, number hex or offset pattern",
@@ -19628,7 +19775,8 @@
     "name": "search_pattern"
    }
   ],
-  "purpose": "Searches instance statistics by name, number, hex value, or memory offset",
+  "purpose": "Searches current session's V$MYSTAT statistics by name, number, hex number or memory offset",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$mystat",
@@ -19762,7 +19910,7 @@
   "category": "Waits, Locks & Latches",
   "hash": "f03686658f1e9358",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Session ID, comma-separated IDs, or subquery",
@@ -19770,7 +19918,8 @@
     "name": "sid"
    }
   ],
-  "purpose": "Shows current wait events and parameters for specified sessions",
+  "purpose": "Variant of sw showing current session waits and parameters with right-justified P1-P3 columns",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wait event",
@@ -19783,12 +19932,13 @@
   ]
  },
  "swa.sql": {
-  "category": "Session & Process",
+  "category": "Waits, Locks & Latches",
   "hash": "32ae825c7984c890",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Wraps sw to show all connected session identifiers",
+  "purpose": "Shows current wait info (sw) for all sessions in V$SESSION",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "session",
@@ -19798,12 +19948,13 @@
   ]
  },
  "swag.sql": {
-  "category": "Session & Process",
+  "category": "Waits, Locks & Latches",
   "hash": "dcf6dfd2555b4bae",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Lists session SIDs from V$SESSION using swg wrapper",
+  "purpose": "Shows wait events grouped by state/event (swg) for all sessions",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -19814,12 +19965,13 @@
   ]
  },
  "swani.sql": {
-  "category": "Session & Process",
+  "category": "Waits, Locks & Latches",
   "hash": "60b47b0ef32b748c",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Shows active sessions currently waiting for events",
+  "purpose": "Shows current waits (sw) for sessions whose wait class is not Idle",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -19830,12 +19982,13 @@
   ]
  },
  "swb.sql": {
-  "category": "Session & Process",
+  "category": "Waits, Locks & Latches",
   "hash": "92bc9e0a077fa255",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Shows session IDs of background processes",
+  "purpose": "Shows current waits (sw) for background process sessions",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -19940,7 +20093,7 @@
   "category": "Waits, Locks & Latches",
   "hash": "5c28dacf6d31d7ec",
   "kind": "stub",
-  "model": "claude-sonnet-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "session id(s) or subquery returning sids",
@@ -19948,7 +20101,8 @@
     "name": "sid_list"
    }
   ],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Old unfinished draft of sw (session wait display)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session_wait",
@@ -19964,7 +20118,7 @@
   "category": "Waits, Locks & Latches",
   "hash": "bc066f806907e9c6",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "First waitprof parameter",
@@ -19982,7 +20136,8 @@
     "name": "param3"
    }
   ],
-  "purpose": "Profiles wait events with customizable parameters via waitprof",
+  "purpose": "Wrapper for waitprof: sampled wait event profile of sessions",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "waitprof",
@@ -19992,12 +20147,13 @@
   ]
  },
  "swu.sql": {
-  "category": "Session & Process",
+  "category": "Waits, Locks & Latches",
   "hash": "3605f23286e8725f",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Shows SIDs for all user database sessions in the instance",
+  "purpose": "Shows current waits (sw) for all USER-type sessions",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -20008,12 +20164,13 @@
   ]
  },
  "swug.sql": {
-  "category": "Session & Process",
+  "category": "Waits, Locks & Latches",
   "hash": "6a20d141383b1ebe",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Lists user session identifiers via swg wrapper",
+  "purpose": "Shows wait events grouped by state/event (swg) for all USER-type sessions",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -20179,12 +20336,13 @@
   ]
  },
  "syt.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "Instance & Configuration",
   "hash": "93956bd238302db0",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows system time model statistics converted to seconds",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$sys_time_model",
@@ -20284,10 +20442,10 @@
   ]
  },
  "tabhisthybrid.sql": {
-  "category": "SQL & Execution Plans",
+  "category": "Objects & Storage",
   "hash": "f3814af3e586c1e5",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Table name; format: [owner.]table_name",
@@ -20301,6 +20459,7 @@
    }
   ],
   "purpose": "Shows estimated cardinality for column values from HYBRID histogram statistics",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "histogram",
@@ -20505,9 +20664,10 @@
   "category": "Waits, Locks & Latches",
   "hash": "e5afa980712d0f3d",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Enables continuous sampling and profiling of latch holders",
+  "purpose": "Creates tables and collector objects for continuously sampling latch holders from X$KSUPRLAT (LatchProfX)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "latch",
@@ -20541,9 +20701,10 @@
   "category": "Objects & Storage",
   "hash": "474471a47773b9ee",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Records periodic snapshots of tablespace, segments, free space, and service statistics data",
+  "purpose": "Creates PLANCAP_COLLECTOR package with procedures to snapshot data files, free space, segment space and service stats",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "dba_segments",
@@ -20594,8 +20755,8 @@
  "tools/collectors/shared_pool_monitor/shared_pool_monitor_package.sql": {
   "category": "Memory",
   "hash": "287e44804f5ad25d",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "setup",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "sleep between samples in seconds",
@@ -20608,7 +20769,8 @@
     "name": "sample_count"
    }
   ],
-  "purpose": "Collects continuous samples of shared pool memory activity including subpool, heap, flush and reserved chunks",
+  "purpose": "Creates SHARED_POOL_MONITOR package that samples subpool, heap, flush and reserved chunk stats",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "shared_pool",
@@ -20723,10 +20885,11 @@
  "tools/moats_v1.05/global_test.sql": {
   "category": "Demos & Experiments",
   "hash": "385fec8efd6cb23d",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Abandoned experiment creating a pipelined function F for MOATS (comment: 'hack but ain't working')",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "pipelined function",
@@ -20800,12 +20963,13 @@
   ]
  },
  "tools/moats_v1.05/moats_remove.sql": {
-  "category": "Objects & Storage",
+  "category": "Instance & Configuration",
   "hash": "8d42d3d7832a99fa",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Uninstalls the MOATS monitoring framework from the database",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "moats",
@@ -20850,12 +21014,13 @@
   ]
  },
  "tools/moats_v1.05/moats_views.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Instance & Configuration",
   "hash": "b63c37bfb84a4e6b",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Creates a view interface to the MOATS top activity table function",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "view",
@@ -20918,7 +21083,7 @@
   "category": "Waits, Locks & Latches",
   "hash": "c905e2d0f90e5ca1",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Wait event name pattern (% for all)",
@@ -20941,7 +21106,8 @@
     "name": "sleep_time"
    }
   ],
-  "purpose": "Samples and logs session wait events at intervals for performance analysis",
+  "purpose": "Creates table and procedure to log V$SESSION_WAIT samples for a wait event over a time window",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session_wait",
@@ -21004,10 +21170,11 @@
  "tools/sesspack_0.05_release/drop_sesspack_packages.sql": {
   "category": "Instance & Configuration",
   "hash": "e7ac537b7d34cff8",
-  "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "kind": "setup",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Drops the SESSPACK package from the database",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sesspack",
@@ -21128,12 +21295,13 @@
   ]
  },
  "tools/sesspack_0.05_release/install_sesspack_schema.sql": {
-  "category": "ASH Analysis",
+  "category": "Instance & Configuration",
   "hash": "d4fa04278c1d659a",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Enables session activity and wait event snapshot collection over time",
+  "purpose": "Creates SAWR$ snapshot tables, types, sequence and views used by sesspack",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$session",
@@ -21146,12 +21314,13 @@
   ]
  },
  "tools/sesspack_0.05_release/list.sql": {
-  "category": "Session & Process",
+  "category": "AWR & History",
   "hash": "c28e788e47c38641",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Lists session snapshots with capture time, mode, and session count",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sawr",
@@ -21260,7 +21429,7 @@
   "category": "AWR & History",
   "hash": "ddba7af88797ef97",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "SESSPACK schema owner containing SAWR tables",
@@ -21273,7 +21442,8 @@
     "name": "spkeep"
    }
   ],
-  "purpose": "Purges old SESSPACK snapshots and compacts indexes for storage reclamation",
+  "purpose": "Deletes SAWR$ snapshot data older than N days and coalesces the index",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sesspack",
@@ -21313,7 +21483,7 @@
   "category": "AWR & History",
   "hash": "1b5659f16f055c04",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Session attributes to group by (comma-separated)",
@@ -21331,7 +21501,8 @@
     "name": "end_snap"
    }
   ],
-  "purpose": "Compares wait events and session statistics between two AWR snapshots, grouped by specified dimensions",
+  "purpose": "Compares session statistics and wait events between two sesspack (SAWR$) snapshots, grouped by given columns",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wait events",
@@ -21348,7 +21519,7 @@
   "category": "AWR & History",
   "hash": "cb2442b8f6950e2a",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "comma-separated columns to group by",
@@ -21371,7 +21542,8 @@
     "name": "stat_cols"
    }
   ],
-  "purpose": "Compare session statistics and wait events between two snapshots, grouped by specified dimensions",
+  "purpose": "Compares sesspack session statistics and wait events between two snapshots, with selectable stat columns",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "sess_stat",
@@ -21411,9 +21583,10 @@
   "category": "Objects & Storage",
   "hash": "92396b5b3b93948f",
   "kind": "setup",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Enables detailed space analysis showing full, free, and unformatted blocks per segment",
+  "purpose": "Creates SPACE_TOOLS package wrapping DBMS_SPACE.SPACE_USAGE for full/free/unformatted block counts per segment",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "space_usage",
@@ -21606,12 +21779,13 @@
   ]
  },
  "tpt.sql": {
-  "category": "Tracing & Diagnostics",
+  "category": "SQL*Plus Utilities",
   "hash": "5a617b560ebd1e44",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Displays interactive menu for executing Tanel Poder performance troubleshooting scripts",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "tpt",
@@ -21819,10 +21993,11 @@
  "trigger.sql": {
   "category": "Demos & Experiments",
   "hash": "c15620d638e55b70",
-  "kind": "stub",
-  "model": "claude-sonnet-5",
+  "kind": "demo",
+  "model": "claude-sonnet-5-5",
   "params": [],
-  "purpose": "Placeholder or stub script",
+  "purpose": "Scratch snippets: a SERVERERROR trigger example and XMLDB/XQuery PL/SQL that creates XML resources from a table",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "trigger",
@@ -22079,12 +22254,13 @@
   ]
  },
  "uds.sql": {
-  "category": "Memory",
+  "category": "Objects & Storage",
   "hash": "6f53542eb4da0e3e",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows undo tablespace activity and ORA-1555 errors from V$UNDOSTAT snapshots",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "v$undostat",
@@ -22137,10 +22313,10 @@
   ]
  },
  "ugav.sql": {
-  "category": "Memory",
+  "category": "Tracing & Diagnostics",
   "hash": "552c8f8bb8f9b3a8",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "UGA variable name to dump",
@@ -22148,7 +22324,8 @@
     "name": "variable_name"
    }
   ],
-  "purpose": "Dumps user global area diagnostic information for a specified variable",
+  "purpose": "Dumps a UGA variable by name via oradebug dumpvar uga <variable>",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "uga",
@@ -22642,10 +22819,10 @@
   ]
  },
  "vstat.sql": {
-  "category": "AWR & History",
+  "category": "Instance & Configuration",
   "hash": "22ebb74764f3ecd2",
   "kind": "tool",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Start time for metrics range, e.g. sysdate-1/1440",
@@ -22658,7 +22835,8 @@
     "name": "end_time"
    }
   ],
-  "purpose": "Shows system metrics with per-minute granularity for current container/PDB",
+  "purpose": "Shows system metrics per minute from GV$SYSMETRIC_HISTORY (last hour only) between begin and end time filters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "gv$sysmetric_history",
@@ -22788,7 +22966,7 @@
   "category": "Waits, Locks & Latches",
   "hash": "e0b6e9c3f63f2988",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "session ID or WHERE predicate for waitprof",
@@ -22796,7 +22974,8 @@
     "name": "session_filter"
    }
   ],
-  "purpose": "Profiles wait events for a session using waitprof stack sampling",
+  "purpose": "Runs waitprof on a session: samples V$SESSION_WAIT 100000 times and profiles events with parameters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "waitprof",
@@ -22810,7 +22989,7 @@
   "category": "SQL*Plus Utilities",
   "hash": "a40471ea7704f7ac",
   "kind": "fragment",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Maximum number of rows to return",
@@ -22818,7 +22997,8 @@
     "name": "row_limit"
    }
   ],
-  "purpose": "Shows WHERE clause fragment limiting result set by rownum parameter",
+  "purpose": "Appends 'where rownum <= N' to the SQL*Plus buffer to limit a query's rows",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "rownum",
@@ -23001,10 +23181,11 @@
  "xa.sql": {
   "category": "SQL & Execution Plans",
   "hash": "6ea86270af0387d2",
-  "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "kind": "tool",
+  "model": "claude-sonnet-5-5",
   "params": [],
   "purpose": "Shows the last cursor's execution plan with bind values and memory statistics",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "execution_plan",
@@ -23240,10 +23421,10 @@
   ]
  },
  "xde.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "Tracing & Diagnostics",
   "hash": "f013bc972278f02d",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "Search term or pattern to pass to xde2",
@@ -23252,6 +23433,7 @@
    }
   ],
   "purpose": "Wraps xde2 script, passing search term with wildcard characters",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "wrapper",
@@ -23780,10 +23962,10 @@
   ]
  },
  "xpm.sql": {
-  "category": "SQL*Plus Utilities",
+  "category": "SQL & Execution Plans",
   "hash": "3cbe0facba112901",
   "kind": "wrapper",
-  "model": "claude-haiku-4-5",
+  "model": "claude-sonnet-5-5",
   "params": [
    {
     "desc": "System ID parameter passed to xp script",
@@ -23791,7 +23973,8 @@
     "name": "mysid"
    }
   ],
-  "purpose": "Invokes xp script passing the current system ID parameter",
+  "purpose": "Runs xp (SQL Monitor text report) for the current session's own SID (&mysid)",
+  "reviewed": true,
   "schema": 2,
   "tags": [
    "xp",

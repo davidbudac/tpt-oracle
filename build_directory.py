@@ -940,11 +940,6 @@ def extract_keywords(filepath, desc, category):
                 if "_" in w:
                     words.add(w)
 
-    # Add from category
-    for w in re.findall(r'[a-z]+', category.lower()):
-        if w not in STOP_WORDS and len(w) >= 3:
-            words.add(w)
-
     # Limit to most relevant (max 12)
     # Prioritize Oracle terms, then V$ views, then others
     oracle = sorted(w for w in words if w in ORACLE_TERMS)
@@ -1039,6 +1034,361 @@ def syntax_from_ai(relpath, params):
     return base + " " + " ".join(f"<{p['name']}>" for p in params)
 
 
+NONE_VALUES = {"none", "n/a", "-", "na"}
+FIX_STATS = {"syntax": 0, "examples": 0, "wrapper_skipped": 0, "samples": []}
+INVOKE_RE = re.compile(r"^(@@?)([A-Za-z0-9_$./\\-]+)")
+
+
+def clean_text_field(val):
+    """Normalize placeholder values to '' and strip common leading indentation."""
+    val = (val or "").strip("\n")
+    if val.strip().lower() in NONE_VALUES:
+        return ""
+    lines = val.rstrip().split("\n")
+    if len(lines) > 1:
+        def ind(l):
+            return len(l) - len(l.lstrip())
+        rest = [l for l in lines[1:] if l.strip()]
+        if rest:
+            m = min(ind(l) for l in rest)
+            if ind(lines[0]) == 0 and m > 0:
+                first = lines[0].lstrip()[:1]
+                if first and all(l.lstrip()[:1] == first for l in rest if ind(l) == m):
+                    lines = [lines[0]] + [l[m:] if l.strip() else l for l in lines[1:]]
+            elif ind(lines[0]) > 0:
+                m = min(ind(l) for l in lines if l.strip())
+                lines = [l[m:] if l.strip() else l for l in lines]
+    return "\n".join(l.rstrip() for l in lines).strip()
+
+
+def correct_token(entry, token, allow_rename):
+    """Return the corrected invocation token for this script, or None."""
+    own_dir = os.path.dirname(entry["file"])
+    own_base = entry["name"][:-4] if entry["name"].lower().endswith(".sql") else entry["name"]
+    ext = ".sql" if token.lower().endswith(".sql") else ""
+    t = token[:-4] if ext else token
+    tdir, tbase = os.path.split(t)
+    tdir = tdir[2:] if tdir.startswith("./") else tdir
+    if tbase.lower() != own_base.lower():
+        if not allow_rename or not re.fullmatch(r"[A-Za-z0-9_$]+", tbase or ""):
+            return None
+    elif tdir == own_dir and tbase == own_base:
+        return None
+    new = (own_dir + "/" if own_dir else "") + own_base + ext
+    return new if new != token else None
+
+
+def fix_invocations(entry):
+    """Rewrite wrong @script invocations in syntax/examples (deterministic)."""
+    for f in ("purpose", "syntax", "parameters", "examples"):
+        entry[f] = clean_text_field(entry.get(f, ""))
+    is_wrapper = entry.get("kind") == "wrapper"
+    own_base = entry["name"][:-4]
+    m = INVOKE_RE.match(entry["syntax"])
+    if m:
+        tok = m.group(2)
+        tb = os.path.basename(tok[:-4] if tok.lower().endswith(".sql") else tok)
+        new = correct_token(entry, tok, True)
+        rest = entry["syntax"][m.end():]
+        if new and is_wrapper and tb.lower() != own_base.lower() and (
+                re.search(r"&\d", rest) or not re.search(r"<\w", rest)):
+            # Syntax is the wrapped call copied from the body, not this script's
+            # usage: rebuild it from the parameter names instead.
+            names = re.findall(r"^\s*(?:-\s*|&\d+:\s*)(\w+)", entry["parameters"], re.M)
+            names += re.findall(r",\s*&\d+:\s*(\w+)", entry["parameters"])
+            old = entry["syntax"]
+            entry["syntax"] = " ".join(["@" + new.removesuffix(".sql")] + [f"<{n}>" for n in names])
+            FIX_STATS["wrapper_rebuilt"] = FIX_STATS.get("wrapper_rebuilt", 0) + 1
+            FIX_STATS["samples"].append((entry["file"], old, entry["syntax"]))
+            new = None
+        if new:
+            old = entry["syntax"]
+            entry["syntax"] = m.group(1) + new + old[m.end():]
+            FIX_STATS["syntax"] += 1
+            FIX_STATS["samples"].append((entry["file"], old, entry["syntax"]))
+    out = []
+    for line in entry["examples"].split("\n"):
+        mm = re.match(r"^(\s*(?:--+\s*)?)(@@?)([A-Za-z0-9_$./\\-]+)", line)
+        if mm:
+            tok = mm.group(3)
+            tb = os.path.basename(tok[:-4] if tok.lower().endswith(".sql") else tok)
+            if tb.lower() == own_base.lower():
+                new = correct_token(entry, tok, False)
+                if new:
+                    old = line
+                    line = mm.group(1) + mm.group(2) + new + line[mm.end():]
+                    FIX_STATS["examples"] += 1
+                    FIX_STATS["samples"].append((entry["file"], old.strip(), line.strip()))
+        out.append(line)
+    entry["examples"] = "\n".join(out)
+
+
+# ---------------------------------------------------------------------------
+# Call graph (calls / called_by) and requirement tags (requires)
+# ---------------------------------------------------------------------------
+
+def _read_text(filepath):
+    try:
+        with open(filepath, "r", errors="replace") as f:
+            return f.read()
+    except OSError:
+        return ""
+
+
+_LINE_CMT_RE = re.compile(r"^[ \t]*(?:rem(?:ark)?|prompt|pro)(?:[ \t].*|)$", re.I)
+
+
+def _drop_sqlplus_comment_lines(text):
+    """Blank out SQL*Plus REM / PROMPT lines (prompt may continue with a trailing '-')."""
+    out = []
+    cont = False
+    for line in text.split("\n"):
+        if cont:
+            cont = line.rstrip().endswith("-")
+            out.append("")
+            continue
+        if _LINE_CMT_RE.match(line):
+            cont = line.rstrip().endswith("-") and re.match(r"^[ \t]*(prompt|pro)\b", line, re.I) is not None
+            out.append("")
+        else:
+            out.append(line)
+    return "\n".join(out)
+
+
+def _tokenize_sql(text, keep_strings, multiline_strings):
+    """Strip -- and /* */ comments (and optionally string literals) from SQL.
+
+    Newlines are preserved so line structure survives.  With
+    multiline_strings=False an unterminated quote ends at end of line, which
+    keeps a stray apostrophe in a SQL*Plus command line from swallowing the
+    rest of the file.
+    """
+    out = []
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        two = text[i:i + 2]
+        if two == "--":
+            j = text.find("\n", i)
+            i = n if j < 0 else j
+        elif two == "/*":
+            j = text.find("*/", i + 2)
+            seg = text[i:] if j < 0 else text[i:j + 2]
+            out.append("\n" * seg.count("\n") + " ")
+            i = n if j < 0 else j + 2
+        elif c in "qQ" and text[i + 1:i + 2] == "'" and i + 2 < n and text[i + 2] in "[{(<!|/#~^" \
+                and (i == 0 or not (text[i - 1].isalnum() or text[i - 1] in "_$#")):
+            op = text[i + 2]
+            cl = {"[": "]", "{": "}", "(": ")", "<": ">"}.get(op, op)
+            j = text.find(cl + "'", i + 3)
+            end = n if j < 0 else j + 2
+            seg = text[i:end]
+            out.append(seg if keep_strings else "'' " + "\n" * seg.count("\n"))
+            i = end
+        elif c == "'":
+            j = i + 1
+            while j < n:
+                if text[j] == "'":
+                    if text[j + 1:j + 2] == "'":
+                        j += 2
+                        continue
+                    break
+                if text[j] == "\n" and not multiline_strings:
+                    j -= 1
+                    break
+                j += 1
+            end = min(j + 1, n)
+            seg = text[i:end]
+            out.append(seg if keep_strings else "'' " + "\n" * seg.count("\n"))
+            i = end
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+_MAYBE_CALL_RE = re.compile(r"^[ \t]*(@@?)[ \t]*(\S+)|^[ \t]*(?:start|sta)[ \t]+(?!with\b)()(\S+)", re.I | re.M)
+_ADMIN_DIAG_RE = re.compile(r"^[ \t]*@@?[ \t]*\?[/\\]rdbms[/\\]admin[/\\](?:awr|ash|addm)\w*", re.I | re.M)
+
+# Hard-coded requirement patterns (applied to lowercase, comment-stripped text)
+_REQ_DIAG = re.compile(
+    r"\bg?v\$active_session_history\b|\b(?:dba|cdb)_hist_\w+|\bdbms_workload_repository\b|"
+    r"\bdbms_addm\b|\bdba_addm_\w+")
+_REQ_TUNING = re.compile(
+    r"\bdbms_sqltune\b|\bdbms_sql_monitor\b|\bg?v\$sql_monitor\w*|\bg?v\$sql_plan_monitor\b|\bdba_sqltune_\w+")
+_REQ_X = re.compile(r"\bx\$\w+")
+_REQ_SYSDBA = re.compile(r"\boradebug\b")
+
+_TBL = r"[\w.$\"@]+"
+_CHANGES = [
+    ("alter system", re.compile(r"\balter\s+system\b")),
+    ("kill/disconnect session", re.compile(r"\b(?:kill|disconnect)\s+session\b")),
+    ("ddl", re.compile(
+        r"\b(?:create|drop|truncate|alter)\s+(?:or\s+replace\s+)?(?:(?:unique|bitmap|public|global\s+temporary|"
+        r"private\s+temporary|materialized|force|editionable|noneditionable)\s+)*"
+        r"(?:table|index|user|procedure|package|view|trigger|directory|sequence|synonym)\b")),
+    ("insert", re.compile(r"\binsert\s+(?:all\s+)?into\s+(" + _TBL + r")")),
+    ("update", re.compile(r"\bupdate\s+(" + _TBL + r")\s+(?:\w+\s+)?set\b")),
+    ("delete", re.compile(r"\bdelete\s+from\s+(" + _TBL + r")|^\s*delete\s+(" + _TBL + r")\s*(?:where\b|;)", re.M)),
+    ("merge", re.compile(r"\bmerge\s+into\s+(" + _TBL + r")")),
+    ("grant/revoke", re.compile(r"(?:^|;)[ \t]*(?:grant|revoke)\s+[\w ,$]+?\s+(?:on|to|from)\b", re.M)),
+    ("dbms_spm/sqldiag", re.compile(
+        r"\bdbms_spm\.(?!display)\w+|"
+        r"\bdbms_sqldiag(?:_internal)?\.\w*(?:create|drop|alter|import|load|pack|unpack|evolve|accept|configure|set)\w*")),
+    ("dbms_sqltune change", re.compile(
+        r"\bdbms_sqltune\.\w*(?:create|drop|alter|import|accept|execute_tuning|set_|update_|load|unpack|pack|remove|reset|cancel|resume)\w*")),
+    ("dbms_stats", re.compile(
+        r"\bdbms_stats\.(?:gather|set_|delete|lock|unlock|export|import|restore|copy|create|drop|publish|flush|"
+        r"purge|reset|alter|transfer|prepare)\w*")),
+    ("dbms_scheduler", re.compile(r"\bdbms_scheduler\.(?:create|drop)\w*")),
+]
+_EXEC_IMM = re.compile(r"\bexecute\s+immediate\b")
+_TEMP_TARGET = re.compile(r"temp|tmp|gtt|plan_table|^:|^table\($|^\(")
+
+
+def _requires_own(clean_str, clean_nostr, with_str_raw):
+    """Own (non-propagated) requirement tags from comment-stripped lowercase text."""
+    tags = set()
+    why = {}
+    for tag, rx in (("diag_pack", _REQ_DIAG), ("tuning_pack", _REQ_TUNING),
+                    ("x$", _REQ_X), ("sysdba", _REQ_SYSDBA)):
+        m = rx.search(clean_str)
+        if m:
+            tags.add(tag)
+            why[tag] = m.group(0)
+    # TPT scripts that wrap Oracle's own AWR/ASH/ADDM report scripts
+    if _ADMIN_DIAG_RE.search(with_str_raw):
+        tags.add("diag_pack")
+        why.setdefault("diag_pack", "@?/rdbms/admin/awr|ash|addm*")
+    for label, rx in _CHANGES:
+        for m in rx.finditer(clean_nostr):
+            if label in ("insert", "update", "delete", "merge"):
+                target = next((g for g in m.groups() if g), "")
+                if _TEMP_TARGET.search(target):
+                    continue
+            tags.add("changes")
+            why.setdefault("changes", m.group(0).strip()[:60])
+            break
+        if "changes" in tags:
+            break
+    if "changes" not in tags:
+        for m in _EXEC_IMM.finditer(clean_nostr):
+            # ignore EXECUTE IMMEDIATE 'alter session ...' (session-local); the string
+            # literal is only visible in the string-preserving text
+            tags.add("changes")
+            why["changes"] = "execute immediate"
+            break
+    return tags, why
+
+
+def _exec_imm_only_session(clean_str):
+    """True if every EXECUTE IMMEDIATE targets a literal ALTER SESSION / SELECT / SET ROLE."""
+    found = False
+    for m in re.finditer(r"\bexecute\s+immediate\s*(.{0,40})", clean_str, re.S):
+        found = True
+        if not re.match(r"\(?\s*(?:q?'\s*(?:alter\s+session|select\b|set\s+role)\b)", m.group(1)):
+            return False
+    return found
+
+
+def compute_call_graph_and_requires(scripts):
+    """Annotate each script record with calls, called_by and requires."""
+    by_path = {s["file"]: s for s in scripts}
+    lower_map = {p.lower(): p for p in by_path}
+    unresolved = {}
+    own_tags, own_why = {}, {}
+
+    def lookup(rel):
+        rel = os.path.normpath(rel).replace(os.sep, "/")
+        if rel in by_path:
+            return rel
+        return lower_map.get(rel.lower())
+
+    for s in scripts:
+        rel = s["file"]
+        sdir = os.path.dirname(rel)
+        raw = _drop_sqlplus_comment_lines(_read_text(os.path.join(REPO, rel)))
+        for_calls = _tokenize_sql(raw, True, False)
+        calls = []
+        for m in _MAYBE_CALL_RE.finditer(for_calls):
+            at, tok = (m.group(1), m.group(2)) if m.group(1) else ("@", m.group(4))
+            if not tok or "&" in tok:
+                continue
+            tok = tok.strip("\"'")
+            tok = re.sub(r"^(?:\$SQLPATH|\$\{SQLPATH\}|%SQLPATH%)[/\\]", "", tok, flags=re.I)
+            tok = tok.rstrip(";").replace("\\", "/")
+            if not tok or tok.startswith(("?", "$", "%", "http")) or "&" in tok:
+                continue
+            base = tok if re.search(r"\.\w+$", os.path.basename(tok)) else tok + ".sql"
+            cands = []
+            if at == "@@":
+                cands = [os.path.join(sdir, base), base]
+            else:
+                cands = [base, os.path.join(sdir, base)]
+            hit = None
+            for c in cands:
+                hit = lookup(c)
+                if not hit and not c.lower().endswith(".sql"):
+                    hit = lookup(c + ".sql")
+                if hit:
+                    break
+            if hit:
+                if hit != rel and hit not in calls:
+                    calls.append(hit)
+            else:
+                unresolved.setdefault(tok, set()).add(rel)
+        s["calls"] = calls
+
+        low = raw.lower()
+        clean_str = _tokenize_sql(low, True, True)
+        clean_nostr = _tokenize_sql(low, False, True)
+        tags, why = _requires_own(clean_str, clean_nostr, _tokenize_sql(raw, True, False))
+        if "changes" in tags and why.get("changes") == "execute immediate" and _exec_imm_only_session(clean_str):
+            tags.discard("changes")
+            why.pop("changes", None)
+        own_tags[rel], own_why[rel] = tags, why
+
+    called_by = {p: [] for p in by_path}
+    for s in scripts:
+        for c in s["calls"]:
+            called_by[c].append(s["file"])
+    for s in scripts:
+        s["called_by"] = sorted(called_by[s["file"]])
+
+    # Transitive propagation (fixpoint => cycle-safe).  "changes" only flows
+    # into wrapper callers.
+    eff = {p: set(t) for p, t in own_tags.items()}
+    changed = True
+    while changed:
+        changed = False
+        for s in scripts:
+            cur = eff[s["file"]]
+            for c in s["calls"]:
+                add = eff[c] if s["kind"] == "wrapper" else eff[c] - {"changes"}
+                if not add <= cur:
+                    cur |= add
+                    changed = True
+    for s in scripts:
+        s["requires"] = sorted(eff[s["file"]])
+
+    return unresolved, own_tags, own_why
+
+
+def validate_workflows(scripts):
+    """Warn (stderr) about workflows.js steps whose `file` is not in the index."""
+    import sys
+    path = os.path.join(REPO, "workflows.js")
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    text = re.sub(r"^\s*//.*$", "", text, flags=re.M)
+    known = {s["file"] for s in scripts}
+    missing = [m for m in re.findall(r"\bfile\s*:\s*\"([^\"]+)\"", text) if m not in known]
+    for m in missing:
+        print(f"WARNING: workflows.js references {m!r}, which is not in the script index", file=sys.stderr)
+
+
 def main():
     catalog_path = os.path.join(REPO, "SCRIPTS_CATALOG.txt")
     catalog = parse_catalog(catalog_path) if os.path.exists(catalog_path) else {}
@@ -1053,7 +1403,11 @@ def main():
         if any(part.startswith(".") for part in relpath.split(os.sep)):
             continue
 
-        cat_entry = catalog.get(relpath) or catalog.get(os.path.basename(relpath))
+        cat_entry = catalog.get(relpath)
+        base = os.path.basename(relpath)
+        # Bare-name catalog entries refer to the root script when one exists.
+        if not cat_entry and not os.path.exists(os.path.join(REPO, base)):
+            cat_entry = catalog.get(base)
         ai = ai_cache.get(relpath)
         if ai and (ai.get("hash") != file_hash(filepath) or "category" not in ai):
             ai = None  # stale (script changed) or old-schema record; ignore
@@ -1115,9 +1469,23 @@ def main():
 
         dirname = os.path.dirname(relpath)
         entry["directory"] = dirname if dirname else "root"
+        fix_invocations(entry)
         scripts.append(entry)
 
+    unresolved, _own_tags, _own_why = compute_call_graph_and_requires(scripts)
+    if os.environ.get("CALL_DEBUG_FILE"):
+        with open(os.environ["CALL_DEBUG_FILE"], "w") as f:
+            json.dump({"unresolved": {k: sorted(v) for k, v in unresolved.items()},
+                       "own": {k: sorted(v) for k, v in _own_tags.items()},
+                       "why": _own_why}, f)
     scripts.sort(key=lambda s: (not s["documented"], s["category"], s["name"]))
+    import sys
+    validate_workflows(scripts)
+    print(f"fixed {FIX_STATS['syntax']} syntax lines, {FIX_STATS['examples']} example lines "
+          f"(wrapper syntax rebuilt from params: {FIX_STATS.get('wrapper_rebuilt', 0)})", file=sys.stderr)
+    if os.environ.get("FIX_VERBOSE"):
+        for f, a, b in FIX_STATS["samples"]:
+            print(f"  {f}: {a!r} -> {b!r}", file=sys.stderr)
     print(json.dumps(scripts, separators=(",", ":"), ensure_ascii=False))
 
 

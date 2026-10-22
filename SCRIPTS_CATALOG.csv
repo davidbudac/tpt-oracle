@@ -58,8 +58,8 @@ tabpart.sql|Object Information|partition, table, segment, storage, size, rows, s
 tabsubpart.sql|Object Information|subpartition, table, composite, storage, partition|Display table subpartition information for composite partitioned tables|@tabsubpart [<owner>.]<table_name>|@tabsubpart soe.orders|@tabsubpart soe.%|
 wrka.sql|Memory Management / Workarea|pga, workarea, temp, sort, hash, memory, usage, session|Display PGA and TEMP usage by session from V$PROCESS and V$TEMPSEG_USAGE|@wrka <filter_expression>|@wrka 1=1|@wrka sid=1000|"@wrka ""username='SOE'"""
 wrkasum.sql|Memory Management / Workarea|pga, workarea, summary, operation, sort, hash, group, aggregate|Display summary of SQL workareas grouped by operation type (PGA and TEMP)|@wrkasum <filter_expression>|@wrkasum sql_id='7q729nhdgtsqq'|@wrkasum 1=1|
-topcur.sql|SQL Analysis / Memory|cursor, top, memory, shared, pool, sql, large|Display top cursors by memory usage in shared pool|@topcur|@topcur||
-topcurmem.sql|SQL Analysis / Memory|cursor, memory, top, shared, pool, large, persistent|Display top cursors by memory usage with detailed breakdown|@topcurmem|@topcurmem||
+topcur.sql|SQL Analysis / Memory|cursor, top, memory, shared, pool, sql, large|Finds plans/SQL with many distinct SQL_IDs or child cursors in V$SQL (likely missing bind variables)|@topcur|@topcur||
+topcurmem.sql|SQL Analysis / Memory|cursor, memory, top, shared, pool, large, persistent|Shows top 20 cursors in V$SQL by SHARABLE_MEM with partial SQL text|@topcurmem|@topcurmem||
 sqlbinds.sql|SQL Analysis|bind, variable, value, captured, peeking, sql|Display captured SQL bind variable values from V$SQL_BIND_CAPTURE|@sqlbinds <sql_id> <child_number> <bind_name>|@sqlbinds 2swu3tn1ujzq7 0 %|@sqlbinds 2swu3tn1ujzq7 % sys_b_.*|@sqlbinds 7q729nhdgtsqq % %
 nonshared.sql|SQL Analysis / Cursor|cursor, sharing, nonshared, child, reason, version, mismatch|Display reasons why child cursors are not shared from V$SQL_SHARED_CURSOR|@nonshared <sql_id>|@nonshared 7q729nhdgtsqq||
 lob.sql|Object Information|lob, large, object, clob, blob, segment, storage|Display LOB segment information and storage details|@lob [<owner>.]<table_name>|@lob soe.customers|@lob %.%|
@@ -105,17 +105,17 @@ sql_profile_hints.sql|SQL Tuning|sql, profile, hints, extract, tuning, outline|E
 mutexprof.sql|Performance Monitoring / Latch Analysis|mutex, profiling, contention, cursor, pin, library|Profile cursor pin mutex activity showing top mutex holders|@mutexprof <grouping_columns> <filter> <samples>|@mutexprof sid,sql_id 1=1 10000||
 bufprof.sql|Performance Monitoring / Buffer Cache|buffer, cache, profiling, gets, read, hot, block|Profile buffer cache activity showing hot blocks and segments|@bufprof|@bufprof||
 waitprof.sql|Performance Monitoring / Wait Analysis|wait, event, profiling, activity, session, sampling|Profile wait events using high-frequency sampling|@waitprof <samples>|@waitprof 10000||
-rowcache.sql|Memory Management / Dictionary Cache|rowcache, dictionary, cache, dc, misses, gets|Display row cache (dictionary cache) statistics|@rowcache <cache_name>|@rowcache %|@rowcache dc_users|
+rowcache.sql|Memory Management / Dictionary Cache|rowcache, dictionary, cache, dc, misses, gets|Shows parent row cache (dictionary cache) entries matching an object name, from V$ROWCACHE_PARENT|@rowcache <cache_name>|@rowcache %|@rowcache dc_users|
 sgastatx.sql|Memory Management|sga, shared, pool, subpool, detailed, x$, ksmss|Display shared pool stats by sub-pool from X$KSMSS|@sgastatx <statistic_name>|"@sgastatx ""free memory"""|@sgastatx cursor|
 sgares.sql|Memory Management|sga, resize, history, operations, automatic, memory|Display information about last completed SGA resize operations|@sgares|@sgares||
 memres.sql|Memory Management|memory, resize, history, automatic, sga, component|Display information about last completed memory resize operations|@memres|@memres||
 uds.sql|Transaction Monitoring / Undo|undo, statistics, segment, transaction, rollback, undo|Display undo segment statistics|@uds|@uds||
-ltx.sql|Transaction Monitoring|transaction, lock, enqueue, tx, undo, session|Display detailed transaction information with locks and undo|@ltx|@ltx||
+ltx.sql|Transaction Monitoring|transaction, lock, enqueue, tx, undo, session|Lists enqueue lock types (with hex index, ID1/ID2 meanings, description) from X$KSIRESTYP/X$KSQEQTYP|@ltx|@ltx||
 tq.sql|Parallel Execution|parallel, query, px, tq, table, queue, slaves|Display parallel query table queue statistics|@tq|@tq||
 px.sql|Parallel Execution|parallel, execution, px, slaves, coordinator, dop|Display parallel execution session information|@px <filter_expression>|@px 1=1|@px qcsid=123|
 px2.sql|Parallel Execution|parallel, execution, px, detailed, slaves, statistics|Display detailed parallel execution information with statistics|@px2 <filter_expression>|@px2 1=1||
 pxs.sql|Parallel Execution|parallel, execution, px, slaves, active, session|Display active parallel execution slaves|@pxs|@pxs||
-se.sql|Session Monitoring / Events|session, event, trace, 10046, diagnostic, enabled|Display session events that are currently set|@se <sid>|@se 10||
+se.sql|Session Monitoring / Events|session, event, trace, 10046, diagnostic, enabled|Shows cumulative wait events and CPU time for given sessions from V$SESSION_EVENT and V$SESSTAT|@se <sid>|@se 10||
 ev.sql|Session Management / Tracing|event, set, enable, trace, 10046, diagnostic|Set a session event (like 10046 for SQL trace)|@ev <event_number> <level>|@ev 10046 12||
 evo.sql|Session Management / Tracing|event, disable, off, trace, stop|Disable a session event|@evo <event_number>|@evo 10046||
 ti.sql|Tracing / Diagnostics|trace, identifier, new, file, force, diagnostics|Force creation of a new trace file for current session|@ti|@ti||
@@ -134,5 +134,5 @@ db.sql|System Configuration / Database Info|database, name, dbid, created, platf
 dbinfo.sql|System Configuration / Database Info|database, info, instance, version, details, configuration|Display detailed database and instance information|@dbinfo|@dbinfo||
 i.sql|Session Monitoring|whoami, session, info, current, user, connection|"Display ""who am I"" - current session and instance information"|@i|@i||
 mysid.sql|Session Monitoring|sid, my, current, session, own|Display current session SID (sets &mysid variable)|@mysid|@mysid||
-find.sql|Utility / Search|find, search, object, text, source, code|Search for text patterns in source code and object names|@find <search_pattern>|@find employee||
-grep.sql|Utility / Search|grep, search, source, code, text, plsql|Search source code (like Unix grep command)|@grep <pattern>|@grep execute_immediate||
+find.sql|Utility / Search|find, search, object, text, source, code|Searches parameters, V$SYSSTAT stats, wait events, latches and enqueue types whose names match a pattern|@find <search_pattern>|@find employee||
+grep.sql|Utility / Search|grep, search, source, code, text, plsql|Greps the current session's trace file (&trcfile) for a pattern, keeping lines starting with '*'|@grep <pattern>|@grep execute_immediate||

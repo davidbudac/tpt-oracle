@@ -775,7 +775,7 @@ EXAMPLES:
 SCRIPT: topcur.sql
 CATEGORY: SQL Analysis / Memory
 KEYWORDS: cursor, top, memory, shared, pool, sql, large
-PURPOSE: Display top cursors by memory usage in shared pool
+PURPOSE: Finds plans/SQL with many distinct SQL_IDs or child cursors in V$SQL (likely missing bind variables)
 SYNTAX: @topcur
 PARAMETERS: None
 EXAMPLES:
@@ -785,7 +785,7 @@ EXAMPLES:
 SCRIPT: topcurmem.sql
 CATEGORY: SQL Analysis / Memory
 KEYWORDS: cursor, memory, top, shared, pool, large, persistent
-PURPOSE: Display top cursors by memory usage with detailed breakdown
+PURPOSE: Shows top 20 cursors in V$SQL by SHARABLE_MEM with partial SQL text
 SYNTAX: @topcurmem
 PARAMETERS: None
 EXAMPLES:
@@ -1367,7 +1367,7 @@ EXAMPLES:
 SCRIPT: rowcache.sql
 CATEGORY: Memory Management / Dictionary Cache
 KEYWORDS: rowcache, dictionary, cache, dc, misses, gets
-PURPOSE: Display row cache (dictionary cache) statistics
+PURPOSE: Shows parent row cache (dictionary cache) entries matching an object name, from V$ROWCACHE_PARENT
 SYNTAX: @rowcache <cache_name>
 PARAMETERS:
   - cache_name: Row cache name pattern (use % for all)
@@ -1421,7 +1421,7 @@ EXAMPLES:
 SCRIPT: ltx.sql
 CATEGORY: Transaction Monitoring
 KEYWORDS: transaction, lock, enqueue, tx, undo, session
-PURPOSE: Display detailed transaction information with locks and undo
+PURPOSE: Lists enqueue lock types (with hex index, ID1/ID2 meanings, description) from X$KSIRESTYP/X$KSQEQTYP
 SYNTAX: @ltx
 PARAMETERS: None
 EXAMPLES:
@@ -1474,7 +1474,7 @@ EXAMPLES:
 SCRIPT: se.sql
 CATEGORY: Session Monitoring / Events
 KEYWORDS: session, event, trace, 10046, diagnostic, enabled
-PURPOSE: Display session events that are currently set
+PURPOSE: Shows cumulative wait events and CPU time for given sessions from V$SESSION_EVENT and V$SESSTAT
 SYNTAX: @se <sid>
 PARAMETERS:
   - sid: Session ID
@@ -1676,7 +1676,7 @@ EXAMPLES:
 SCRIPT: find.sql
 CATEGORY: Utility / Search
 KEYWORDS: find, search, object, text, source, code
-PURPOSE: Search for text patterns in source code and object names
+PURPOSE: Searches parameters, V$SYSSTAT stats, wait events, latches and enqueue types whose names match a pattern
 SYNTAX: @find <search_pattern>
 PARAMETERS:
   - search_pattern: Pattern to search for
@@ -1687,7 +1687,7 @@ EXAMPLES:
 SCRIPT: grep.sql
 CATEGORY: Utility / Search
 KEYWORDS: grep, search, source, code, text, plsql
-PURPOSE: Search source code (like Unix grep command)
+PURPOSE: Greps the current session's trace file (&trcfile) for a pattern, keeping lines starting with '*'
 SYNTAX: @grep <pattern>
 PARAMETERS:
   - pattern: Pattern to search for in source code

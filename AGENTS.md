@@ -69,6 +69,8 @@ There are two separate catalog layers in this repository. Do not treat them as i
     3. header comments and rule-based heuristics (offline fallback)
   - `tools/ai_describe.py` fills `.ai_descriptions.json` for new or changed scripts
   - Categories are a fixed list of 12 shared by `build_directory.py` and `tools/ai_describe.py`; `kind` is one of tool/wrapper/demo/fragment/setup/stub
+  - Each record also has `calls` (repo paths the script invokes via `@`/`@@`), `called_by` (the inverse) and `requires` (subset of `diag_pack`, `tuning_pack`, `x$`, `sysdba`, `changes`), derived by `build_directory.py` from the script source; `directory.html` shows them as badges, a "Needs" filter and a call graph
+  - `workflows.js` is hand-edited (`const WORKFLOWS = [{id, title, blurb, steps:[{file, why, example, note?}]}]`) and drives the "Start here" cards in `directory.html`; every `file` must be a repo-relative path, and `build_directory.py` warns on stderr about unknown ones
 
 If a task touches search, documentation, or catalog data, first determine which layer is being changed:
 
